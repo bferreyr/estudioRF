@@ -1,7 +1,7 @@
 // use prisma-8
 
 model User {
-  id           String   @id @default(cuid())
+  id           String   @id @default(uuid())
   username     String   @unique
   passwordHash String
   name         String?
@@ -10,7 +10,7 @@ model User {
 }
 
 model Client {
-  id             String   @id @default(cuid())
+  id             String   @id @default(uuid())
   nombre         String
   dni            String?
   telefono       String?
@@ -29,7 +29,7 @@ model Client {
 }
 
 model Case {
-  id                 String   @id @default(cuid())
+  id                 String   @id @default(uuid())
   clientId           String
   client             Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
   
@@ -71,7 +71,7 @@ model Case {
 }
 
 model Fee {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   caseId    String
   case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
   monto     Float
@@ -83,7 +83,7 @@ model Fee {
 }
 
 model Contribution {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   caseId    String
   case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
   concepto  String
@@ -95,7 +95,7 @@ model Contribution {
 }
 
 model Expense {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   caseId    String
   case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
   concepto  String

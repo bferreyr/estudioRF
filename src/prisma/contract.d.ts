@@ -34,9 +34,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'1e8412e162dbbe69f4bb3bf8d07f0280ae67eaab15c34dcf201e67468315428d'>;
+  StorageHashBase<'867113fad29cc89fd369f5c6e6fc20b29a7a5704f6294de719b6512be3652d77'>;
 export type ExecutionHash =
-  ExecutionHashBase<'4abff323cc88151ef9c9a0ec90122cfee6d46814a118cdb66a9fdd94a4123463'>;
+  ExecutionHashBase<'9e33206f6ce82f351aa42b89e00c330cd9524f776f6be1c9cab2272a7a134120'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -242,18 +242,85 @@ type DefaultLiteralValue<CodecId extends string, Encoded> = CodecId extends keyo
 
 export type FieldOutputTypes = {
   readonly public: {
-    readonly Post: {
-      readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly title: CodecTypes['pg/text@1']['output'];
-      readonly content: CodecTypes['pg/text@1']['output'] | null;
-      readonly authorId: CodecTypes['pg/int4@1']['output'];
+    readonly Case: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly clientId: CodecTypes['pg/text@1']['output'];
+      readonly caratula: CodecTypes['pg/text@1']['output'] | null;
+      readonly materia: CodecTypes['pg/text@1']['output'] | null;
+      readonly estudio: CodecTypes['pg/text@1']['output'] | null;
+      readonly estado: CodecTypes['pg/text@1']['output'] | null;
+      readonly moroso: CodecTypes['pg/bool@1']['output'];
+      readonly fechaEntrevista: CodecTypes['pg/text@1']['output'] | null;
+      readonly horaEntrevista: CodecTypes['pg/text@1']['output'] | null;
+      readonly atendidoPor: CodecTypes['pg/text@1']['output'] | null;
+      readonly referidoPor: CodecTypes['pg/text@1']['output'] | null;
+      readonly detalleAsunto: CodecTypes['pg/text@1']['output'] | null;
+      readonly descripcionCaso: CodecTypes['pg/text@1']['output'] | null;
+      readonly notasEntrevista: CodecTypes['pg/text@1']['output'] | null;
+      readonly modalidadTrabajo: CodecTypes['pg/text@1']['output'] | null;
+      readonly plazoEstimado: CodecTypes['pg/text@1']['output'] | null;
+      readonly tareas: CodecTypes['pg/text@1']['output'] | null;
+      readonly tareasDetalle: CodecTypes['pg/text@1']['output'] | null;
+      readonly fechaFinalizacion: CodecTypes['pg/text@1']['output'] | null;
+      readonly proximoMovimiento: CodecTypes['pg/text@1']['output'] | null;
+      readonly tribunal: CodecTypes['pg/text@1']['output'] | null;
+      readonly contraparte: CodecTypes['pg/text@1']['output'] | null;
+      readonly fechaInicio: CodecTypes['pg/text@1']['output'] | null;
+      readonly nroExpediente: CodecTypes['pg/text@1']['output'] | null;
+      readonly honorariosTotales: CodecTypes['pg/float8@1']['output'] | null;
+      readonly anticipo: CodecTypes['pg/float8@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
+    readonly Client: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly nombre: CodecTypes['pg/text@1']['output'];
+      readonly dni: CodecTypes['pg/text@1']['output'] | null;
+      readonly telefono: CodecTypes['pg/text@1']['output'] | null;
+      readonly telefonoAlt: CodecTypes['pg/text@1']['output'] | null;
+      readonly email: CodecTypes['pg/text@1']['output'] | null;
+      readonly ocupacion: CodecTypes['pg/text@1']['output'] | null;
+      readonly fechaNacimiento: CodecTypes['pg/text@1']['output'] | null;
+      readonly estadoCivil: CodecTypes['pg/text@1']['output'] | null;
+      readonly direccion: CodecTypes['pg/text@1']['output'] | null;
+      readonly localidad: CodecTypes['pg/text@1']['output'] | null;
+      readonly observaciones: CodecTypes['pg/text@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    };
+    readonly Contribution: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly caseId: CodecTypes['pg/text@1']['output'];
+      readonly concepto: CodecTypes['pg/text@1']['output'];
+      readonly monto: CodecTypes['pg/float8@1']['output'];
+      readonly fechaVenc: CodecTypes['pg/text@1']['output'] | null;
+      readonly fechaPago: CodecTypes['pg/text@1']['output'] | null;
+      readonly comprobante: CodecTypes['pg/text@1']['output'] | null;
+      readonly notas: CodecTypes['pg/text@1']['output'] | null;
+    };
+    readonly Expense: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly caseId: CodecTypes['pg/text@1']['output'];
+      readonly concepto: CodecTypes['pg/text@1']['output'];
+      readonly monto: CodecTypes['pg/float8@1']['output'];
+      readonly fecha: CodecTypes['pg/text@1']['output'] | null;
+      readonly comprobante: CodecTypes['pg/text@1']['output'] | null;
+      readonly notas: CodecTypes['pg/text@1']['output'] | null;
+    };
+    readonly Fee: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly caseId: CodecTypes['pg/text@1']['output'];
+      readonly monto: CodecTypes['pg/float8@1']['output'];
+      readonly fechaVenc: CodecTypes['pg/text@1']['output'] | null;
+      readonly fechaPago: CodecTypes['pg/text@1']['output'] | null;
+      readonly metodo: CodecTypes['pg/text@1']['output'] | null;
+      readonly recibo: CodecTypes['pg/text@1']['output'] | null;
+      readonly notas: CodecTypes['pg/text@1']['output'] | null;
+    };
     readonly User: {
-      readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly email: CodecTypes['pg/text@1']['output'];
-      readonly username: CodecTypes['pg/text@1']['output'] | null;
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly username: CodecTypes['pg/text@1']['output'];
+      readonly passwordHash: CodecTypes['pg/text@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -262,18 +329,85 @@ export type FieldOutputTypes = {
 };
 export type FieldInputTypes = {
   readonly public: {
-    readonly Post: {
-      readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly title: CodecTypes['pg/text@1']['input'];
-      readonly content: CodecTypes['pg/text@1']['input'] | null;
-      readonly authorId: CodecTypes['pg/int4@1']['input'];
+    readonly Case: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly clientId: CodecTypes['pg/text@1']['input'];
+      readonly caratula: CodecTypes['pg/text@1']['input'] | null;
+      readonly materia: CodecTypes['pg/text@1']['input'] | null;
+      readonly estudio: CodecTypes['pg/text@1']['input'] | null;
+      readonly estado: CodecTypes['pg/text@1']['input'] | null;
+      readonly moroso: CodecTypes['pg/bool@1']['input'];
+      readonly fechaEntrevista: CodecTypes['pg/text@1']['input'] | null;
+      readonly horaEntrevista: CodecTypes['pg/text@1']['input'] | null;
+      readonly atendidoPor: CodecTypes['pg/text@1']['input'] | null;
+      readonly referidoPor: CodecTypes['pg/text@1']['input'] | null;
+      readonly detalleAsunto: CodecTypes['pg/text@1']['input'] | null;
+      readonly descripcionCaso: CodecTypes['pg/text@1']['input'] | null;
+      readonly notasEntrevista: CodecTypes['pg/text@1']['input'] | null;
+      readonly modalidadTrabajo: CodecTypes['pg/text@1']['input'] | null;
+      readonly plazoEstimado: CodecTypes['pg/text@1']['input'] | null;
+      readonly tareas: CodecTypes['pg/text@1']['input'] | null;
+      readonly tareasDetalle: CodecTypes['pg/text@1']['input'] | null;
+      readonly fechaFinalizacion: CodecTypes['pg/text@1']['input'] | null;
+      readonly proximoMovimiento: CodecTypes['pg/text@1']['input'] | null;
+      readonly tribunal: CodecTypes['pg/text@1']['input'] | null;
+      readonly contraparte: CodecTypes['pg/text@1']['input'] | null;
+      readonly fechaInicio: CodecTypes['pg/text@1']['input'] | null;
+      readonly nroExpediente: CodecTypes['pg/text@1']['input'] | null;
+      readonly honorariosTotales: CodecTypes['pg/float8@1']['input'] | null;
+      readonly anticipo: CodecTypes['pg/float8@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
+    readonly Client: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly nombre: CodecTypes['pg/text@1']['input'];
+      readonly dni: CodecTypes['pg/text@1']['input'] | null;
+      readonly telefono: CodecTypes['pg/text@1']['input'] | null;
+      readonly telefonoAlt: CodecTypes['pg/text@1']['input'] | null;
+      readonly email: CodecTypes['pg/text@1']['input'] | null;
+      readonly ocupacion: CodecTypes['pg/text@1']['input'] | null;
+      readonly fechaNacimiento: CodecTypes['pg/text@1']['input'] | null;
+      readonly estadoCivil: CodecTypes['pg/text@1']['input'] | null;
+      readonly direccion: CodecTypes['pg/text@1']['input'] | null;
+      readonly localidad: CodecTypes['pg/text@1']['input'] | null;
+      readonly observaciones: CodecTypes['pg/text@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
+    };
+    readonly Contribution: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly caseId: CodecTypes['pg/text@1']['input'];
+      readonly concepto: CodecTypes['pg/text@1']['input'];
+      readonly monto: CodecTypes['pg/float8@1']['input'];
+      readonly fechaVenc: CodecTypes['pg/text@1']['input'] | null;
+      readonly fechaPago: CodecTypes['pg/text@1']['input'] | null;
+      readonly comprobante: CodecTypes['pg/text@1']['input'] | null;
+      readonly notas: CodecTypes['pg/text@1']['input'] | null;
+    };
+    readonly Expense: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly caseId: CodecTypes['pg/text@1']['input'];
+      readonly concepto: CodecTypes['pg/text@1']['input'];
+      readonly monto: CodecTypes['pg/float8@1']['input'];
+      readonly fecha: CodecTypes['pg/text@1']['input'] | null;
+      readonly comprobante: CodecTypes['pg/text@1']['input'] | null;
+      readonly notas: CodecTypes['pg/text@1']['input'] | null;
+    };
+    readonly Fee: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly caseId: CodecTypes['pg/text@1']['input'];
+      readonly monto: CodecTypes['pg/float8@1']['input'];
+      readonly fechaVenc: CodecTypes['pg/text@1']['input'] | null;
+      readonly fechaPago: CodecTypes['pg/text@1']['input'] | null;
+      readonly metodo: CodecTypes['pg/text@1']['input'] | null;
+      readonly recibo: CodecTypes['pg/text@1']['input'] | null;
+      readonly notas: CodecTypes['pg/text@1']['input'] | null;
+    };
     readonly User: {
-      readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly email: CodecTypes['pg/text@1']['input'];
-      readonly username: CodecTypes['pg/text@1']['input'] | null;
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly username: CodecTypes['pg/text@1']['input'];
+      readonly passwordHash: CodecTypes['pg/text@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
@@ -282,72 +416,287 @@ export type FieldInputTypes = {
 };
 export type StorageColumnTypes = {
   readonly public: {
-    readonly post: {
-      readonly authorId: CodecTypes['pg/int4@1']['output'];
-      readonly content: CodecTypes['pg/text@1']['output'] | null;
+    readonly case: {
+      readonly anticipo: CodecTypes['pg/float8@1']['output'] | null;
+      readonly atendidoPor: CodecTypes['pg/text@1']['output'] | null;
+      readonly caratula: CodecTypes['pg/text@1']['output'] | null;
+      readonly clientId: CodecTypes['pg/text@1']['output'];
+      readonly contraparte: CodecTypes['pg/text@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly title: CodecTypes['pg/text@1']['output'];
+      readonly descripcionCaso: CodecTypes['pg/text@1']['output'] | null;
+      readonly detalleAsunto: CodecTypes['pg/text@1']['output'] | null;
+      readonly estado: CodecTypes['pg/text@1']['output'] | null;
+      readonly estudio: CodecTypes['pg/text@1']['output'] | null;
+      readonly fechaEntrevista: CodecTypes['pg/text@1']['output'] | null;
+      readonly fechaFinalizacion: CodecTypes['pg/text@1']['output'] | null;
+      readonly fechaInicio: CodecTypes['pg/text@1']['output'] | null;
+      readonly honorariosTotales: CodecTypes['pg/float8@1']['output'] | null;
+      readonly horaEntrevista: CodecTypes['pg/text@1']['output'] | null;
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly materia: CodecTypes['pg/text@1']['output'] | null;
+      readonly modalidadTrabajo: CodecTypes['pg/text@1']['output'] | null;
+      readonly moroso: CodecTypes['pg/bool@1']['output'];
+      readonly notasEntrevista: CodecTypes['pg/text@1']['output'] | null;
+      readonly nroExpediente: CodecTypes['pg/text@1']['output'] | null;
+      readonly plazoEstimado: CodecTypes['pg/text@1']['output'] | null;
+      readonly proximoMovimiento: CodecTypes['pg/text@1']['output'] | null;
+      readonly referidoPor: CodecTypes['pg/text@1']['output'] | null;
+      readonly tareas: CodecTypes['pg/text@1']['output'] | null;
+      readonly tareasDetalle: CodecTypes['pg/text@1']['output'] | null;
+      readonly tribunal: CodecTypes['pg/text@1']['output'] | null;
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    };
+    readonly client: {
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly direccion: CodecTypes['pg/text@1']['output'] | null;
+      readonly dni: CodecTypes['pg/text@1']['output'] | null;
+      readonly email: CodecTypes['pg/text@1']['output'] | null;
+      readonly estadoCivil: CodecTypes['pg/text@1']['output'] | null;
+      readonly fechaNacimiento: CodecTypes['pg/text@1']['output'] | null;
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly localidad: CodecTypes['pg/text@1']['output'] | null;
+      readonly nombre: CodecTypes['pg/text@1']['output'];
+      readonly observaciones: CodecTypes['pg/text@1']['output'] | null;
+      readonly ocupacion: CodecTypes['pg/text@1']['output'] | null;
+      readonly telefono: CodecTypes['pg/text@1']['output'] | null;
+      readonly telefonoAlt: CodecTypes['pg/text@1']['output'] | null;
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    };
+    readonly contribution: {
+      readonly caseId: CodecTypes['pg/text@1']['output'];
+      readonly comprobante: CodecTypes['pg/text@1']['output'] | null;
+      readonly concepto: CodecTypes['pg/text@1']['output'];
+      readonly fechaPago: CodecTypes['pg/text@1']['output'] | null;
+      readonly fechaVenc: CodecTypes['pg/text@1']['output'] | null;
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly monto: CodecTypes['pg/float8@1']['output'];
+      readonly notas: CodecTypes['pg/text@1']['output'] | null;
+    };
+    readonly expense: {
+      readonly caseId: CodecTypes['pg/text@1']['output'];
+      readonly comprobante: CodecTypes['pg/text@1']['output'] | null;
+      readonly concepto: CodecTypes['pg/text@1']['output'];
+      readonly fecha: CodecTypes['pg/text@1']['output'] | null;
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly monto: CodecTypes['pg/float8@1']['output'];
+      readonly notas: CodecTypes['pg/text@1']['output'] | null;
+    };
+    readonly fee: {
+      readonly caseId: CodecTypes['pg/text@1']['output'];
+      readonly fechaPago: CodecTypes['pg/text@1']['output'] | null;
+      readonly fechaVenc: CodecTypes['pg/text@1']['output'] | null;
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly metodo: CodecTypes['pg/text@1']['output'] | null;
+      readonly monto: CodecTypes['pg/float8@1']['output'];
+      readonly notas: CodecTypes['pg/text@1']['output'] | null;
+      readonly recibo: CodecTypes['pg/text@1']['output'] | null;
     };
     readonly user: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly email: CodecTypes['pg/text@1']['output'];
-      readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'] | null;
+      readonly passwordHash: CodecTypes['pg/text@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly username: CodecTypes['pg/text@1']['output'] | null;
+      readonly username: CodecTypes['pg/text@1']['output'];
     };
   };
 };
 export type StorageColumnInputTypes = {
   readonly public: {
-    readonly post: {
-      readonly authorId: CodecTypes['pg/int4@1']['input'];
-      readonly content: CodecTypes['pg/text@1']['input'] | null;
+    readonly case: {
+      readonly anticipo: CodecTypes['pg/float8@1']['input'] | null;
+      readonly atendidoPor: CodecTypes['pg/text@1']['input'] | null;
+      readonly caratula: CodecTypes['pg/text@1']['input'] | null;
+      readonly clientId: CodecTypes['pg/text@1']['input'];
+      readonly contraparte: CodecTypes['pg/text@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly title: CodecTypes['pg/text@1']['input'];
+      readonly descripcionCaso: CodecTypes['pg/text@1']['input'] | null;
+      readonly detalleAsunto: CodecTypes['pg/text@1']['input'] | null;
+      readonly estado: CodecTypes['pg/text@1']['input'] | null;
+      readonly estudio: CodecTypes['pg/text@1']['input'] | null;
+      readonly fechaEntrevista: CodecTypes['pg/text@1']['input'] | null;
+      readonly fechaFinalizacion: CodecTypes['pg/text@1']['input'] | null;
+      readonly fechaInicio: CodecTypes['pg/text@1']['input'] | null;
+      readonly honorariosTotales: CodecTypes['pg/float8@1']['input'] | null;
+      readonly horaEntrevista: CodecTypes['pg/text@1']['input'] | null;
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly materia: CodecTypes['pg/text@1']['input'] | null;
+      readonly modalidadTrabajo: CodecTypes['pg/text@1']['input'] | null;
+      readonly moroso: CodecTypes['pg/bool@1']['input'];
+      readonly notasEntrevista: CodecTypes['pg/text@1']['input'] | null;
+      readonly nroExpediente: CodecTypes['pg/text@1']['input'] | null;
+      readonly plazoEstimado: CodecTypes['pg/text@1']['input'] | null;
+      readonly proximoMovimiento: CodecTypes['pg/text@1']['input'] | null;
+      readonly referidoPor: CodecTypes['pg/text@1']['input'] | null;
+      readonly tareas: CodecTypes['pg/text@1']['input'] | null;
+      readonly tareasDetalle: CodecTypes['pg/text@1']['input'] | null;
+      readonly tribunal: CodecTypes['pg/text@1']['input'] | null;
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
+    };
+    readonly client: {
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly direccion: CodecTypes['pg/text@1']['input'] | null;
+      readonly dni: CodecTypes['pg/text@1']['input'] | null;
+      readonly email: CodecTypes['pg/text@1']['input'] | null;
+      readonly estadoCivil: CodecTypes['pg/text@1']['input'] | null;
+      readonly fechaNacimiento: CodecTypes['pg/text@1']['input'] | null;
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly localidad: CodecTypes['pg/text@1']['input'] | null;
+      readonly nombre: CodecTypes['pg/text@1']['input'];
+      readonly observaciones: CodecTypes['pg/text@1']['input'] | null;
+      readonly ocupacion: CodecTypes['pg/text@1']['input'] | null;
+      readonly telefono: CodecTypes['pg/text@1']['input'] | null;
+      readonly telefonoAlt: CodecTypes['pg/text@1']['input'] | null;
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
+    };
+    readonly contribution: {
+      readonly caseId: CodecTypes['pg/text@1']['input'];
+      readonly comprobante: CodecTypes['pg/text@1']['input'] | null;
+      readonly concepto: CodecTypes['pg/text@1']['input'];
+      readonly fechaPago: CodecTypes['pg/text@1']['input'] | null;
+      readonly fechaVenc: CodecTypes['pg/text@1']['input'] | null;
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly monto: CodecTypes['pg/float8@1']['input'];
+      readonly notas: CodecTypes['pg/text@1']['input'] | null;
+    };
+    readonly expense: {
+      readonly caseId: CodecTypes['pg/text@1']['input'];
+      readonly comprobante: CodecTypes['pg/text@1']['input'] | null;
+      readonly concepto: CodecTypes['pg/text@1']['input'];
+      readonly fecha: CodecTypes['pg/text@1']['input'] | null;
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly monto: CodecTypes['pg/float8@1']['input'];
+      readonly notas: CodecTypes['pg/text@1']['input'] | null;
+    };
+    readonly fee: {
+      readonly caseId: CodecTypes['pg/text@1']['input'];
+      readonly fechaPago: CodecTypes['pg/text@1']['input'] | null;
+      readonly fechaVenc: CodecTypes['pg/text@1']['input'] | null;
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly metodo: CodecTypes['pg/text@1']['input'] | null;
+      readonly monto: CodecTypes['pg/float8@1']['input'];
+      readonly notas: CodecTypes['pg/text@1']['input'] | null;
+      readonly recibo: CodecTypes['pg/text@1']['input'] | null;
     };
     readonly user: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly email: CodecTypes['pg/text@1']['input'];
-      readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'] | null;
+      readonly passwordHash: CodecTypes['pg/text@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly username: CodecTypes['pg/text@1']['input'] | null;
+      readonly username: CodecTypes['pg/text@1']['input'];
     };
   };
 };
 
 export namespace Models {
   export type public_User = {
-    id: CodecTypes['pg/int4@1']['output'];
-    email: CodecTypes['pg/text@1']['output'];
-    username: CodecTypes['pg/text@1']['output'] | null;
+    id: CodecTypes['pg/text@1']['output'];
+    username: CodecTypes['pg/text@1']['output'];
+    passwordHash: CodecTypes['pg/text@1']['output'];
     name: CodecTypes['pg/text@1']['output'] | null;
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
-    posts: public_Post[];
-    readonly [RelationKeys]?: 'posts';
+    readonly [RelationKeys]?: never;
   };
-  export type public_Post = {
-    id: CodecTypes['pg/int4@1']['output'];
-    title: CodecTypes['pg/text@1']['output'];
-    content: CodecTypes['pg/text@1']['output'] | null;
-    authorId: CodecTypes['pg/int4@1']['output'];
+  export type public_Client = {
+    id: CodecTypes['pg/text@1']['output'];
+    nombre: CodecTypes['pg/text@1']['output'];
+    dni: CodecTypes['pg/text@1']['output'] | null;
+    telefono: CodecTypes['pg/text@1']['output'] | null;
+    telefonoAlt: CodecTypes['pg/text@1']['output'] | null;
+    email: CodecTypes['pg/text@1']['output'] | null;
+    ocupacion: CodecTypes['pg/text@1']['output'] | null;
+    fechaNacimiento: CodecTypes['pg/text@1']['output'] | null;
+    estadoCivil: CodecTypes['pg/text@1']['output'] | null;
+    direccion: CodecTypes['pg/text@1']['output'] | null;
+    localidad: CodecTypes['pg/text@1']['output'] | null;
+    observaciones: CodecTypes['pg/text@1']['output'] | null;
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
-    author: public_User;
-    readonly [RelationKeys]?: 'author';
+    cases: public_Case[];
+    readonly [RelationKeys]?: 'cases';
+  };
+  export type public_Case = {
+    id: CodecTypes['pg/text@1']['output'];
+    clientId: CodecTypes['pg/text@1']['output'];
+    caratula: CodecTypes['pg/text@1']['output'] | null;
+    materia: CodecTypes['pg/text@1']['output'] | null;
+    estudio: CodecTypes['pg/text@1']['output'] | null;
+    estado: CodecTypes['pg/text@1']['output'] | null;
+    moroso: CodecTypes['pg/bool@1']['output'];
+    fechaEntrevista: CodecTypes['pg/text@1']['output'] | null;
+    horaEntrevista: CodecTypes['pg/text@1']['output'] | null;
+    atendidoPor: CodecTypes['pg/text@1']['output'] | null;
+    referidoPor: CodecTypes['pg/text@1']['output'] | null;
+    detalleAsunto: CodecTypes['pg/text@1']['output'] | null;
+    descripcionCaso: CodecTypes['pg/text@1']['output'] | null;
+    notasEntrevista: CodecTypes['pg/text@1']['output'] | null;
+    modalidadTrabajo: CodecTypes['pg/text@1']['output'] | null;
+    plazoEstimado: CodecTypes['pg/text@1']['output'] | null;
+    tareas: CodecTypes['pg/text@1']['output'] | null;
+    tareasDetalle: CodecTypes['pg/text@1']['output'] | null;
+    fechaFinalizacion: CodecTypes['pg/text@1']['output'] | null;
+    proximoMovimiento: CodecTypes['pg/text@1']['output'] | null;
+    tribunal: CodecTypes['pg/text@1']['output'] | null;
+    contraparte: CodecTypes['pg/text@1']['output'] | null;
+    fechaInicio: CodecTypes['pg/text@1']['output'] | null;
+    nroExpediente: CodecTypes['pg/text@1']['output'] | null;
+    honorariosTotales: CodecTypes['pg/float8@1']['output'] | null;
+    anticipo: CodecTypes['pg/float8@1']['output'] | null;
+    createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    client: public_Client;
+    contributions: public_Contribution[];
+    expenses: public_Expense[];
+    fees: public_Fee[];
+    readonly [RelationKeys]?: 'client' | 'contributions' | 'expenses' | 'fees';
+  };
+  export type public_Fee = {
+    id: CodecTypes['pg/text@1']['output'];
+    caseId: CodecTypes['pg/text@1']['output'];
+    monto: CodecTypes['pg/float8@1']['output'];
+    fechaVenc: CodecTypes['pg/text@1']['output'] | null;
+    fechaPago: CodecTypes['pg/text@1']['output'] | null;
+    metodo: CodecTypes['pg/text@1']['output'] | null;
+    recibo: CodecTypes['pg/text@1']['output'] | null;
+    notas: CodecTypes['pg/text@1']['output'] | null;
+    case: public_Case;
+    readonly [RelationKeys]?: 'case';
+  };
+  export type public_Contribution = {
+    id: CodecTypes['pg/text@1']['output'];
+    caseId: CodecTypes['pg/text@1']['output'];
+    concepto: CodecTypes['pg/text@1']['output'];
+    monto: CodecTypes['pg/float8@1']['output'];
+    fechaVenc: CodecTypes['pg/text@1']['output'] | null;
+    fechaPago: CodecTypes['pg/text@1']['output'] | null;
+    comprobante: CodecTypes['pg/text@1']['output'] | null;
+    notas: CodecTypes['pg/text@1']['output'] | null;
+    case: public_Case;
+    readonly [RelationKeys]?: 'case';
+  };
+  export type public_Expense = {
+    id: CodecTypes['pg/text@1']['output'];
+    caseId: CodecTypes['pg/text@1']['output'];
+    concepto: CodecTypes['pg/text@1']['output'];
+    monto: CodecTypes['pg/float8@1']['output'];
+    fecha: CodecTypes['pg/text@1']['output'] | null;
+    comprobante: CodecTypes['pg/text@1']['output'] | null;
+    notas: CodecTypes['pg/text@1']['output'] | null;
+    case: public_Case;
+    readonly [RelationKeys]?: 'case';
   };
 }
 
 export declare const models: {
   public: {
     User: Models.public_User;
-    Post: Models.public_Post;
+    Client: Models.public_Client;
+    Case: Models.public_Case;
+    Fee: Models.public_Fee;
+    Contribution: Models.public_Contribution;
+    Expense: Models.public_Expense;
   };
 };
 
@@ -369,31 +718,141 @@ type ContractBase = Omit<
         readonly kind: 'postgres-schema';
         readonly entries: {
           readonly table: {
-            readonly post: {
+            readonly case: {
               columns: {
                 readonly id: {
-                  readonly nativeType: 'int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'function';
-                    readonly expression: 'autoincrement()';
-                  };
-                };
-                readonly title: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                 };
-                readonly content: {
+                readonly clientId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly caratula: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
                 };
-                readonly authorId: {
-                  readonly nativeType: 'int4';
-                  readonly codecId: 'pg/int4@1';
+                readonly materia: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly estudio: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly estado: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly moroso: {
+                  readonly nativeType: 'bool';
+                  readonly codecId: 'pg/bool@1';
                   readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/bool@1', false>;
+                  };
+                };
+                readonly fechaEntrevista: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly horaEntrevista: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly atendidoPor: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly referidoPor: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly detalleAsunto: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly descripcionCaso: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly notasEntrevista: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly modalidadTrabajo: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly plazoEstimado: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly tareas: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly tareasDetalle: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly fechaFinalizacion: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly proximoMovimiento: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly tribunal: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly contraparte: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly fechaInicio: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly nroExpediente: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly honorariosTotales: {
+                  readonly nativeType: 'float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: true;
+                };
+                readonly anticipo: {
+                  readonly nativeType: 'float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: true;
                 };
                 readonly createdAt: {
                   readonly nativeType: 'timestamptz';
@@ -411,9 +870,9 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'post_authorId_idx_e47547ed';
-                  readonly prefix: 'post_authorId_idx';
-                  readonly columns: readonly ['authorId'];
+                  readonly name: 'case_clientId_idx_153a9a49';
+                  readonly prefix: 'case_clientId_idx';
+                  readonly columns: readonly ['clientId'];
                   readonly unique: false;
                 },
               ];
@@ -421,12 +880,290 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'post';
-                    readonly columns: readonly ['authorId'];
+                    readonly tableName: 'case';
+                    readonly columns: readonly ['clientId'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'user';
+                    readonly tableName: 'client';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly client: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly nombre: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly dni: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly telefono: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly telefonoAlt: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly email: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly ocupacion: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly fechaNacimiento: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly estadoCivil: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly direccion: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly localidad: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly observaciones: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly createdAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly updatedAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [];
+            };
+            readonly contribution: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly caseId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly concepto: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly monto: {
+                  readonly nativeType: 'float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: false;
+                };
+                readonly fechaVenc: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly fechaPago: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly comprobante: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly notas: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'contribution_caseId_idx_f7093793';
+                  readonly prefix: 'contribution_caseId_idx';
+                  readonly columns: readonly ['caseId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'contribution';
+                    readonly columns: readonly ['caseId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'case';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly expense: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly caseId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly concepto: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly monto: {
+                  readonly nativeType: 'float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: false;
+                };
+                readonly fecha: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly comprobante: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly notas: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'expense_caseId_idx_f7093793';
+                  readonly prefix: 'expense_caseId_idx';
+                  readonly columns: readonly ['caseId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'expense';
+                    readonly columns: readonly ['caseId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'case';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly fee: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly caseId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly monto: {
+                  readonly nativeType: 'float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: false;
+                };
+                readonly fechaVenc: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly fechaPago: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly metodo: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly recibo: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly notas: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'fee_caseId_idx_f7093793';
+                  readonly prefix: 'fee_caseId_idx';
+                  readonly columns: readonly ['caseId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'fee';
+                    readonly columns: readonly ['caseId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'case';
                     readonly columns: readonly ['id'];
                   };
                 },
@@ -435,15 +1172,6 @@ type ContractBase = Omit<
             readonly user: {
               columns: {
                 readonly id: {
-                  readonly nativeType: 'int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'function';
-                    readonly expression: 'autoincrement()';
-                  };
-                };
-                readonly email: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
@@ -451,7 +1179,12 @@ type ContractBase = Omit<
                 readonly username: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
+                  readonly nullable: false;
+                };
+                readonly passwordHash: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
                 };
                 readonly name: {
                   readonly nativeType: 'text';
@@ -471,7 +1204,7 @@ type ContractBase = Omit<
                 };
               };
               primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [{ readonly columns: readonly ['email'] }];
+              uniques: readonly [{ readonly columns: readonly ['username'] }];
               indexes: readonly [];
               foreignKeys: readonly [];
             };
@@ -487,29 +1220,124 @@ type ContractBase = Omit<
   readonly targetFamily: 'sql';
   readonly roots: {
     readonly user: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
-    readonly post: { readonly namespace: 'public' & NamespaceId; readonly model: 'Post' };
+    readonly client: { readonly namespace: 'public' & NamespaceId; readonly model: 'Client' };
+    readonly case: { readonly namespace: 'public' & NamespaceId; readonly model: 'Case' };
+    readonly fee: { readonly namespace: 'public' & NamespaceId; readonly model: 'Fee' };
+    readonly contribution: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'Contribution';
+    };
+    readonly expense: { readonly namespace: 'public' & NamespaceId; readonly model: 'Expense' };
   };
   readonly domain: {
     readonly namespaces: {
       readonly public: {
         readonly models: {
-          readonly Post: {
+          readonly Case: {
             readonly fields: {
               readonly id: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
-              readonly title: {
+              readonly clientId: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
-              readonly content: {
+              readonly caratula: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
-              readonly authorId: {
+              readonly materia: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly estudio: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly estado: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly moroso: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
+              };
+              readonly fechaEntrevista: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly horaEntrevista: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly atendidoPor: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly referidoPor: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly detalleAsunto: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly descripcionCaso: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly notasEntrevista: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly modalidadTrabajo: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly plazoEstimado: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly tareas: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly tareasDetalle: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly fechaFinalizacion: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly proximoMovimiento: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly tribunal: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly contraparte: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly fechaInicio: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly nroExpediente: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly honorariosTotales: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
+              };
+              readonly anticipo: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
               };
               readonly createdAt: {
                 readonly nullable: false;
@@ -527,26 +1355,355 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
-              readonly author: {
-                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+              readonly client: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Client';
+                };
                 readonly cardinality: 'N:1';
                 readonly nullable: false;
                 readonly on: {
-                  readonly localFields: readonly ['authorId'];
+                  readonly localFields: readonly ['clientId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly contributions: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Contribution';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['caseId'];
+                };
+              };
+              readonly expenses: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Expense';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['caseId'];
+                };
+              };
+              readonly fees: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'Fee' };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['caseId'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'case';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly clientId: { readonly column: 'clientId' };
+                readonly caratula: { readonly column: 'caratula' };
+                readonly materia: { readonly column: 'materia' };
+                readonly estudio: { readonly column: 'estudio' };
+                readonly estado: { readonly column: 'estado' };
+                readonly moroso: { readonly column: 'moroso' };
+                readonly fechaEntrevista: { readonly column: 'fechaEntrevista' };
+                readonly horaEntrevista: { readonly column: 'horaEntrevista' };
+                readonly atendidoPor: { readonly column: 'atendidoPor' };
+                readonly referidoPor: { readonly column: 'referidoPor' };
+                readonly detalleAsunto: { readonly column: 'detalleAsunto' };
+                readonly descripcionCaso: { readonly column: 'descripcionCaso' };
+                readonly notasEntrevista: { readonly column: 'notasEntrevista' };
+                readonly modalidadTrabajo: { readonly column: 'modalidadTrabajo' };
+                readonly plazoEstimado: { readonly column: 'plazoEstimado' };
+                readonly tareas: { readonly column: 'tareas' };
+                readonly tareasDetalle: { readonly column: 'tareasDetalle' };
+                readonly fechaFinalizacion: { readonly column: 'fechaFinalizacion' };
+                readonly proximoMovimiento: { readonly column: 'proximoMovimiento' };
+                readonly tribunal: { readonly column: 'tribunal' };
+                readonly contraparte: { readonly column: 'contraparte' };
+                readonly fechaInicio: { readonly column: 'fechaInicio' };
+                readonly nroExpediente: { readonly column: 'nroExpediente' };
+                readonly honorariosTotales: { readonly column: 'honorariosTotales' };
+                readonly anticipo: { readonly column: 'anticipo' };
+                readonly createdAt: { readonly column: 'createdAt' };
+                readonly updatedAt: { readonly column: 'updatedAt' };
+              };
+            };
+          };
+          readonly Client: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly nombre: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly dni: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly telefono: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly telefonoAlt: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly email: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly ocupacion: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly fechaNacimiento: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly estadoCivil: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly direccion: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly localidad: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly observaciones: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly cases: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'Case' };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['clientId'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'client';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly nombre: { readonly column: 'nombre' };
+                readonly dni: { readonly column: 'dni' };
+                readonly telefono: { readonly column: 'telefono' };
+                readonly telefonoAlt: { readonly column: 'telefonoAlt' };
+                readonly email: { readonly column: 'email' };
+                readonly ocupacion: { readonly column: 'ocupacion' };
+                readonly fechaNacimiento: { readonly column: 'fechaNacimiento' };
+                readonly estadoCivil: { readonly column: 'estadoCivil' };
+                readonly direccion: { readonly column: 'direccion' };
+                readonly localidad: { readonly column: 'localidad' };
+                readonly observaciones: { readonly column: 'observaciones' };
+                readonly createdAt: { readonly column: 'createdAt' };
+                readonly updatedAt: { readonly column: 'updatedAt' };
+              };
+            };
+          };
+          readonly Contribution: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly caseId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly concepto: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly monto: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
+              };
+              readonly fechaVenc: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly fechaPago: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly comprobante: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly notas: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly case: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'Case' };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['caseId'];
                   readonly targetFields: readonly ['id'];
                 };
               };
             };
             readonly storage: {
-              readonly table: 'post';
+              readonly table: 'contribution';
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly id: { readonly column: 'id' };
-                readonly title: { readonly column: 'title' };
-                readonly content: { readonly column: 'content' };
-                readonly authorId: { readonly column: 'authorId' };
-                readonly createdAt: { readonly column: 'createdAt' };
-                readonly updatedAt: { readonly column: 'updatedAt' };
+                readonly caseId: { readonly column: 'caseId' };
+                readonly concepto: { readonly column: 'concepto' };
+                readonly monto: { readonly column: 'monto' };
+                readonly fechaVenc: { readonly column: 'fechaVenc' };
+                readonly fechaPago: { readonly column: 'fechaPago' };
+                readonly comprobante: { readonly column: 'comprobante' };
+                readonly notas: { readonly column: 'notas' };
+              };
+            };
+          };
+          readonly Expense: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly caseId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly concepto: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly monto: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
+              };
+              readonly fecha: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly comprobante: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly notas: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly case: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'Case' };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['caseId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'expense';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly caseId: { readonly column: 'caseId' };
+                readonly concepto: { readonly column: 'concepto' };
+                readonly monto: { readonly column: 'monto' };
+                readonly fecha: { readonly column: 'fecha' };
+                readonly comprobante: { readonly column: 'comprobante' };
+                readonly notas: { readonly column: 'notas' };
+              };
+            };
+          };
+          readonly Fee: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly caseId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly monto: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
+              };
+              readonly fechaVenc: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly fechaPago: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly metodo: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly recibo: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly notas: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly case: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'Case' };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['caseId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'fee';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly caseId: { readonly column: 'caseId' };
+                readonly monto: { readonly column: 'monto' };
+                readonly fechaVenc: { readonly column: 'fechaVenc' };
+                readonly fechaPago: { readonly column: 'fechaPago' };
+                readonly metodo: { readonly column: 'metodo' };
+                readonly recibo: { readonly column: 'recibo' };
+                readonly notas: { readonly column: 'notas' };
               };
             };
           };
@@ -554,14 +1711,14 @@ type ContractBase = Omit<
             readonly fields: {
               readonly id: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly email: {
-                readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly username: {
-                readonly nullable: true;
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly passwordHash: {
+                readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly name: {
@@ -583,23 +1740,14 @@ type ContractBase = Omit<
                 };
               };
             };
-            readonly relations: {
-              readonly posts: {
-                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'Post' };
-                readonly cardinality: '1:N';
-                readonly on: {
-                  readonly localFields: readonly ['id'];
-                  readonly targetFields: readonly ['authorId'];
-                };
-              };
-            };
+            readonly relations: Record<string, never>;
             readonly storage: {
               readonly table: 'user';
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly id: { readonly column: 'id' };
-                readonly email: { readonly column: 'email' };
                 readonly username: { readonly column: 'username' };
+                readonly passwordHash: { readonly column: 'passwordHash' };
                 readonly name: { readonly column: 'name' };
                 readonly createdAt: { readonly column: 'createdAt' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
@@ -636,11 +1784,68 @@ type ContractBase = Omit<
         {
           readonly ref: {
             readonly namespace: 'public';
-            readonly table: 'post';
+            readonly table: 'case';
+            readonly column: 'id';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'case';
             readonly column: 'updatedAt';
           };
           readonly onCreate: { readonly kind: 'generator'; readonly id: 'timestampNow' };
           readonly onUpdate: { readonly kind: 'generator'; readonly id: 'timestampNow' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'client';
+            readonly column: 'id';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'client';
+            readonly column: 'updatedAt';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'timestampNow' };
+          readonly onUpdate: { readonly kind: 'generator'; readonly id: 'timestampNow' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'contribution';
+            readonly column: 'id';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'expense';
+            readonly column: 'id';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'fee';
+            readonly column: 'id';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'user';
+            readonly column: 'id';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
         },
         {
           readonly ref: {
