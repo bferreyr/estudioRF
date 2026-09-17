@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestión del Estudio</title>
+</head>
+<body>
+<div id="app" style="max-width:960px;margin:0 auto;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
+  <style>
+    #app * { box-sizing: border-box; }
+    #app table { border-collapse: collapse; width: 100%; font-size: 13px; }
+    #app th, #app td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #e3e3e3; vertical-align: top; }
+    #app th { background: #1F3864; color: #fff; font-weight: 600; font-size: 12px; }
+    #app tr:hover td { background: #f7f9fc; }
+    #app .tab-btn { padding: 8px 16px; border: 1px solid #c9c9c9; background: #f2f2f2; cursor: pointer; font-size: 13px; border-radius: 6px 6px 0 0; margin-right: 4px; }
+    #app .tab-btn.active { background: #1F3864; color: #fff; border-color: #1F3864; }
+    #app .panel { border: 1px solid #c9c9c9; padding: 16px; border-radius: 0 8px 8px 8px; background: #fff; }
+    #app input, #app select, #app textarea { width: 100%; padding: 6px 8px; border: 1px solid #bbb; border-radius: 4px; font-size: 13px; font-family: Arial, sans-serif; }
+    #app label { font-size: 12px; font-weight: 600; color: #444; display:block; margin-bottom:3px; }
+    #app .field { margin-bottom: 10px; }
+    #app .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    #app .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    #app button.action { background: #1F3864; color: #fff; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-size: 13px; }
+    #app button.action:hover { background: #16294a; }
+    #app button.secondary { background: #fff; color: #1F3864; border: 1px solid #1F3864; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+    #app button.small { padding: 4px 8px; font-size: 12px; border-radius: 4px; border: 1px solid #bbb; background: #fff; cursor: pointer; }
+    #app .badge { padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; display:inline-block; }
+    #app .b-pagada { background: #dff0d8; color: #2a6a2a; }
+    #app .b-pendiente { background: #fff3cd; color: #856404; }
+    #app .b-vencida { background: #f8d7da; color: #a71d2a; }
+    #app .b-moroso { background: #a71d2a; color: #fff; font-weight:700; }
+    #app .b-activo { background: #dff0d8; color: #2a6a2a; }
+    #app .b-archivado, #app .b-finalizado { background: #e2e2e2; color: #555; }
+    #app .b-paralizado { background: #fff3cd; color: #856404; }
+    #app .searchbar { margin-bottom: 12px; display:flex; gap:8px; }
+    #app .searchbar input { flex:1; }
+    #app .ficha-card { background: #fff; border: 1px solid #c9c9c9; border-radius: 8px; padding: 20px; }
+    #app .ficha-title { font-size: 18px; font-weight: 700; color: #1F3864; margin-bottom: 4px; }
+    #app .ficha-sub { font-size: 12px; color: #777; margin-bottom: 16px; }
+    #app .ficha-row { display: flex; padding: 6px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+    #app .ficha-label { width: 180px; font-weight: 600; color: #555; flex-shrink:0; }
+    #app .stat-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:10px; margin:16px 0; }
+    #app .stat { background:#f4f6fa; border-radius:6px; padding:10px; text-align:center; }
+    #app .stat .num { font-size:18px; font-weight:700; color:#1F3864; }
+    #app .stat .lbl { font-size:11px; color:#777; }
+    #app .empty { color:#888; font-size:13px; padding:20px; text-align:center; }
+    #app .toprow { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+    #app h2 { font-size:16px; margin:0; color:#1F3864; }
+    #app .chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+    #app .chip { padding: 5px 12px; border: 1px solid #c9c9c9; border-radius: 14px; background: #fff; cursor: pointer; font-size: 12px; color: #444; }
+    #app .chip.active { background: #1F3864; color: #fff; border-color: #1F3864; }
+    #app .chip .cnt { opacity:0.7; margin-left:4px; }
+    #app .materia-tag { background:#eef1f7; color:#1F3864; border-radius:4px; padding:1px 6px; font-size:11px; font-weight:600; }
+
+    /* ---- Ficha de caso: mismo estilo que la ficha de cliente del estudio ---- */
+    #app .vf-wrap{ --vf-azul:#1f3a5f; --vf-azul-claro:#eef2f7; --vf-dorado:#a8843c; --vf-gris:#5a5f66; --vf-borde:#c9d2de; }
+    #app .vf-hoja{ max-width:850px; margin:0 auto; background:#fff; padding:36px 44px 44px; box-shadow:0 2px 18px rgba(0,0,0,0.12); font-family:'Georgia','Times New Roman',serif; color:#222; }
+    #app .vf-encabezado{ text-align:center; border-bottom:3px solid var(--vf-azul); padding-bottom:14px; margin-bottom:20px; }
+    #app .vf-encabezado h1{ font-size:20px; letter-spacing:1px; color:var(--vf-azul); margin:0 0 4px; text-transform:uppercase; font-family:'Georgia','Times New Roman',serif; }
+    #app .vf-encabezado .vf-sub{ font-size:12px; color:var(--vf-gris); font-style:italic; font-family:Arial,sans-serif; }
+    #app .vf-titulo{ text-align:center; font-size:14px; font-weight:bold; letter-spacing:2px; color:var(--vf-dorado); text-transform:uppercase; margin:16px 0 24px; font-family:Arial,sans-serif; }
+    #app .vf-seccion{ margin-bottom:22px; }
+    #app .vf-seccion h2{ font-size:13px; color:#fff; background:var(--vf-azul); padding:7px 12px; margin:0 0 12px; letter-spacing:0.5px; text-transform:uppercase; border-radius:2px; font-family:Arial,sans-serif; font-weight:600; }
+    #app .vf-fila{ display:flex; flex-wrap:wrap; gap:14px; margin-bottom:10px; }
+    #app .vf-campo{ flex:1 1 200px; display:flex; flex-direction:column; }
+    #app .vf-campo.full{ flex-basis:100%; }
+    #app .vf-campo label{ font-size:10.5px; text-transform:uppercase; letter-spacing:0.4px; color:var(--vf-gris); margin-bottom:3px; font-family:Arial,sans-serif; }
+    #app .vf-valor{ border:none; border-bottom:1.4px solid var(--vf-borde); padding:5px 2px; font-size:13.5px; font-family:'Georgia','Times New Roman',serif; color:#1a1a1a; min-height:22px; }
+    #app .vf-valor.vf-empty{ color:#aaa; font-style:italic; font-size:12.5px; }
+    #app .vf-stat-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:6px 0 18px; }
+    #app .vf-stat{ background:var(--vf-azul-claro); border-radius:4px; padding:10px; text-align:center; font-family:Arial,sans-serif; }
+    #app .vf-stat .vf-num{ font-size:17px; font-weight:700; color:var(--vf-azul); }
+    #app .vf-stat .vf-lbl{ font-size:10.5px; color:var(--vf-gris); text-transform:uppercase; margin-top:2px; }
+    #app .vf-tabla{ width:100%; border-collapse:collapse; font-size:12px; font-family:Arial,sans-serif; }
+    #app .vf-tabla th{ background:var(--vf-azul-claro); color:var(--vf-azul); text-align:left; padding:6px; border:1px solid var(--vf-borde); font-size:10.5px; text-transform:uppercase; letter-spacing:0.3px; }
+    #app .vf-tabla td{ border:1px solid var(--vf-borde); padding:6px; }
+    #app .vf-badge{ padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; font-family:Arial,sans-serif; display:inline-block; }
+    #app .vf-b-pagada{ background:#dff0d8; color:#2a6a2a; }
+    #app .vf-b-pendiente{ background:#fff3cd; color:#856404; }
+    #app .vf-b-vencida{ background:#f8d7da; color:#a71d2a; }
+    #app .vf-b-activo{ background:#dff0d8; color:#2a6a2a; }
+    #app .vf-b-archivado, #app .vf-b-finalizado{ background:#e2e2e2; color:#555; }
+    #app .vf-b-paralizado{ background:#fff3cd; color:#856404; }
+    #app .vf-toolbar{ max-width:850px; margin:0 auto 12px; display:flex; justify-content:space-between; align-items:center; gap:10px; font-family:Arial,sans-serif; flex-wrap:wrap; }
+    #app .vf-btn{ padding:8px 16px; font-size:12.5px; border-radius:4px; cursor:pointer; font-weight:600; border:1.4px solid var(--vf-azul); background:#fff; color:var(--vf-azul); font-family:Arial,sans-serif; }
+    #app .vf-btn:hover{ background:var(--vf-azul-claro); }
+    #app .vf-nota-final{ font-family:Arial,sans-serif; font-size:11px; color:var(--vf-gris); text-align:center; margin-top:6px; }
+    @media print{
+      #app .vf-toolbar, #app .tab-btn, #app .chips { display:none !important; }
+      #app .vf-hoja{ box-shadow:none; padding:0; }
+    }
+    #app .modal-bg { position: relative; margin-top: 14px; padding: 16px; background: #f9f9fb; border: 1px solid #d8d8d8; border-radius: 8px; }
+    #app .link-btn { background:none;border:none;color:#1F3864;cursor:pointer;font-size:12px;text-decoration:underline;padding:0; }
+    #app .danger { color:#a71d2a; }
+    #app .btn-fila-tabla { font-family:Arial,sans-serif; font-size:11px; color:#1F3864; background:none; border:1px dashed #1F3864; padding:4px 10px; cursor:pointer; border-radius:3px; }
+    #app .btn-fila-tabla:hover { background:#eef2f7; }
+    #app .modal-bg table input[type=text], #app .modal-bg table input[type=date] { width:100%; padding:3px 4px; font-size:12px; }
+    #app .modal-bg table input[type=checkbox] { width:14px; height:14px; }
+  </style>
+
+  <div class="toprow">
+    <div>
+      <div style="font-size:20px;font-weight:700;color:#1F3864;">Gestión del Estudio</div>
+      <div style="font-size:12px;color:#777;">Clientes, casos y cuotas conectados entre sí</div>
+    </div>
+    <div style="text-align:right;">
+      <div>
+        <button class="secondary" id="btn-conectar" style="font-size:11px;padding:5px 10px;font-weight:600;" disabled="">Conectado ✓</button>
+        <button class="secondary" id="btn-exportar" style="font-size:11px;padding:5px 10px;">⬇ Descargar copia</button>
+        <button class="secondary" id="btn-importar" style="font-size:11px;padding:5px 10px;">⬆ Cargar copia</button>
+        <input type="file" id="input-importar" accept=".json" style="display:none;">
+      </div>
+      <div id="save-indicator" style="font-size: 11px; color: rgb(42, 106, 42); margin-top: 4px;">🔗 Guardado en el archivo</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:#999;text-align:right;max-width:960px;margin:-8px auto 10px;padding:0 4px;">
+    "Conectar" te va a pedir elegir este mismo archivo .html una vez — desde ahí, cada cambio se guarda directo en él. Sirve en Chrome o Edge; en otros navegadores usá "Descargar copia" / "Cargar copia".
+  </div>
+
+  <div id="tabs" style="margin-top:10px;"><button class="tab-btn " data-tab="ficha">Ficha de caso</button><button class="tab-btn active" data-tab="clientes">Clientes</button><button class="tab-btn " data-tab="casos">Casos</button><button class="tab-btn " data-tab="cuotas">Honorarios</button></div>
+  <div id="panel" class="panel">
+      <div class="toprow"><h2>Clientes (0)</h2><div><button class="secondary" id="btn-import-cli">+ Carga rápida (texto)</button> <button class="action" id="btn-new-cliente">+ Nuevo cliente</button></div></div>
+      <div class="searchbar"><input id="search-cli" placeholder="Buscar por nombre o DNI/CUIT..." value=""></div>
+      <table>
+        <thead><tr><th>Nombre</th><th>DNI/CUIT</th><th>Teléfono</th><th>Email</th><th>Casos</th><th></th></tr></thead>
+        <tbody>
+          <tr><td colspan="6" class="empty">No hay clientes cargados todavía</td></tr>
+        </tbody>
+      </table>
+      <div id="cliente-form-holder"></div>
+      <div id="import-cli-holder">
+      <div class="modal-bg">
+        <div style="font-size:12px;color:#555;margin-bottom:8px;">
+          Un cliente por línea. Si querés, agregá el expediente y el estudio separados por <strong>punto y coma ( ; )</strong> — así no se confunde con la coma del nombre (Apellido, Nombre).<br>
+          Formato: <code style="font-size:11px;">Nombre; Expediente; Estudio</code> — el expediente y el estudio son opcionales.<br>
+          Ejemplo:<br>
+          <code style="font-size:11px;">Pérez, Juan Carlos; Pérez Juan c/ Gómez Ana s/ Ejecutivo; Manuela<br>González, Marta Susana; ; Mutual<br>Rodríguez, Carlos</code>
+        </div>
+        <textarea id="f-import-text" rows="8" placeholder="Pérez, Juan Carlos; Pérez Juan c/ Gómez Ana s/ Ejecutivo; Manuela
+González, Marta Susana; ; Mutual"></textarea>
+        <div style="margin-top:10px;">
+          <button class="action" id="f-import-save">Importar</button>
+          <button class="secondary" id="f-import-cancel" style="margin-left:8px;">Cancelar</button>
+        </div>
+      </div>
+    </div>
+    </div>
+</div>
+
+<script type="application/json" id="datos-guardados">{"clientes":[{"id":"c-mu1atbkyqd75","nombre":"ACOSTA, BEATRIZ (KATU)","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbkz62wx","nombre":"ACOSTA, MARIA DEL CARMEN","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbkz16s2","nombre":"AGUIRRE, MAXIMO","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbkze2ml","nombre":"AGUIRRE, RODRIGO","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbkzlgmp","nombre":"ASENSION, PATRICIA VIVIANA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbkzs4ku","nombre":"AYALA, DANIELA SOLEDAD","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbkzb27s","nombre":"AYALA, JUAN EDUARDO","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbkz83vw","nombre":"AYALA, LINO DANIEL","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbkz26fl","nombre":"BAEZ, TERESA ISABEL","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbkzy1gb","nombre":"BANEGAS, SERGIO","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbkzwwvy","nombre":"BARNETCHE, GABRIEL","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbkzsatk","nombre":"BARRIA, ORLANDO","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbkzzyz9","nombre":"BERGALLO, NATALIA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbkzl64w","nombre":"BLANCO, ROMINA ELISABET","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbkzs104","nombre":"BUSTOS, LUCIANA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbkzp3jg","nombre":"BUSTOS, ROMINA SOLEDAD","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0yk0g","nombre":"CACERES, JUAN CARLOS","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0bs5d","nombre":"CANETTI, FERNANDO","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0hrc1","nombre":"CASTRILLON, MAXIMILIANO ANDRES","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0p0dv","nombre":"CASTRO, MELANIA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0njw9","nombre":"CORIA, RICARDO","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl02jzy","nombre":"CRISTALDI, CRISTIAN","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl02ksp","nombre":"CRISTIN, ELIO MARTIN","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0wm1y","nombre":"DIAZ, DIEGO JOSE","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0f2n3","nombre":"FARIOLI, YAMILE MICAELA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0tndw","nombre":"FERNANDEZ, PABLO EXEQUIEL","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl07qos","nombre":"FERREYRA, ANTONELA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0rx6s","nombre":"FIGUEROA, DANIELA BELEN","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0i264","nombre":"GARCIA, MARIA FLORENCIA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0mvdd","nombre":"GARCILAZO, ANTONELA BELEN","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0szz2","nombre":"GRASSO, VICTORIA ENRIQUETA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0z3ug","nombre":"HERNANDEZ, SILVINA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl04838","nombre":"IEDRO, LORENA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0x6hd","nombre":"INSAURRALDE, MARIELA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0am50","nombre":"LEMOS, MARIANO NICOLAS","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0ab9d","nombre":"LOPEZ, ORIANA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0l9gj","nombre":"MAINETTI, LUCAS","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0ips4","nombre":"MAITRE, DIEGO","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0c5eq","nombre":"MARCHETTI, KARINA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0yw7d","nombre":"MARTINEZ, DOMINGO","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0c4o6","nombre":"MARTINEZ, SANDRA FATIMA MARIANA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0xxx1","nombre":"MAZZEI, JESSICA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0hqdx","nombre":"MENDOZA, IGNACIA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0erry","nombre":"MIÑO, MARIA TERESA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0yp9q","nombre":"MONDINO, FLORENCIA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0oipw","nombre":"OVIEDO, EMILCE","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0yt6r","nombre":"PERALTA, GUSTAVO","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl07qsp","nombre":"PEREYRA, JUAN","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0n28z","nombre":"PEREYRA, OSCAR","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0q4aj","nombre":"PEREZ, NATALIA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0sbgb","nombre":"PIEDRABUENA, LAURA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0s3nh","nombre":"PORTILLO, MIRTA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0610x","nombre":"PRINA, LUDMILA VICTORIA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0rvg3","nombre":"RAMIREZ, CECILIA BEATRIZ","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0gzaf","nombre":"RAMIREZ, MARIA ROSA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0747t","nombre":"RIOS, EDUARDO JOSE","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0izc4","nombre":"ROJAS, ADRIANA SILVANA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl07anz","nombre":"ROMERO, NATALIA MARIA DEL VALLE","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0dmot","nombre":"RUGGIA, ELVIRA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0i9iu","nombre":"SADONIO, ESTEBAN EDUARDO","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0mftr","nombre":"SALZMANN, VANINA AYELEN","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0aq0h","nombre":"SANCHEZ, CECILIA MARTA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0is1r","nombre":"SANDOVAL, JOSE JUAN","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0gycg","nombre":"SESMA, JORGE ALBERTO","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0vxnq","nombre":"SORAIRE, ALICIA ISABEL","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl0mzuh","nombre":"TONELLI, CARLOS GASTON","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl156yn","nombre":"VALENZUELA, JUAN RAMON","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl19per","nombre":"VEGA, LUCRECIA ROMINA","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl1wjfs","nombre":"VISINTINI, DANIEL","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""},{"id":"c-mu1atbl1kabt","nombre":"ZARABIA, GUSTAVO ADRIAN","dni":"","telefono":"","telefonoAlt":"","email":"","ocupacion":"","fechaNacimiento":"","estadoCivil":"","direccion":"","localidad":"","observaciones":""}],"casos":[],"cuotas":[],"aportes":[],"gastos":[]}</script>
+
+<script>
+(function(){
+  const MATERIAS = ['Familia','Laboral','Quiebras','Rehabilitaciones','Sucesiones','ART','Otros'];
+  const ESTUDIOS_BASE = ['Manuela','Mutual','Manuel'];
+  const state = { clientes: [], casos: [], cuotas: [], aportes: [], gastos: [], tab: 'ficha', editingCliente: null, editingCaso: null, editingCuota: null, editingAporte: null, editingGasto: null, fichaCasoId: null, searchCli: '', searchCas: '', filtroMateriaCasos: 'Todas', filtroMateriaFicha: 'Todas', filtroEstudioCasos: 'Todas', filtroEstudioFicha: 'Todas', soloMorosos: false, ocultarConcluidos: true };
+
+  function uid(prefix){ return prefix + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+  const STORE_PREFIX = 'gestion_estudio_v1_';
+  function lsGet(key){
+    try {
+      const raw = localStorage.getItem(STORE_PREFIX+key);
+      return raw ? JSON.parse(raw) : null;
+    } catch(e){ return null; }
+  }
+  function lsSet(key, value){
+    try { localStorage.setItem(STORE_PREFIX+key, JSON.stringify(value)); return true; }
+    catch(e){ return false; }
+  }
+
+  let fileHandle = null;
+
+  function leerDatosEmbebidos(){
+    try {
+      const el = document.getElementById('datos-guardados');
+      if (!el) return null;
+      const txt = el.textContent.trim();
+      if (!txt || txt === '{}') return null;
+      const data = JSON.parse(txt);
+      if (!Array.isArray(data.clientes)) return null;
+      return data;
+    } catch(e){ return null; }
+  }
+
+  function loadAll(){
+    const embebido = leerDatosEmbebidos();
+    if (embebido){
+      state.clientes = embebido.clientes || [];
+      state.casos = embebido.casos || [];
+      state.cuotas = embebido.cuotas || [];
+      state.aportes = embebido.aportes || [];
+      state.gastos = embebido.gastos || [];
+    } else {
+      state.clientes = lsGet('clientes') || [];
+      state.casos = lsGet('casos') || [];
+      state.cuotas = lsGet('cuotas') || [];
+      state.aportes = lsGet('aportes') || [];
+      state.gastos = lsGet('gastos') || [];
+    }
+    state.casos.forEach(c => { if (!c.materia) c.materia = 'Otros'; });
+    render();
+  }
+
+  function persist(){
+    lsSet('clientes', state.clientes);
+    lsSet('casos', state.casos);
+    lsSet('cuotas', state.cuotas);
+    lsSet('aportes', state.aportes);
+    lsSet('gastos', state.gastos);
+    if (fileHandle) { guardarEnArchivo(); }
+    else { flash(); }
+  }
+  function saveClientes(){ persist(); }
+  function saveCasos(){ persist(); }
+  function saveCuotas(){ persist(); }
+  function saveAportes(){ persist(); }
+  function saveGastos(){ persist(); }
+
+  function flash(){
+    const el = document.getElementById('save-indicator');
+    el.textContent = 'Guardado en este navegador';
+    el.style.color = '#999';
+    setTimeout(()=>{ el.textContent=''; }, 1800);
+  }
+
+  async function conectarArchivo(){
+    if (!window.showOpenFilePicker){
+      alert('Tu navegador no soporta esta función. Para guardar directo en el archivo necesitás Chrome o Edge en la computadora.');
+      return;
+    }
+    try {
+      const [handle] = await window.showOpenFilePicker({
+        types: [{ description: 'Archivo HTML de la app', accept: {'text/html': ['.html']} }],
+        excludeAcceptAllOption: false
+      });
+      const perm = await handle.requestPermission({mode:'readwrite'});
+      if (perm !== 'granted'){
+        alert('No se otorgó permiso de escritura sobre el archivo.');
+        return;
+      }
+      fileHandle = handle;
+      document.getElementById('btn-conectar').textContent = 'Conectado ✓';
+      document.getElementById('btn-conectar').disabled = true;
+      await guardarEnArchivo();
+    } catch(e){
+      // el usuario canceló el selector de archivo, no hacer nada
+    }
+  }
+
+  async function guardarEnArchivo(){
+    if (!fileHandle) return;
+    const el = document.getElementById('save-indicator');
+    try {
+      const datosEl = document.getElementById('datos-guardados');
+      if (datosEl) {
+        datosEl.textContent = JSON.stringify({
+          clientes: state.clientes, casos: state.casos, cuotas: state.cuotas, aportes: state.aportes, gastos: state.gastos
+        });
+      }
+      const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      const writable = await fileHandle.createWritable();
+      await writable.write(html);
+      await writable.close();
+      if (el){ el.textContent = '🔗 Guardado en el archivo'; el.style.color = '#2a6a2a'; }
+    } catch(err){
+      if (el){ el.textContent = 'No se pudo guardar en el archivo (quedó guardado en este navegador)'; el.style.color = '#a71d2a'; }
+    }
+  }
+
+  function exportarDatos(){
+    const payload = {
+      version: 1,
+      exportado: new Date().toISOString(),
+      clientes: state.clientes, casos: state.casos, cuotas: state.cuotas, aportes: state.aportes, gastos: state.gastos
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const fecha = new Date().toISOString().slice(0,10);
+    a.href = url;
+    a.download = `copia_estudio_${fecha}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function importarDatos(file){
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      let data;
+      try { data = JSON.parse(e.target.result); }
+      catch(err){ alert('El archivo no es una copia de seguridad válida.'); return; }
+      if (!data || !Array.isArray(data.clientes)){ alert('El archivo no tiene el formato esperado.'); return; }
+      if (!confirm(`Esto va a REEMPLAZAR todos los datos actuales (${state.clientes.length} clientes, ${state.casos.length} casos) por los del archivo (${data.clientes.length} clientes, ${(data.casos||[]).length} casos). ¿Continuar?`)) return;
+      state.clientes = data.clientes || [];
+      state.casos = data.casos || [];
+      state.cuotas = data.cuotas || [];
+      state.aportes = data.aportes || [];
+      state.gastos = data.gastos || [];
+      persist();
+      render();
+      alert('Copia importada correctamente.');
+    };
+    reader.readAsText(file);
+  }
+
+  function clienteNombre(id){
+    const c = state.clientes.find(x=>x.id===id);
+    return c ? c.nombre : '(sin cliente)';
+  }
+  function casoCaratula(id){
+    const c = state.casos.find(x=>x.id===id);
+    return c ? c.caratula : '(sin caso)';
+  }
+  function estadoCuota(q){
+    if (q.fechaPago) return 'Pagada';
+    if (q.fechaVenc && new Date(q.fechaVenc) < new Date(new Date().toDateString())) return 'Vencida';
+    return 'Pendiente';
+  }
+  const estadoAporte = estadoCuota;
+  function esConcluido(caso){ return caso.estado === 'Finalizado' || caso.estado === 'Archivado'; }
+  function badgeClass(estado){
+    const map = { 'Pagada':'b-pagada','Pendiente':'b-pendiente','Vencida':'b-vencida','Activo':'b-activo','Archivado':'b-archivado','Finalizado':'b-finalizado','Paralizado':'b-paralizado' };
+    return map[estado] || '';
+  }
+  function fmtMoney(n){ return '$' + (Number(n)||0).toLocaleString('es-AR'); }
+  function esc(s){ return (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+  function render(){
+    renderTabs();
+    if (state.tab === 'ficha') renderFicha();
+    else if (state.tab === 'clientes') renderClientes();
+    else if (state.tab === 'casos') renderCasos();
+    else if (state.tab === 'cuotas') renderHonorarios();
+  }
+
+  function renderTabs(){
+    const tabs = [['ficha','Ficha de caso'],['clientes','Clientes'],['casos','Casos'],['cuotas','Honorarios']];
+    document.getElementById('tabs').innerHTML = tabs.map(([id,label]) =>
+      `<button class="tab-btn ${state.tab===id?'active':''}" data-tab="${id}">${label}</button>`
+    ).join('');
+    document.querySelectorAll('.tab-btn').forEach(b=>{
+      b.onclick = () => { state.tab = b.dataset.tab; render(); };
+    });
+  }
+
+  // ---------------- FICHA ----------------
+  function renderFicha(){
+    const panel = document.getElementById('panel');
+    if (!state.casos.length){
+      panel.innerHTML = `<div class="empty">Todavía no cargaste ningún caso. Andá a la pestaña "Casos" para crear el primero.</div>`;
+      return;
+    }
+    const visibles = state.casos.filter(c => (state.filtroMateriaFicha==='Todas' || c.materia===state.filtroMateriaFicha) && (state.filtroEstudioFicha==='Todas' || (c.estudio||'Sin asignar')===state.filtroEstudioFicha) && (!state.soloMorosos || c.moroso) && (!state.ocultarConcluidos || !esConcluido(c)));
+    if (!visibles.length){
+      panel.innerHTML = `${chipsHtml('filtroMateriaFicha', state.casos)}${chipsHtmlEstudio('filtroEstudioFicha', state.casos)}<div class="empty">No hay casos cargados para este filtro todavía.</div>`;
+      bindChips('filtroMateriaFicha', renderFicha);
+      bindChipsEstudio('filtroEstudioFicha', renderFicha);
+      return;
+    }
+    if (!state.fichaCasoId || !visibles.find(c=>c.id===state.fichaCasoId)) state.fichaCasoId = visibles[0].id;
+    const options = visibles.map(c => `<option value="${c.id}" ${state.fichaCasoId===c.id?'selected':''}>${esc(c.caratula)}</option>`).join('');
+    const caso = state.casos.find(c=>c.id===state.fichaCasoId);
+    const cliente = caso ? state.clientes.find(c=>c.id===caso.clienteId) : null;
+    const cuotasCaso = state.cuotas.filter(q=>q.casoId===state.fichaCasoId).sort((a,b)=>(b.fechaPago||b.fechaVenc||'').localeCompare(a.fechaPago||a.fechaVenc||''));
+    const aportesCaso = state.aportes.filter(q=>q.casoId===state.fichaCasoId);
+    const gastosCaso = state.gastos.filter(g=>g.casoId===state.fichaCasoId).sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
+    const pagosRecibidos = cuotasCaso.filter(q=>q.fechaPago).reduce((s,q)=>s+(Number(q.monto)||0),0);
+    const aportesPagados = aportesCaso.filter(q=>estadoAporte(q)==='Pagada').reduce((s,q)=>s+(Number(q.monto)||0),0);
+    const aportesTotal = aportesCaso.reduce((s,q)=>s+(Number(q.monto)||0),0);
+    const gastosTotal = gastosCaso.reduce((s,g)=>s+(Number(g.monto)||0),0);
+    const vencidas = aportesCaso.filter(q=>estadoAporte(q)==='Vencida').length;
+    const honTotal = Number(caso.honorariosTotales)||0;
+    const anticipo = Number(caso.anticipo)||0;
+    const val = (v) => v ? esc(v) : `<span class="vf-empty">—</span>`;
+
+    panel.innerHTML = `
+      ${chipsHtml('filtroMateriaFicha', state.casos)}
+      ${chipsHtmlEstudio('filtroEstudioFicha', state.casos)}
+      <div style="display:flex;flex-wrap:wrap;gap:16px;margin:-6px 0 12px;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#a71d2a;font-weight:600;cursor:pointer;">
+          <input type="checkbox" id="chk-solo-morosos-ficha" ${state.soloMorosos?'checked':''} style="width:14px;height:14px;"> Ver solo morosos (${state.casos.filter(c=>c.moroso).length})
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;font-weight:600;cursor:pointer;">
+          <input type="checkbox" id="chk-ocultar-concluidos-ficha" ${state.ocultarConcluidos?'checked':''} style="width:14px;height:14px;"> Ocultar concluidos (${state.casos.filter(esConcluido).length})
+        </label>
+      </div>
+      <div class="vf-toolbar">
+        <div style="flex:1;min-width:260px;">
+          <select id="ficha-select" style="max-width:420px;">${options}</select>
+        </div>
+        <div>
+          <button class="vf-btn" id="btn-add-cuota-ficha">+ Pago</button>
+          <button class="vf-btn" id="btn-add-aporte-ficha">+ Aporte</button>
+          <button class="vf-btn" id="btn-add-gasto-ficha">+ Gasto</button>
+          <button class="vf-btn" id="btn-toggle-moroso" style="${caso.moroso?'background:#a71d2a;color:#fff;border-color:#a71d2a;':''}">${caso.moroso?'Quitar moroso':'Marcar moroso'}</button>
+          ${!esConcluido(caso) ? `<button class="vf-btn" id="btn-concluir-ficha">Marcar finalizado</button>` : ''}
+          <button class="vf-btn" id="btn-print">Imprimir / PDF</button>
+        </div>
+      </div>
+      <div class="vf-wrap">
+      <div class="vf-hoja" id="vf-hoja">
+        <div class="vf-encabezado">
+          <h1>Estudio Jurídico Ramírez Ferrero</h1>
+          <div class="vf-sub">Pasaje 13 de Diciembre 2970, Santa Fe</div>
+        </div>
+        <div class="vf-titulo">Ficha de caso — ${esc(caso.materia||'Otros')} · ${esc(caso.estudio||'Sin asignar')} ${caso.moroso?'<span class="badge b-moroso" style="margin-left:8px;vertical-align:middle;">MOROSO</span>':''}</div>
+
+        <div class="vf-seccion">
+          <h2>Datos de la entrevista</h2>
+          <div class="vf-fila">
+            <div class="vf-campo"><label>Fecha de entrevista</label><div class="vf-valor">${val(caso.fechaEntrevista)}</div></div>
+            <div class="vf-campo"><label>Hora</label><div class="vf-valor">${val(caso.horaEntrevista)}</div></div>
+            <div class="vf-campo"><label>Atendido por</label><div class="vf-valor">${val(caso.atendidoPor)}</div></div>
+            <div class="vf-campo"><label>Referido por</label><div class="vf-valor">${val(caso.referidoPor)}</div></div>
+          </div>
+        </div>
+
+        <div class="vf-seccion">
+          <h2>Datos del cliente</h2>
+          <div class="vf-fila">
+            <div class="vf-campo"><label>Nombre / Razón social</label><div class="vf-valor">${cliente?val(cliente.nombre):'<span class="vf-empty">—</span>'}</div></div>
+            <div class="vf-campo"><label>DNI / CUIT</label><div class="vf-valor">${cliente?val(cliente.dni):'<span class="vf-empty">—</span>'}</div></div>
+            <div class="vf-campo"><label>Fecha de nacimiento</label><div class="vf-valor">${cliente?val(cliente.fechaNacimiento):'<span class="vf-empty">—</span>'}</div></div>
+            <div class="vf-campo"><label>Estado civil</label><div class="vf-valor">${cliente?val(cliente.estadoCivil):'<span class="vf-empty">—</span>'}</div></div>
+          </div>
+          <div class="vf-fila">
+            <div class="vf-campo full"><label>Domicilio real</label><div class="vf-valor">${cliente?val(cliente.direccion):'<span class="vf-empty">—</span>'}</div></div>
+          </div>
+          <div class="vf-fila">
+            <div class="vf-campo"><label>Localidad</label><div class="vf-valor">${cliente?val(cliente.localidad):'<span class="vf-empty">—</span>'}</div></div>
+            <div class="vf-campo"><label>Teléfono</label><div class="vf-valor">${cliente?val(cliente.telefono):'<span class="vf-empty">—</span>'}</div></div>
+            <div class="vf-campo"><label>Teléfono alternativo</label><div class="vf-valor">${cliente?val(cliente.telefonoAlt):'<span class="vf-empty">—</span>'}</div></div>
+          </div>
+          <div class="vf-fila">
+            <div class="vf-campo"><label>Email</label><div class="vf-valor">${cliente?val(cliente.email):'<span class="vf-empty">—</span>'}</div></div>
+            <div class="vf-campo"><label>Ocupación / Profesión</label><div class="vf-valor">${cliente?val(cliente.ocupacion):'<span class="vf-empty">—</span>'}</div></div>
+          </div>
+        </div>
+
+        <div class="vf-seccion">
+          <h2>Motivo de consulta / tipo de asunto</h2>
+          <div class="vf-fila">
+            <div class="vf-campo"><label>Materia</label><div class="vf-valor"><span class="materia-tag">${esc(caso.materia||'Otros')}</span></div></div>
+            <div class="vf-campo"><label>Detalle / especificar</label><div class="vf-valor">${val(caso.detalleAsunto)}</div></div>
+          </div>
+          <div class="vf-fila">
+            <div class="vf-campo full"><label>Descripción breve del caso</label><div class="vf-valor">${val(caso.descripcionCaso)}</div></div>
+          </div>
+        </div>
+
+        <div class="vf-seccion">
+          <h2>Notas de la entrevista</h2>
+          <div class="vf-fila">
+            <div class="vf-campo full"><div class="vf-valor" style="min-height:50px;white-space:pre-wrap;">${val(caso.notasEntrevista)}</div></div>
+          </div>
+        </div>
+
+        <div class="vf-seccion">
+          <h2>Documentación solicitada / pendiente</h2>
+          <table class="vf-tabla">
+            <thead><tr><th>Documento</th><th>Solicitado</th><th>Entregado</th><th>Fecha entrega</th><th>Obs.</th></tr></thead>
+            <tbody>
+              ${(caso.documentacion && caso.documentacion.length) ? caso.documentacion.map(d => `
+                <tr>
+                  <td>${esc(d.documento)}</td>
+                  <td style="text-align:center;">${d.solicitado?'☑':'☐'}</td>
+                  <td style="text-align:center;">${d.entregado?'☑':'☐'}</td>
+                  <td>${esc(d.fechaEntrega||'')}</td>
+                  <td>${esc(d.obs||'')}</td>
+                </tr>`).join('') : `<tr><td colspan="5" class="empty">Sin documentación cargada</td></tr>`}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="vf-seccion">
+          <h2>Modalidad de trabajo</h2>
+          <div class="vf-fila">
+            <div class="vf-campo"><label>Modalidad</label><div class="vf-valor">${val(caso.modalidadTrabajo)}</div></div>
+            <div class="vf-campo"><label>Plazo estimado</label><div class="vf-valor">${val(caso.plazoEstimado)}</div></div>
+          </div>
+          <div class="vf-fila">
+            <div class="vf-campo full"><label>Tareas a realizar</label><div class="vf-valor">${(caso.tareas&&caso.tareas.length)?esc(caso.tareas.join(' · ')):'<span class="vf-empty">—</span>'}</div></div>
+          </div>
+          ${caso.tareasDetalle ? `<div class="vf-fila"><div class="vf-campo full"><label>Detalle de tareas</label><div class="vf-valor">${val(caso.tareasDetalle)}</div></div></div>` : ''}
+        </div>
+
+        <div class="vf-seccion">
+          <h2>Datos del caso</h2>
+          <div class="vf-fila">
+            <div class="vf-campo full"><label>Expediente</label><div class="vf-valor">${val(caso.caratula)}</div></div>
+          </div>
+          <div class="vf-fila">
+            <div class="vf-campo"><label>Estado</label><div class="vf-valor">${caso.estado?`<span class="vf-badge ${badgeClass(caso.estado)}">${esc(caso.estado)}</span>`:'<span class="vf-empty">—</span>'}</div></div>
+            ${esConcluido(caso) ? `<div class="vf-campo"><label>Fecha de finalización</label><div class="vf-valor">${val(caso.fechaFinalizacion)}</div></div>` : `<div class="vf-campo"><label>Próximo movimiento</label><div class="vf-valor">${val(caso.proximoMovimiento)}</div></div>`}
+          </div>
+        </div>
+
+        <div class="vf-seccion">
+          <h2>Detalle del expediente</h2>
+          <div class="vf-fila">
+            <div class="vf-campo"><label>Juzgado / Tribunal</label><div class="vf-valor">${val(caso.tribunal)}</div></div>
+            <div class="vf-campo"><label>Contraparte</label><div class="vf-valor">${val(caso.contraparte)}</div></div>
+          </div>
+          <div class="vf-fila">
+            <div class="vf-campo"><label>Fecha de inicio</label><div class="vf-valor">${val(caso.fechaInicio)}</div></div>
+          </div>
+          <div class="vf-fila">
+            <div class="vf-campo full"><label>Observaciones</label><div class="vf-valor">${val(caso.obs)}</div></div>
+          </div>
+        </div>
+
+        <div class="vf-seccion">
+          <h2>Honorarios</h2>
+          <div class="vf-stat-grid">
+            <div class="vf-stat"><div class="vf-num">${fmtMoney(honTotal)}</div><div class="vf-lbl">Total honorarios</div></div>
+            <div class="vf-stat"><div class="vf-num">${fmtMoney(anticipo)}</div><div class="vf-lbl">Anticipo</div></div>
+            <div class="vf-stat"><div class="vf-num">${fmtMoney(pagosRecibidos)}</div><div class="vf-lbl">Pagos recibidos</div></div>
+            <div class="vf-stat"><div class="vf-num">${fmtMoney(aportesPagados)}</div><div class="vf-lbl">Aportes pagados</div></div>
+          </div>
+          ${vencidas ? `<div class="danger" style="font-size:12px;margin-bottom:10px;font-family:Arial,sans-serif;">${vencidas} aporte(s) vencido(s) sin abonar</div>` : ''}
+
+          <label style="font-size:10.5px;text-transform:uppercase;color:#5a5f66;font-family:Arial,sans-serif;font-weight:600;">Pagos recibidos</label>
+          <table class="vf-tabla" style="margin:6px 0 16px;">
+            <thead><tr><th>Concepto</th><th>Fecha de pago</th><th>Monto</th></tr></thead>
+            <tbody>
+              ${cuotasCaso.length ? cuotasCaso.map(q => `
+                <tr>
+                  <td>${esc(q.concepto||'Pago')}</td>
+                  <td>${esc(q.fechaPago || (q.fechaVenc?('(estimado) '+q.fechaVenc):'—'))}</td>
+                  <td>${fmtMoney(q.monto)}</td>
+                </tr>`).join('') : `<tr><td colspan="3" class="empty">Sin pagos cargados</td></tr>`}
+            </tbody>
+          </table>
+
+          <label style="font-size:10.5px;text-transform:uppercase;color:#5a5f66;font-family:Arial,sans-serif;font-weight:600;">Aportes (Caja Forense / Caja Jubilaciones) — total ${fmtMoney(aportesTotal)}</label>
+          <table class="vf-tabla" style="margin:6px 0 0;">
+            <thead><tr><th>Concepto</th><th>Vencimiento</th><th>Monto</th><th>Fecha de pago</th><th>Estado</th></tr></thead>
+            <tbody>
+              ${aportesCaso.length ? aportesCaso.map(q => `
+                <tr>
+                  <td>${esc(q.concepto||'')}</td>
+                  <td>${esc(q.fechaVenc||'')}</td>
+                  <td>${fmtMoney(q.monto)}</td>
+                  <td>${esc(q.fechaPago||'—')}</td>
+                  <td><span class="vf-badge ${badgeClass(estadoAporte(q))}">${estadoAporte(q)}</span></td>
+                </tr>`).join('') : `<tr><td colspan="5" class="empty">Sin aportes cargados</td></tr>`}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="vf-seccion">
+          <h2>Gastos del expediente — total ${fmtMoney(gastosTotal)}</h2>
+          <table class="vf-tabla">
+            <thead><tr><th>Concepto</th><th>Fecha</th><th>Monto</th><th>N° Boleta</th></tr></thead>
+            <tbody>
+              ${gastosCaso.length ? gastosCaso.map(g => `
+                <tr>
+                  <td>${esc(g.concepto||'')}</td>
+                  <td>${esc(g.fecha||'')}</td>
+                  <td>${fmtMoney(g.monto)}</td>
+                  <td>${esc(g.boleta||'—')}</td>
+                </tr>`).join('') : `<tr><td colspan="4" class="empty">Sin gastos cargados</td></tr>`}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="vf-nota-final">Ficha interna de uso del estudio.</div>
+      </div>
+    `;
+    document.getElementById('ficha-select').onchange = (e) => { state.fichaCasoId = e.target.value; renderFicha(); };
+    document.getElementById('chk-solo-morosos-ficha').onchange = (e) => { state.soloMorosos = e.target.checked; renderFicha(); };
+    document.getElementById('chk-ocultar-concluidos-ficha').onchange = (e) => { state.ocultarConcluidos = e.target.checked; renderFicha(); };
+    document.getElementById('btn-add-cuota-ficha').onclick = () => { openCuotaForm({ casoId: state.fichaCasoId }); };
+    document.getElementById('btn-add-aporte-ficha').onclick = () => { openAporteForm({ casoId: state.fichaCasoId }); };
+    document.getElementById('btn-add-gasto-ficha').onclick = () => { openGastoForm({ casoId: state.fichaCasoId }); };
+    document.getElementById('btn-toggle-moroso').onclick = () => {
+      caso.moroso = !caso.moroso;
+      saveCasos(); renderFicha();
+    };
+    const btnConcluirFicha = document.getElementById('btn-concluir-ficha');
+    if (btnConcluirFicha) btnConcluirFicha.onclick = () => {
+      caso.estado = 'Finalizado';
+      caso.fechaFinalizacion = new Date().toISOString().slice(0,10);
+      saveCasos(); renderFicha();
+    };
+    document.getElementById('btn-print').onclick = () => window.print();
+    bindChips('filtroMateriaFicha', renderFicha);
+    bindChipsEstudio('filtroEstudioFicha', renderFicha);
+  }
+
+  function chipsHtml(filterKey, casos){
+    const counts = {};
+    casos.forEach(c => { const m = c.materia||'Otros'; counts[m] = (counts[m]||0)+1; });
+    const active = state[filterKey];
+    const chips = ['Todas', ...MATERIAS].filter(m => m==='Todas' || counts[m]);
+    return `<div class="chips">${chips.map(m => `
+      <button class="chip ${active===m?'active':''}" data-materia-chip="${esc(m)}">${esc(m)}${m!=='Todas'?` <span class="cnt">${counts[m]||0}</span>`:''}</button>
+    `).join('')}</div>`;
+  }
+  function bindChips(filterKey, rerender){
+    document.querySelectorAll('[data-materia-chip]').forEach(b => {
+      b.onclick = () => { state[filterKey] = b.dataset.materiaChip; rerender(); };
+    });
+  }
+
+  function chipsHtmlEstudio(filterKey, casos){
+    const counts = {};
+    casos.forEach(c => { const m = c.estudio || 'Sin asignar'; counts[m] = (counts[m]||0)+1; });
+    const active = state[filterKey];
+    const todosValores = Array.from(new Set([...ESTUDIOS_BASE, ...Object.keys(counts).filter(k=>k!=='Sin asignar')]));
+    const chips = ['Todas', ...todosValores, ...(counts['Sin asignar']?['Sin asignar']:[])].filter(m => m==='Todas' || counts[m]);
+    return `<div class="chips" style="margin-top:-6px;">${chips.map(m => `
+      <button class="chip ${active===m?'active':''}" data-estudio-chip="${esc(m)}">${esc(m)}${m!=='Todas'?` <span class="cnt">${counts[m]||0}</span>`:''}</button>
+    `).join('')}</div>`;
+  }
+  function bindChipsEstudio(filterKey, rerender){
+    document.querySelectorAll('[data-estudio-chip]').forEach(b => {
+      b.onclick = () => { state[filterKey] = b.dataset.estudioChip; rerender(); };
+    });
+  }
+
+  // ---------------- CLIENTES ----------------
+  function renderClientes(){
+    const panel = document.getElementById('panel');
+    const q = state.searchCli.toLowerCase();
+    const rows = state.clientes.filter(c => !q || (c.nombre||'').toLowerCase().includes(q) || (c.dni||'').includes(q));
+    panel.innerHTML = `
+      <div class="toprow"><h2>Clientes (${state.clientes.length})</h2><div><button class="secondary" id="btn-import-cli">+ Carga rápida (texto)</button> <button class="action" id="btn-new-cliente">+ Nuevo cliente</button></div></div>
+      <div class="searchbar"><input id="search-cli" placeholder="Buscar por nombre o DNI/CUIT..." value="${esc(state.searchCli)}"></div>
+      <table>
+        <thead><tr><th>Nombre</th><th>DNI/CUIT</th><th>Teléfono</th><th>Email</th><th>Casos</th><th></th></tr></thead>
+        <tbody>
+          ${rows.length ? rows.map(c => `
+            <tr>
+              <td>${esc(c.nombre)}</td><td>${esc(c.dni)}</td><td>${esc(c.telefono)}</td><td>${esc(c.email)}</td>
+              <td>${state.casos.filter(x=>x.clienteId===c.id).length}</td>
+              <td><button class="link-btn" data-edit="${c.id}">Editar</button> · <button class="link-btn danger" data-del="${c.id}">Borrar</button></td>
+            </tr>`).join('') : `<tr><td colspan="6" class="empty">No hay clientes cargados todavía</td></tr>`}
+        </tbody>
+      </table>
+      <div id="cliente-form-holder"></div>
+      <div id="import-cli-holder"></div>
+    `;
+    document.getElementById('search-cli').oninput = (e) => { state.searchCli = e.target.value; renderClientes(); };
+    document.getElementById('btn-new-cliente').onclick = () => openClienteForm({});
+    document.getElementById('btn-import-cli').onclick = () => openImportClientes();
+    document.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => openClienteForm(state.clientes.find(c=>c.id===b.dataset.edit)));
+    document.querySelectorAll('[data-del]').forEach(b => b.onclick = () => {
+      if (confirm('¿Borrar este cliente? No se borran sus casos.')) {
+        state.clientes = state.clientes.filter(c=>c.id!==b.dataset.del);
+        saveClientes(); renderClientes();
+      }
+    });
+  }
+
+  function openImportClientes(){
+    const holder = document.getElementById('import-cli-holder');
+    holder.innerHTML = `
+      <div class="modal-bg">
+        <div style="font-size:12px;color:#555;margin-bottom:8px;">
+          Un cliente por línea. Si querés, agregá el expediente y el estudio separados por <strong>punto y coma ( ; )</strong> — así no se confunde con la coma del nombre (Apellido, Nombre).<br>
+          Formato: <code style="font-size:11px;">Nombre; Expediente; Estudio</code> — el expediente y el estudio son opcionales.<br>
+          Ejemplo:<br>
+          <code style="font-size:11px;">Pérez, Juan Carlos; Pérez Juan c/ Gómez Ana s/ Ejecutivo; Manuela<br>González, Marta Susana; ; Mutual<br>Rodríguez, Carlos</code>
+        </div>
+        <textarea id="f-import-text" rows="8" placeholder="Pérez, Juan Carlos; Pérez Juan c/ Gómez Ana s/ Ejecutivo; Manuela
+González, Marta Susana; ; Mutual"></textarea>
+        <div style="margin-top:10px;">
+          <button class="action" id="f-import-save">Importar</button>
+          <button class="secondary" id="f-import-cancel" style="margin-left:8px;">Cancelar</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('f-import-cancel').onclick = () => { holder.innerHTML = ''; };
+    document.getElementById('f-import-save').onclick = () => {
+      const texto = document.getElementById('f-import-text').value;
+      const lineas = texto.split('\n').map(l => l.trim()).filter(Boolean);
+      if (!lineas.length){ alert('Pegá al menos un cliente'); return; }
+      let nuevosClientes = 0, reutilizados = 0, nuevosCasos = 0;
+      lineas.forEach(linea => {
+        const partes = linea.split(';').map(p => p.trim());
+        if (!partes.length || !partes[0]) return;
+        const nombre = partes[0];
+        const expediente = partes[1] || '';
+        const estudio = partes[2] || '';
+        let cliente = state.clientes.find(c => (c.nombre||'').toLowerCase() === nombre.toLowerCase());
+        if (!cliente) {
+          cliente = { id: uid('c'), nombre, dni:'', telefono:'', telefonoAlt:'', email:'', ocupacion:'', fechaNacimiento:'', estadoCivil:'', direccion:'', localidad:'', observaciones:'' };
+          state.clientes.push(cliente);
+          nuevosClientes++;
+        } else {
+          reutilizados++;
+        }
+        if (expediente) {
+          state.casos.push({
+            id: uid('j'), caratula: expediente, materia: 'Otros', estudio, clienteId: cliente.id,
+            tribunal:'', contraparte:'', fechaInicio:'', estado:'Activo', proximoMovimiento:'',
+            honorariosTotales:0, anticipo:0, obs:''
+          });
+          nuevosCasos++;
+        }
+      });
+      saveClientes();
+      if (nuevosCasos) saveCasos();
+      holder.innerHTML = '';
+      renderClientes();
+      alert(`Listo: ${nuevosClientes} cliente(s) nuevo(s)${reutilizados?`, ${reutilizados} ya existían`:''}${nuevosCasos?` y ${nuevosCasos} caso(s) creado(s)`:''}.`);
+    };
+  }
+
+  function openClienteForm(c){
+    const isNew = !c.id;
+    const holder = document.getElementById('cliente-form-holder');
+    holder.innerHTML = `
+      <div class="modal-bg">
+        <div class="grid2">
+          <div class="field"><label>Nombre / Razón social</label><input id="f-nombre" value="${esc(c.nombre)}"></div>
+          <div class="field"><label>DNI / CUIT</label><input id="f-dni" value="${esc(c.dni)}"></div>
+          <div class="field"><label>Teléfono</label><input id="f-tel" value="${esc(c.telefono)}"></div>
+          <div class="field"><label>Teléfono alternativo</label><input id="f-telalt" value="${esc(c.telefonoAlt)}"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label>Email</label><input id="f-email" value="${esc(c.email)}"></div>
+          <div class="field"><label>Ocupación / Profesión</label><input id="f-ocup" value="${esc(c.ocupacion)}"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label>Fecha de nacimiento</label><input id="f-fnac" type="date" value="${c.fechaNacimiento||''}"></div>
+          <div class="field"><label>Estado civil</label><input id="f-ecivil" value="${esc(c.estadoCivil)}"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label>Domicilio real</label><input id="f-dir" value="${esc(c.direccion)}"></div>
+          <div class="field"><label>Localidad</label><input id="f-loc" value="${esc(c.localidad)}"></div>
+        </div>
+        <div class="field"><label>Observaciones</label><textarea id="f-obs" rows="2">${esc(c.observaciones)}</textarea></div>
+        <button class="action" id="f-save">Guardar</button>
+        <button class="secondary" id="f-cancel" style="margin-left:8px;">Cancelar</button>
+      </div>
+    `;
+    document.getElementById('f-cancel').onclick = () => { holder.innerHTML=''; };
+    document.getElementById('f-save').onclick = () => {
+      const nombre = document.getElementById('f-nombre').value.trim();
+      if (!nombre){ alert('Ingresá un nombre'); return; }
+      const data = {
+        id: c.id || uid('c'),
+        nombre,
+        dni: document.getElementById('f-dni').value.trim(),
+        telefono: document.getElementById('f-tel').value.trim(),
+        telefonoAlt: document.getElementById('f-telalt').value.trim(),
+        email: document.getElementById('f-email').value.trim(),
+        ocupacion: document.getElementById('f-ocup').value.trim(),
+        fechaNacimiento: document.getElementById('f-fnac').value,
+        estadoCivil: document.getElementById('f-ecivil').value.trim(),
+        direccion: document.getElementById('f-dir').value.trim(),
+        localidad: document.getElementById('f-loc').value.trim(),
+        observaciones: document.getElementById('f-obs').value.trim(),
+      };
+      if (isNew) state.clientes.push(data);
+      else Object.assign(c, data);
+      saveClientes(); holder.innerHTML=''; renderClientes();
+    };
+  }
+
+  // ---------------- CASOS ----------------
+  function renderCasos(){
+    const panel = document.getElementById('panel');
+    const q = state.searchCas.toLowerCase();
+    const porMateria = state.casos.filter(c => state.filtroMateriaCasos==='Todas' || (c.materia||'Otros')===state.filtroMateriaCasos);
+    const porEstudio = porMateria.filter(c => state.filtroEstudioCasos==='Todas' || (c.estudio||'Sin asignar')===state.filtroEstudioCasos);
+    const porMoroso = porEstudio.filter(c => !state.soloMorosos || c.moroso);
+    const porConcluido = porMoroso.filter(c => !state.ocultarConcluidos || !esConcluido(c));
+    const rows = porConcluido.filter(c => !q || (c.caratula||'').toLowerCase().includes(q));
+    const cantMorosos = state.casos.filter(c=>c.moroso).length;
+    const cantConcluidos = state.casos.filter(esConcluido).length;
+    panel.innerHTML = `
+      <div class="toprow"><h2>Casos (${state.casos.length})</h2><div><button class="action" id="btn-new-caso">+ Nuevo caso</button></div></div>
+      ${chipsHtml('filtroMateriaCasos', state.casos)}
+      ${chipsHtmlEstudio('filtroEstudioCasos', state.casos)}
+      <div style="display:flex;flex-wrap:wrap;gap:16px;margin:-6px 0 12px;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#a71d2a;font-weight:600;cursor:pointer;">
+          <input type="checkbox" id="chk-solo-morosos" ${state.soloMorosos?'checked':''} style="width:14px;height:14px;"> Ver solo morosos (${cantMorosos})
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;font-weight:600;cursor:pointer;">
+          <input type="checkbox" id="chk-ocultar-concluidos" ${state.ocultarConcluidos?'checked':''} style="width:14px;height:14px;"> Ocultar concluidos (${cantConcluidos})
+        </label>
+      </div>
+      <div class="searchbar"><input id="search-cas" placeholder="Buscar por expediente..." value="${esc(state.searchCas)}"></div>
+      <table>
+        <thead><tr><th>Expediente</th><th>Materia</th><th>Estudio</th><th>Cliente</th><th>Juzgado</th><th>Estado</th><th>Próximo movimiento</th><th></th></tr></thead>
+        <tbody>
+          ${rows.length ? rows.map(c => `
+            <tr>
+              <td>${esc(c.caratula)} ${c.moroso?'<span class="badge b-moroso">MOROSO</span>':''}</td><td><span class="materia-tag">${esc(c.materia||'Otros')}</span></td><td><span class="materia-tag">${esc(c.estudio||'Sin asignar')}</span></td><td>${esc(clienteNombre(c.clienteId))}</td><td>${esc(c.tribunal)}</td>
+              <td><span class="badge ${badgeClass(c.estado)}">${esc(c.estado||'')}</span></td><td>${esc(c.proximoMovimiento)}</td>
+              <td>
+                ${!esConcluido(c) ? `<button class="link-btn" data-concluir="${c.id}">Marcar finalizado</button> · ` : ''}
+                <button class="link-btn" data-toggle-moroso="${c.id}">${c.moroso?'Quitar moroso':'Marcar moroso'}</button> · <button class="link-btn" data-edit="${c.id}">Editar</button> · <button class="link-btn danger" data-del="${c.id}">Borrar</button>
+              </td>
+            </tr>`).join('') : `<tr><td colspan="8" class="empty">No hay casos para este filtro todavía</td></tr>`}
+        </tbody>
+      </table>
+      <div id="caso-form-holder"></div>
+    `;
+    document.getElementById('search-cas').oninput = (e) => { state.searchCas = e.target.value; renderCasos(); };
+    document.getElementById('chk-solo-morosos').onchange = (e) => { state.soloMorosos = e.target.checked; renderCasos(); };
+    document.getElementById('chk-ocultar-concluidos').onchange = (e) => { state.ocultarConcluidos = e.target.checked; renderCasos(); };
+    document.getElementById('btn-new-caso').onclick = () => openCasoForm({
+      ...(state.filtroMateriaCasos!=='Todas' ? {materia: state.filtroMateriaCasos} : {}),
+      ...(state.filtroEstudioCasos!=='Todas' && state.filtroEstudioCasos!=='Sin asignar' ? {estudio: state.filtroEstudioCasos} : {})
+    });
+    document.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => openCasoForm(state.casos.find(c=>c.id===b.dataset.edit)));
+    document.querySelectorAll('[data-toggle-moroso]').forEach(b => b.onclick = () => {
+      const caso = state.casos.find(c=>c.id===b.dataset.toggleMoroso);
+      caso.moroso = !caso.moroso;
+      saveCasos(); renderCasos();
+    });
+    document.querySelectorAll('[data-concluir]').forEach(b => b.onclick = () => {
+      const caso = state.casos.find(c=>c.id===b.dataset.concluir);
+      caso.estado = 'Finalizado';
+      caso.fechaFinalizacion = new Date().toISOString().slice(0,10);
+      saveCasos(); renderCasos();
+    });
+    document.querySelectorAll('[data-del]').forEach(b => b.onclick = () => {
+      if (confirm('¿Borrar este caso? También se borran sus cuotas y aportes asociados.')) {
+        state.casos = state.casos.filter(c=>c.id!==b.dataset.del);
+        state.cuotas = state.cuotas.filter(q=>q.casoId!==b.dataset.del);
+        state.aportes = state.aportes.filter(q=>q.casoId!==b.dataset.del);
+        state.gastos = state.gastos.filter(q=>q.casoId!==b.dataset.del);
+        saveCasos(); saveCuotas(); saveAportes(); saveGastos(); renderCasos();
+      }
+    });
+    bindChips('filtroMateriaCasos', renderCasos);
+    bindChipsEstudio('filtroEstudioCasos', renderCasos);
+  }
+
+  function openCasoForm(c){
+    const isNew = !c.id;
+    const holder = document.getElementById('caso-form-holder');
+    const clienteOpts = state.clientes.map(cl => `<option value="${cl.id}" ${c.clienteId===cl.id?'selected':''}>${esc(cl.nombre)}</option>`).join('');
+    const estados = ['Activo','Paralizado','Archivado','Finalizado'];
+    holder.innerHTML = `
+      <div class="modal-bg">
+        ${state.clientes.length ? '' : '<div class="danger" style="font-size:12px;margin-bottom:8px;">No hay clientes cargados. Creá uno primero en la pestaña Clientes.</div>'}
+        <div class="field"><label>Expediente (carátula)</label><input id="f-caratula" value="${esc(c.caratula)}" placeholder="Ej: Pérez Juan c/ Gómez Ana s/ Ejecutivo"></div>
+        <datalist id="estudios-list">${ESTUDIOS_BASE.map(e=>`<option value="${esc(e)}"></option>`).join('')}</datalist>
+        <div class="grid3">
+          <div class="field"><label>Materia (carpeta)</label><select id="f-materia">${MATERIAS.map(m=>`<option ${( c.materia||'Otros')===m?'selected':''}>${m}</option>`).join('')}</select></div>
+          <div class="field"><label>Estudio</label><input id="f-estudio" list="estudios-list" value="${esc(c.estudio)}" placeholder="Manuela / Mutual / Manuel / colega..."></div>
+          <div class="field"><label>Cliente</label><select id="f-cliente">${clienteOpts}</select></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label>Juzgado / Tribunal</label><input id="f-trib" value="${esc(c.tribunal)}"></div>
+          <div class="field"><label>Contraparte</label><input id="f-contra" value="${esc(c.contraparte)}"></div>
+        </div>
+        <div class="grid3">
+          <div class="field"><label>Fecha inicio</label><input id="f-finicio" type="date" value="${c.fechaInicio||''}"></div>
+          <div class="field"><label>Estado</label><select id="f-estado">${estados.map(t=>`<option ${c.estado===t?'selected':''}>${t}</option>`).join('')}</select></div>
+          <div class="field"><label>Próximo movimiento</label><input id="f-venc" type="date" value="${c.proximoMovimiento||''}"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label>Honorarios totales pactados</label><input id="f-honTotal" type="number" value="${c.honorariosTotales||''}"></div>
+          <div class="field"><label>Anticipo recibido</label><input id="f-anticipo" type="number" value="${c.anticipo||''}"></div>
+        </div>
+        <div class="field"><label>Observaciones</label><textarea id="f-obs" rows="2">${esc(c.obs)}</textarea></div>
+
+        <details style="margin:14px 0 10px;border:1px solid #d8d8d8;border-radius:8px;padding:10px 14px;">
+          <summary style="cursor:pointer;font-weight:600;font-size:13px;color:#1F3864;">Datos de la entrevista inicial (opcional)</summary>
+          <div style="margin-top:12px;">
+            <div class="grid3">
+              <div class="field"><label>Fecha de entrevista</label><input id="f-fentrev" type="date" value="${c.fechaEntrevista||''}"></div>
+              <div class="field"><label>Hora</label><input id="f-hora" value="${esc(c.horaEntrevista)}" placeholder="Ej: 10:30 hs"></div>
+              <div class="field"><label>Atendido por</label><input id="f-atendido" value="${esc(c.atendidoPor)}"></div>
+            </div>
+            <div class="field"><label>Referido por</label><input id="f-referido" value="${esc(c.referidoPor)}"></div>
+            <div class="field"><label>Detalle del asunto</label><input id="f-detalle" value="${esc(c.detalleAsunto)}"></div>
+            <div class="field"><label>Descripción breve del caso</label><textarea id="f-descrip" rows="3">${esc(c.descripcionCaso)}</textarea></div>
+            <div class="field"><label>Notas de la entrevista</label><textarea id="f-notas" rows="4">${esc(c.notasEntrevista)}</textarea></div>
+
+            <div class="field"><label>Modalidad de trabajo</label>
+              <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:13px;margin-top:4px;">
+                ${['Patrocinio letrado','Representación (apoderado)','Sólo asesoramiento'].map(m=>`<label style="display:flex;align-items:center;gap:5px;font-weight:400;"><input type="radio" name="f-modalidad" value="${m}" ${c.modalidadTrabajo===m?'checked':''}> ${m}</label>`).join('')}
+              </div>
+            </div>
+            <div class="field"><label>Tareas a realizar</label>
+              <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:13px;margin-top:4px;">
+                ${['Redacción de escrito inicial','Trámite completo del proceso','Mediación previa','Gestión extrajudicial','Seguimiento de expediente existente'].map(t=>`<label style="display:flex;align-items:center;gap:5px;font-weight:400;"><input type="checkbox" class="f-tarea" value="${t}" ${(c.tareas||[]).includes(t)?'checked':''}> ${t}</label>`).join('')}
+              </div>
+            </div>
+            <div class="grid2">
+              <div class="field"><label>Plazo estimado</label><input id="f-plazo" value="${esc(c.plazoEstimado)}"></div>
+              <div class="field"><label>Tareas / detalle</label><input id="f-tareasdet" value="${esc(c.tareasDetalle)}"></div>
+            </div>
+
+            <label style="font-size:12px;font-weight:600;color:#444;display:block;margin:10px 0 4px;">Documentación solicitada / pendiente</label>
+            <table style="font-size:12px;">
+              <thead><tr><th>Documento</th><th style="width:64px;">Solicit.</th><th style="width:64px;">Entreg.</th><th style="width:130px;">Fecha entrega</th><th>Obs.</th></tr></thead>
+              <tbody id="doc-tabla-body">
+                ${(c.documentacion && c.documentacion.length ? c.documentacion : [
+                  {documento:'DNI (copia)'},{documento:'Partida de nacimiento'},{documento:'Partida de matrimonio / defunción'},{documento:'Escritura / título de propiedad'},{documento:'Constancia de CUIT/CUIL'}
+                ]).map(d => `
+                  <tr class="doc-row">
+                    <td><input type="text" class="doc-nombre" value="${esc(d.documento)}"></td>
+                    <td style="text-align:center;"><input type="checkbox" class="doc-solicitado" ${d.solicitado?'checked':''}></td>
+                    <td style="text-align:center;"><input type="checkbox" class="doc-entregado" ${d.entregado?'checked':''}></td>
+                    <td><input type="date" class="doc-fecha" value="${d.fechaEntrega||''}"></td>
+                    <td><input type="text" class="doc-obs" value="${esc(d.obs)}"></td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+            <button type="button" class="btn-fila-tabla" id="btn-add-doc" style="margin-top:6px;">+ Agregar documento</button>
+          </div>
+        </details>
+
+        <button class="action" id="f-save">Guardar</button>
+        <button class="secondary" id="f-cancel" style="margin-left:8px;">Cancelar</button>
+      </div>
+    `;
+    document.getElementById('btn-add-doc').onclick = () => {
+      const tr = document.createElement('tr');
+      tr.className = 'doc-row';
+      tr.innerHTML = `
+        <td><input type="text" class="doc-nombre"></td>
+        <td style="text-align:center;"><input type="checkbox" class="doc-solicitado"></td>
+        <td style="text-align:center;"><input type="checkbox" class="doc-entregado"></td>
+        <td><input type="date" class="doc-fecha"></td>
+        <td><input type="text" class="doc-obs"></td>
+      `;
+      document.getElementById('doc-tabla-body').appendChild(tr);
+    };
+    document.getElementById('f-cancel').onclick = () => { holder.innerHTML=''; };
+    document.getElementById('f-save').onclick = () => {
+      const caratula = document.getElementById('f-caratula').value.trim();
+      if (!caratula){ alert('Ingresá el expediente'); return; }
+      if (!state.clientes.length){ alert('Creá un cliente primero'); return; }
+      const documentacion = Array.from(document.querySelectorAll('.doc-row')).map(row => ({
+        documento: row.querySelector('.doc-nombre').value.trim(),
+        solicitado: row.querySelector('.doc-solicitado').checked,
+        entregado: row.querySelector('.doc-entregado').checked,
+        fechaEntrega: row.querySelector('.doc-fecha').value,
+        obs: row.querySelector('.doc-obs').value.trim(),
+      })).filter(d => d.documento);
+      const tareas = Array.from(document.querySelectorAll('.f-tarea:checked')).map(el => el.value);
+      const modalidadEl = document.querySelector('input[name="f-modalidad"]:checked');
+      const data = {
+        id: c.id || uid('j'),
+        caratula,
+        materia: document.getElementById('f-materia').value,
+        estudio: document.getElementById('f-estudio').value.trim(),
+        clienteId: document.getElementById('f-cliente').value,
+        tribunal: document.getElementById('f-trib').value.trim(),
+        contraparte: document.getElementById('f-contra').value.trim(),
+        fechaInicio: document.getElementById('f-finicio').value,
+        estado: document.getElementById('f-estado').value,
+        proximoMovimiento: document.getElementById('f-venc').value,
+        honorariosTotales: parseFloat(document.getElementById('f-honTotal').value) || 0,
+        anticipo: parseFloat(document.getElementById('f-anticipo').value) || 0,
+        obs: document.getElementById('f-obs').value.trim(),
+        fechaEntrevista: document.getElementById('f-fentrev').value,
+        horaEntrevista: document.getElementById('f-hora').value.trim(),
+        atendidoPor: document.getElementById('f-atendido').value.trim(),
+        referidoPor: document.getElementById('f-referido').value.trim(),
+        detalleAsunto: document.getElementById('f-detalle').value.trim(),
+        descripcionCaso: document.getElementById('f-descrip').value.trim(),
+        notasEntrevista: document.getElementById('f-notas').value.trim(),
+        modalidadTrabajo: modalidadEl ? modalidadEl.value : '',
+        tareas,
+        plazoEstimado: document.getElementById('f-plazo').value.trim(),
+        tareasDetalle: document.getElementById('f-tareasdet').value.trim(),
+        documentacion,
+      };
+      if (isNew) state.casos.push(data);
+      else Object.assign(c, data);
+      saveCasos(); holder.innerHTML=''; renderCasos();
+    };
+  }
+
+  // ---------------- HONORARIOS (pagos + aportes + gastos) ----------------
+  function renderHonorarios(){
+    const panel = document.getElementById('panel');
+    if (!state.casos.length){
+      panel.innerHTML = `<div class="empty">Todavía no cargaste ningún caso.</div>`;
+      return;
+    }
+    panel.innerHTML = `
+      <datalist id="conceptos-pago">
+        <option value="Anticipo"></option>
+        <option value="Gastos de iniciación"></option>
+        <option value="Pago total"></option>
+        <option value="Cuota"></option>
+        <option value="Saldo final"></option>
+        <option value="Pago parcial"></option>
+      </datalist>
+      <div class="toprow"><h2>Pagos recibidos (${state.cuotas.length})</h2><button class="action" id="btn-new-cuota">+ Nuevo pago</button></div>
+      <div style="font-size:12px;color:#777;margin:-8px 0 12px;">Cargá cada pago como venga: adelantos, pagos totales o cuotas sueltas — no hace falta que sea un cronograma fijo.</div>
+      <table>
+        <thead><tr><th>Caso</th><th>Concepto</th><th>Fecha de pago</th><th>Monto</th><th></th></tr></thead>
+        <tbody>
+          ${state.cuotas.length ? state.cuotas.slice().sort((a,b)=>(b.fechaPago||b.fechaVenc||'').localeCompare(a.fechaPago||a.fechaVenc||'')).map(q => `
+            <tr>
+              <td>${esc(casoCaratula(q.casoId))}</td><td>${esc(q.concepto||'Pago')}</td><td>${esc(q.fechaPago || (q.fechaVenc?('(estimado) '+q.fechaVenc):'—'))}</td><td>${fmtMoney(q.monto)}</td>
+              <td>
+                ${!q.fechaPago ? `<button class="link-btn" data-pay="${q.id}">Marcar pagado</button> · ` : ''}
+                <button class="link-btn" data-edit="${q.id}">Editar</button> · <button class="link-btn danger" data-del="${q.id}">Borrar</button>
+              </td>
+            </tr>`).join('') : `<tr><td colspan="5" class="empty">No hay pagos cargados todavía</td></tr>`}
+        </tbody>
+      </table>
+      <div id="cuota-form-holder"></div>
+
+      <div class="toprow" style="margin-top:28px;"><h2>Aportes — Caja Forense / Caja Jubilaciones (${state.aportes.length})</h2><button class="action" id="btn-new-aporte">+ Nuevo aporte</button></div>
+      <table>
+        <thead><tr><th>Caso</th><th>Concepto</th><th>Vencimiento</th><th>Monto</th><th>Fecha de pago</th><th>Estado</th><th></th></tr></thead>
+        <tbody>
+          ${state.aportes.length ? state.aportes.slice().sort((a,b)=>(a.fechaVenc||'').localeCompare(b.fechaVenc||'')).map(q => `
+            <tr>
+              <td>${esc(casoCaratula(q.casoId))}</td><td>${esc(q.concepto)}</td><td>${esc(q.fechaVenc)}</td><td>${fmtMoney(q.monto)}</td>
+              <td>${esc(q.fechaPago||'—')}</td><td><span class="badge ${badgeClass(estadoAporte(q))}">${estadoAporte(q)}</span></td>
+              <td>
+                ${!q.fechaPago ? `<button class="link-btn" data-pay-aporte="${q.id}">Marcar pagado</button> · ` : ''}
+                <button class="link-btn" data-edit-aporte="${q.id}">Editar</button> · <button class="link-btn danger" data-del-aporte="${q.id}">Borrar</button>
+              </td>
+            </tr>`).join('') : `<tr><td colspan="7" class="empty">No hay aportes cargados todavía</td></tr>`}
+        </tbody>
+      </table>
+      <div id="aporte-form-holder"></div>
+
+      <div class="toprow" style="margin-top:28px;"><h2>Gastos del expediente (${state.gastos.length})</h2><button class="action" id="btn-new-gasto">+ Nuevo gasto</button></div>
+      <div style="font-size:12px;color:#777;margin:-8px 0 12px;">Sellados, tasas de justicia, publicaciones de edictos, boletas y otros gastos de cada expediente.</div>
+      <table>
+        <thead><tr><th>Caso</th><th>Concepto</th><th>Fecha</th><th>Monto</th><th>N° Boleta</th><th></th></tr></thead>
+        <tbody>
+          ${state.gastos.length ? state.gastos.slice().sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')).map(g => `
+            <tr>
+              <td>${esc(casoCaratula(g.casoId))}</td><td>${esc(g.concepto)}</td><td>${esc(g.fecha)}</td><td>${fmtMoney(g.monto)}</td><td>${esc(g.boleta)}</td>
+              <td><button class="link-btn" data-edit-gasto="${g.id}">Editar</button> · <button class="link-btn danger" data-del-gasto="${g.id}">Borrar</button></td>
+            </tr>`).join('') : `<tr><td colspan="6" class="empty">No hay gastos cargados todavía</td></tr>`}
+        </tbody>
+      </table>
+      <div id="gasto-form-holder"></div>
+    `;
+    document.getElementById('btn-new-cuota').onclick = () => openCuotaForm({});
+    document.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => openCuotaForm(state.cuotas.find(q=>q.id===b.dataset.edit)));
+    document.querySelectorAll('[data-pay]').forEach(b => b.onclick = () => {
+      const q = state.cuotas.find(x=>x.id===b.dataset.pay);
+      q.fechaPago = new Date().toISOString().slice(0,10);
+      saveCuotas(); renderHonorarios();
+    });
+    document.querySelectorAll('[data-del]').forEach(b => b.onclick = () => {
+      if (confirm('¿Borrar este pago?')) { state.cuotas = state.cuotas.filter(q=>q.id!==b.dataset.del); saveCuotas(); renderHonorarios(); }
+    });
+
+    document.getElementById('btn-new-aporte').onclick = () => openAporteForm({});
+    document.querySelectorAll('[data-edit-aporte]').forEach(b => b.onclick = () => openAporteForm(state.aportes.find(q=>q.id===b.dataset.editAporte)));
+    document.querySelectorAll('[data-pay-aporte]').forEach(b => b.onclick = () => {
+      const q = state.aportes.find(x=>x.id===b.dataset.payAporte);
+      q.fechaPago = new Date().toISOString().slice(0,10);
+      saveAportes(); renderHonorarios();
+    });
+    document.querySelectorAll('[data-del-aporte]').forEach(b => b.onclick = () => {
+      if (confirm('¿Borrar este aporte?')) { state.aportes = state.aportes.filter(q=>q.id!==b.dataset.delAporte); saveAportes(); renderHonorarios(); }
+    });
+
+    document.getElementById('btn-new-gasto').onclick = () => openGastoForm({});
+    document.querySelectorAll('[data-edit-gasto]').forEach(b => b.onclick = () => openGastoForm(state.gastos.find(g=>g.id===b.dataset.editGasto)));
+    document.querySelectorAll('[data-del-gasto]').forEach(b => b.onclick = () => {
+      if (confirm('¿Borrar este gasto?')) { state.gastos = state.gastos.filter(g=>g.id!==b.dataset.delGasto); saveGastos(); renderHonorarios(); }
+    });
+  }
+
+  function openCuotaForm(q){
+    if (!state.casos.length){ alert('Creá un caso primero'); return; }
+    const isNew = !q.id;
+    const holder = document.getElementById('cuota-form-holder') || (() => { state.tab='cuotas'; renderHonorarios(); return document.getElementById('cuota-form-holder'); })();
+    const casoOpts = state.casos.map(c => `<option value="${c.id}" ${(q.casoId===c.id)?'selected':''}>${esc(c.caratula)}</option>`).join('');
+    holder.innerHTML = `
+      <div class="modal-bg">
+        <div class="grid2">
+          <div class="field"><label>Caso</label><select id="f-caso">${casoOpts}</select></div>
+          <div class="field"><label>Concepto</label><input id="f-concepto" list="conceptos-pago" value="${esc(q.concepto)}" placeholder="Ej: Anticipo, cuota, pago total..."></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label>Fecha de pago (dejar vacío si todavía no se pagó)</label><input id="f-pago" type="date" value="${q.fechaPago||''}"></div>
+          <div class="field"><label>Monto</label><input id="f-monto" type="number" value="${q.monto||''}"></div>
+        </div>
+        <div class="field"><label>Fecha estimada de cobro (opcional, si es un pago pactado a futuro)</label><input id="f-venc" type="date" value="${q.fechaVenc||''}"></div>
+        <div class="field"><label>Observaciones</label><input id="f-obs" value="${esc(q.obs)}"></div>
+        <button class="action" id="f-save">Guardar</button>
+        <button class="secondary" id="f-cancel" style="margin-left:8px;">Cancelar</button>
+      </div>
+    `;
+    document.getElementById('f-cancel').onclick = () => { holder.innerHTML=''; };
+    document.getElementById('f-save').onclick = () => {
+      const monto = parseFloat(document.getElementById('f-monto').value);
+      if (!monto){ alert('Ingresá un monto'); return; }
+      const data = {
+        id: q.id || uid('q'),
+        casoId: document.getElementById('f-caso').value,
+        concepto: document.getElementById('f-concepto').value.trim() || 'Pago',
+        fechaVenc: document.getElementById('f-venc').value,
+        monto,
+        fechaPago: document.getElementById('f-pago').value || '',
+        obs: document.getElementById('f-obs').value.trim(),
+      };
+      if (isNew) state.cuotas.push(data);
+      else Object.assign(q, data);
+      saveCuotas(); holder.innerHTML=''; renderHonorarios();
+    };
+  }
+
+  function openGastoForm(g){
+    if (!state.casos.length){ alert('Creá un caso primero'); return; }
+    const isNew = !g.id;
+    const holder = document.getElementById('gasto-form-holder') || (() => { state.tab='cuotas'; renderHonorarios(); return document.getElementById('gasto-form-holder'); })();
+    const casoOpts = state.casos.map(c => `<option value="${c.id}" ${(g.casoId===c.id)?'selected':''}>${esc(c.caratula)}</option>`).join('');
+    const conceptos = ['Sellado','Tasa de Justicia','Publicación de edictos','Gastos de notificación / oficio','Otro'];
+    holder.innerHTML = `
+      <div class="modal-bg">
+        <div class="grid2">
+          <div class="field"><label>Caso</label><select id="f-caso">${casoOpts}</select></div>
+          <div class="field"><label>Concepto</label><select id="f-concepto">${conceptos.map(c2=>`<option ${g.concepto===c2?'selected':''}>${c2}</option>`).join('')}</select></div>
+        </div>
+        <div class="grid3">
+          <div class="field"><label>Fecha</label><input id="f-fecha" type="date" value="${g.fecha||''}"></div>
+          <div class="field"><label>Monto</label><input id="f-monto" type="number" value="${g.monto||''}"></div>
+          <div class="field"><label>N° de boleta / comprobante</label><input id="f-boleta" value="${esc(g.boleta)}"></div>
+        </div>
+        <div class="field"><label>Observaciones</label><input id="f-obs" value="${esc(g.obs)}"></div>
+        <button class="action" id="f-save">Guardar</button>
+        <button class="secondary" id="f-cancel" style="margin-left:8px;">Cancelar</button>
+      </div>
+    `;
+    document.getElementById('f-cancel').onclick = () => { holder.innerHTML=''; };
+    document.getElementById('f-save').onclick = () => {
+      const monto = parseFloat(document.getElementById('f-monto').value);
+      if (!monto){ alert('Ingresá un monto'); return; }
+      const data = {
+        id: g.id || uid('g'),
+        casoId: document.getElementById('f-caso').value,
+        concepto: document.getElementById('f-concepto').value,
+        fecha: document.getElementById('f-fecha').value,
+        monto,
+        boleta: document.getElementById('f-boleta').value.trim(),
+        obs: document.getElementById('f-obs').value.trim(),
+      };
+      if (isNew) state.gastos.push(data);
+      else Object.assign(g, data);
+      saveGastos(); holder.innerHTML=''; renderHonorarios();
+    };
+  }
+
+  function openAporteForm(q){
+    if (!state.casos.length){ alert('Creá un caso primero'); return; }
+    const isNew = !q.id;
+    const holder = document.getElementById('aporte-form-holder') || (() => { state.tab='cuotas'; renderHonorarios(); return document.getElementById('aporte-form-holder'); })();
+    const casoOpts = state.casos.map(c => `<option value="${c.id}" ${(q.casoId===c.id)?'selected':''}>${esc(c.caratula)}</option>`).join('');
+    const conceptos = ['Caja Forense','Caja de Jubilaciones','Otro'];
+    holder.innerHTML = `
+      <div class="modal-bg">
+        <div class="grid2">
+          <div class="field"><label>Caso</label><select id="f-caso">${casoOpts}</select></div>
+          <div class="field"><label>Concepto</label><select id="f-concepto">${conceptos.map(c2=>`<option ${q.concepto===c2?'selected':''}>${c2}</option>`).join('')}</select></div>
+        </div>
+        <div class="grid3">
+          <div class="field"><label>Fecha de vencimiento</label><input id="f-venc" type="date" value="${q.fechaVenc||''}"></div>
+          <div class="field"><label>Monto</label><input id="f-monto" type="number" value="${q.monto||''}"></div>
+          <div class="field"><label>Fecha de pago (vacío si no se pagó)</label><input id="f-pago" type="date" value="${q.fechaPago||''}"></div>
+        </div>
+        <div class="field"><label>Observaciones</label><input id="f-obs" value="${esc(q.obs)}"></div>
+        <button class="action" id="f-save">Guardar</button>
+        <button class="secondary" id="f-cancel" style="margin-left:8px;">Cancelar</button>
+      </div>
+    `;
+    document.getElementById('f-cancel').onclick = () => { holder.innerHTML=''; };
+    document.getElementById('f-save').onclick = () => {
+      const monto = parseFloat(document.getElementById('f-monto').value);
+      if (!monto){ alert('Ingresá un monto'); return; }
+      const data = {
+        id: q.id || uid('a'),
+        casoId: document.getElementById('f-caso').value,
+        concepto: document.getElementById('f-concepto').value,
+        fechaVenc: document.getElementById('f-venc').value,
+        monto,
+        fechaPago: document.getElementById('f-pago').value || '',
+        obs: document.getElementById('f-obs').value.trim(),
+      };
+      if (isNew) state.aportes.push(data);
+      else Object.assign(q, data);
+      saveAportes(); holder.innerHTML=''; renderHonorarios();
+    };
+  }
+
+  document.getElementById('btn-exportar').onclick = () => exportarDatos();
+  document.getElementById('btn-importar').onclick = () => document.getElementById('input-importar').click();
+  document.getElementById('input-importar').onchange = (e) => {
+    if (e.target.files[0]) importarDatos(e.target.files[0]);
+    e.target.value = '';
+  };
+  document.getElementById('btn-conectar').onclick = () => conectarArchivo();
+  if (!window.showOpenFilePicker){
+    const btn = document.getElementById('btn-conectar');
+    btn.disabled = true;
+    btn.title = 'Tu navegador no soporta esto — usá Chrome o Edge';
+    btn.style.opacity = '0.5';
+  }
+
+  loadAll();
+})();
+</script>
+
+
+</body></html>
