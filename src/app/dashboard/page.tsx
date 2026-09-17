@@ -2,14 +2,14 @@ import { db } from '@/prisma/db'
 
 export default async function DashboardHome() {
   const clientsCount = await db.orm.public.Client.count()
-  const activeCasesCount = await db.orm.public.Case.count({
-    where: { estado: { notIn: ['Finalizado', 'Archivado'] } }
-  })
+  const activeCasesCount = await db.orm.public.Case.where({
+    estado: { notIn: ['Finalizado', 'Archivado'] }
+  }).count()
   
   // En un sistema real esto sumaría la BD
-  const pendingFees = await db.orm.public.Fee.count({
-    where: { fechaPago: null }
-  })
+  const pendingFees = await db.orm.public.Fee.where({
+    fechaPago: null
+  }).count()
 
   return (
     <div className="animate-fade-in">
