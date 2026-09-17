@@ -1,0 +1,106 @@
+// use prisma-8
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  name         String?
+  createdAt    TimestamptzString @default(now())
+  updatedAt    temporal.updatedAtString()
+}
+
+model Client {
+  id             String   @id @default(cuid())
+  nombre         String
+  dni            String?
+  telefono       String?
+  telefonoAlt    String?
+  email          String?
+  ocupacion      String?
+  fechaNacimiento String?
+  estadoCivil    String?
+  direccion      String?
+  localidad      String?
+  observaciones  String?
+  createdAt      TimestamptzString @default(now())
+  updatedAt      temporal.updatedAtString()
+  
+  cases          Case[]
+}
+
+model Case {
+  id                 String   @id @default(cuid())
+  clientId           String
+  client             Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  
+  caratula           String?
+  materia            String?
+  estudio            String?
+  estado             String?
+  moroso             Boolean  @default(false)
+  
+  fechaEntrevista    String?
+  horaEntrevista     String?
+  atendidoPor        String?
+  referidoPor        String?
+  
+  detalleAsunto      String?
+  descripcionCaso    String?
+  notasEntrevista    String?
+  
+  modalidadTrabajo   String?
+  plazoEstimado      String?
+  tareas             String?
+  tareasDetalle      String?
+  
+  fechaFinalizacion  String?
+  proximoMovimiento  String?
+  tribunal           String?
+  contraparte        String?
+  fechaInicio        String?
+  nroExpediente      String?
+  honorariosTotales  Float?
+  anticipo           Float?
+  
+  createdAt          TimestamptzString @default(now())
+  updatedAt          temporal.updatedAtString()
+
+  fees               Fee[]
+  contributions      Contribution[]
+  expenses           Expense[]
+}
+
+model Fee {
+  id        String   @id @default(cuid())
+  caseId    String
+  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  monto     Float
+  fechaVenc String?
+  fechaPago String?
+  metodo    String?
+  recibo    String?
+  notas     String?
+}
+
+model Contribution {
+  id        String   @id @default(cuid())
+  caseId    String
+  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  concepto  String
+  monto     Float
+  fechaVenc String?
+  fechaPago String?
+  comprobante String?
+  notas     String?
+}
+
+model Expense {
+  id        String   @id @default(cuid())
+  caseId    String
+  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  concepto  String
+  monto     Float
+  fecha     String?
+  comprobante String?
+  notas     String?
+}
