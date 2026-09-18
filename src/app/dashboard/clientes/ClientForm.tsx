@@ -1,8 +1,9 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useEffect } from 'react'
 import Link from 'next/link'
-import { createClient, updateClient } from '@/app/actions/clientes'
+import { useRouter } from 'next/navigation'
+import { createClient, updateClient, deleteClient } from '@/app/actions/clientes'
 
 type Client = {
   id?: string
@@ -103,7 +104,21 @@ export function ClientForm({ client, actionType }: { client?: Client; actionType
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'flex-end' }}>
+      <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'flex-end', alignItems: 'center' }}>
+        {actionType === 'update' && client?.id && (
+          <button 
+            type="button" 
+            className="btn btn-outline" 
+            style={{ color: '#ef4444', borderColor: '#ef4444', marginRight: 'auto' }}
+            onClick={async () => {
+              if (confirm('¿Estás seguro de eliminar este cliente? Se borrarán también todos sus expedientes de forma permanente.')) {
+                await deleteClient(client.id!)
+              }
+            }}
+          >
+            Eliminar
+          </button>
+        )}
         <Link href={client?.id ? `/dashboard/clientes/${client.id}` : '/dashboard/clientes'} className="btn btn-outline">
           Cancelar
         </Link>

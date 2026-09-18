@@ -119,3 +119,15 @@ export async function updateClient(id: string, prevState: any, formData: FormDat
   revalidatePath(`/dashboard/clientes/${id}`)
   return { success: 'Cliente actualizado correctamente.' }
 }
+
+export async function deleteClient(id: string) {
+  try {
+    await db.orm.public.Client.where({ id }).delete()
+    revalidatePath('/dashboard/clientes')
+    redirect('/dashboard/clientes')
+  } catch (error: any) {
+    if (error.message === 'NEXT_REDIRECT') throw error
+    console.error('Error deleting client:', error)
+    return { error: 'Ocurrió un error al eliminar el cliente.' }
+  }
+}

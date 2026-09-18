@@ -2,7 +2,7 @@
 
 import { useActionState } from 'react'
 import Link from 'next/link'
-import { createCase, updateCase } from '@/app/actions/casos'
+import { createCase, updateCase, deleteCase } from '@/app/actions/casos'
 
 type Client = { id: string; nombre: string }
 type Case = {
@@ -143,7 +143,21 @@ export function CaseForm({
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'flex-end' }}>
+      <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'flex-end', alignItems: 'center' }}>
+        {actionType === 'update' && caseData?.id && (
+          <button 
+            type="button" 
+            className="btn btn-outline" 
+            style={{ color: '#ef4444', borderColor: '#ef4444', marginRight: 'auto' }}
+            onClick={async () => {
+              if (confirm('¿Estás seguro de eliminar este expediente? Esto borrará también todos los honorarios asociados de forma permanente.')) {
+                await deleteCase(caseData.id!)
+              }
+            }}
+          >
+            Eliminar
+          </button>
+        )}
         <Link href={caseData?.id ? `/dashboard/casos/${caseData.id}` : '/dashboard/casos'} className="btn btn-outline">
           Cancelar
         </Link>

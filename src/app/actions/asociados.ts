@@ -97,3 +97,15 @@ export async function updateAsociado(id: string, prevState: any, formData: FormD
   revalidatePath(`/dashboard/asociados/${id}`)
   return { success: 'Asociado actualizado correctamente.' }
 }
+
+export async function deleteAsociado(id: string) {
+  try {
+    await db.orm.public.Asociado.where({ id }).delete()
+    revalidatePath('/dashboard/asociados')
+    redirect('/dashboard/asociados')
+  } catch (error: any) {
+    if (error.message === 'NEXT_REDIRECT') throw error
+    console.error('Error deleting asociado:', error)
+    return { error: 'Ocurrió un error al eliminar el asociado.' }
+  }
+}

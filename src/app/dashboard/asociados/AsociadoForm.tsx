@@ -1,8 +1,9 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useEffect } from 'react'
 import Link from 'next/link'
-import { createAsociado, updateAsociado } from '@/app/actions/asociados'
+import { useRouter } from 'next/navigation'
+import { createAsociado, updateAsociado, deleteAsociado } from '@/app/actions/asociados'
 
 type Asociado = {
   id?: string
@@ -71,7 +72,21 @@ export function AsociadoForm({
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'flex-end' }}>
+      <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'flex-end', alignItems: 'center' }}>
+        {actionType === 'update' && asociado?.id && (
+          <button 
+            type="button" 
+            className="btn btn-outline" 
+            style={{ color: '#ef4444', borderColor: '#ef4444', marginRight: 'auto' }}
+            onClick={async () => {
+              if (confirm('¿Estás seguro de eliminar este asociado? Los expedientes vinculados quedarán sin asociado.')) {
+                await deleteAsociado(asociado.id!)
+              }
+            }}
+          >
+            Eliminar
+          </button>
+        )}
         <Link href={asociado?.id ? `/dashboard/asociados/${asociado.id}` : '/dashboard/asociados'} className="btn btn-outline">
           Cancelar
         </Link>

@@ -126,3 +126,15 @@ export async function updateCase(id: string, prevState: any, formData: FormData)
   revalidatePath(`/dashboard/casos/${id}`)
   return { success: 'Caso actualizado correctamente.' }
 }
+
+export async function deleteCase(id: string) {
+  try {
+    await db.orm.public.Case.where({ id }).delete()
+    revalidatePath('/dashboard/casos')
+    redirect('/dashboard/casos')
+  } catch (error: any) {
+    if (error.message === 'NEXT_REDIRECT') throw error
+    console.error('Error deleting case:', error)
+    return { error: 'Ocurrió un error al eliminar el expediente.' }
+  }
+}
