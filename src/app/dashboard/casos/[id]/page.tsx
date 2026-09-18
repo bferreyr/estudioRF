@@ -59,7 +59,7 @@ export default async function DetalleCasoPage({
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '0.5rem' }}>
                 <span style={{ color: 'var(--text-muted)' }}>Saldo Pendiente</span>
-                <span style={{ fontWeight: 'bold', color: saldoPendiente > 0 ? '#f59e0b' : '#fff' }}>
+                <span style={{ fontWeight: 'bold', color: saldoPendiente > 0 ? '#f59e0b' : 'var(--text-main)' }}>
                   ${saldoPendiente.toLocaleString()}
                 </span>
               </div>

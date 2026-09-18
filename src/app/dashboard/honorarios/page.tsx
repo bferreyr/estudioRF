@@ -79,7 +79,7 @@ export default async function HonorariosPage({
                       ${fee.monto.toLocaleString()}
                     </td>
                     <td style={{ padding: '1rem 0.5rem' }}>
-                      <Link href={`/dashboard/casos/${fee.caseId}`} style={{ color: '#fff', textDecoration: 'none', fontWeight: 500 }}>
+                      <Link href={`/dashboard/casos/${fee.caseId}`} style={{ color: 'var(--text-main)', textDecoration: 'none', fontWeight: 500 }}>
                         {fee.case?.caratula || 'Sin carátula'}
                       </Link>
                       <div style={{ fontSize: '0.8rem', color: 'var(--accent)' }}>

@@ -47,7 +47,7 @@ export default async function DetalleClientePage({
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {client.cases.map(c => (
                   <div key={c.id} style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)' }}>
-                    <Link href={`/dashboard/casos/${c.id}`} style={{ fontWeight: 600, color: '#fff', textDecoration: 'none', display: 'block', marginBottom: '0.25rem' }}>
+                    <Link href={`/dashboard/casos/${c.id}`} style={{ fontWeight: 600, color: 'var(--text-main)', textDecoration: 'none', display: 'block', marginBottom: '0.25rem' }}>
                       {c.caratula || 'Caso sin carátula'}
                     </Link>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
@@ -55,8 +55,8 @@ export default async function DetalleClientePage({
                       <span style={{ 
                         padding: '0.1rem 0.5rem', 
                         borderRadius: '999px', 
-                        backgroundColor: c.estado === 'Activo' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.1)',
-                        color: c.estado === 'Activo' ? '#34d399' : '#fff'
+                        backgroundColor: c.estado === 'Activo' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(0, 0, 0, 0.05)',
+                        color: c.estado === 'Activo' ? '#34d399' : 'var(--text-muted)'
                       }}>
                         {c.estado || 'S/E'}
                       </span>

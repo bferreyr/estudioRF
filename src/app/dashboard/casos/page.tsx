@@ -68,7 +68,7 @@ export default async function CasosPage({
                 cases.map((c) => (
                   <tr key={c.id} style={{ borderBottom: '1px solid var(--border)' }}>
                     <td style={{ padding: '1rem 0.5rem', fontWeight: 500 }}>
-                      <Link href={`/dashboard/casos/${c.id}`} style={{ color: '#fff', textDecoration: 'none' }}>
+                      <Link href={`/dashboard/casos/${c.id}`} style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
                         {c.caratula || 'Sin carátula'}
                       </Link>
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
@@ -86,8 +86,8 @@ export default async function CasosPage({
                         padding: '0.2rem 0.6rem', 
                         borderRadius: '999px', 
                         fontSize: '0.8rem',
-                        backgroundColor: c.estado === 'Activo' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.1)',
-                        color: c.estado === 'Activo' ? '#34d399' : '#fff'
+                        backgroundColor: c.estado === 'Activo' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(0, 0, 0, 0.05)',
+                        color: c.estado === 'Activo' ? '#34d399' : 'var(--text-muted)'
                       }}>
                         {c.estado || 'S/E'}
                       </span>

@@ -73,7 +73,7 @@ export default async function DashboardHome() {
               {recentCases.map(c => (
                 <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', backgroundColor: 'rgba(0,0,0,0.1)', borderRadius: 'var(--radius-sm)' }}>
                   <div>
-                    <Link href={`/dashboard/casos/${c.id}`} style={{ fontWeight: 600, color: '#fff', textDecoration: 'none' }}>
+                    <Link href={`/dashboard/casos/${c.id}`} style={{ fontWeight: 600, color: 'var(--text-main)', textDecoration: 'none' }}>
                       {c.caratula || 'Sin carátula'}
                     </Link>
                     <div style={{ fontSize: '0.8rem', color: 'var(--accent)' }}>{c.client?.nombre}</div>
@@ -83,8 +83,8 @@ export default async function DashboardHome() {
                       padding: '0.2rem 0.5rem', 
                       borderRadius: '999px', 
                       fontSize: '0.75rem',
-                      backgroundColor: c.estado === 'Activo' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.1)',
-                      color: c.estado === 'Activo' ? '#34d399' : '#fff'
+                      backgroundColor: c.estado === 'Activo' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(0, 0, 0, 0.05)',
+                      color: c.estado === 'Activo' ? '#34d399' : 'var(--text-muted)'
                     }}>
                       {c.estado || 'S/E'}
                     </span>
