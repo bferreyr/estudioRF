@@ -1,15 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Tenor+Sans&display=swap');
 
 :root {
-  --bg-color: #f4f6fa;
+  --bg-color: #faf6f1;
   --bg-card: #ffffff;
-  --text-main: #1a1a1a;
-  --text-muted: #5a5f66;
-  --primary: #1F3864;
-  --primary-hover: #16294a;
-  --accent: #a8843c;
-  --border: #e3e8ef;
-  --border-focus: #c9d2de;
+  --text-main: #10100c;
+  --text-muted: #6f6959;
+  --primary: #10100c;
+  --primary-hover: #333333;
+  --accent: #9f9889;
+  --border: #e8e3dc;
+  --border-focus: #9f9889;
   --danger: #e11d48;
   --danger-bg: #ffe4e6;
   --success: #16a34a;
@@ -36,14 +36,14 @@
 body {
   background-color: var(--bg-color);
   color: var(--text-main);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Tenor Sans', sans-serif;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Cinzel', serif;
   color: var(--primary);
 }
 
@@ -77,7 +77,7 @@ a {
 .input-field {
   width: 100%;
   padding: 0.75rem 1rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Tenor Sans', sans-serif;
   font-size: 0.95rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -98,7 +98,7 @@ a {
   align-items: center;
   justify-content: center;
   padding: 0.75rem 1.5rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Tenor Sans', sans-serif;
   font-size: 0.95rem;
   font-weight: 500;
   border-radius: var(--radius-sm);
