@@ -6,7 +6,7 @@ import { encrypt } from '@/lib/session'
 import { db } from '@/prisma/db'
 import bcrypt from 'bcrypt'
 
-export async function login(formData: FormData) {
+export async function login(prevState: { error?: string } | null, formData: FormData) {
   const username = formData.get('username') as string
   const password = formData.get('password') as string
 

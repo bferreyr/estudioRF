@@ -1,15 +1,21 @@
 import { db } from '@/prisma/db'
 
+import { not } from '@prisma/orm-postgres/orm-client'
+
 export default async function DashboardHome() {
-  const clientsCount = await db.orm.public.Client.count()
-  const activeCasesCount = await db.orm.public.Case.where({
-    estado: { notIn: ['Finalizado', 'Archivado'] }
-  }).count()
+  const clientsAgg = await db.orm.public.Client.aggregate((a) => ({ total: a.count() }))
+  const clientsCount = clientsAgg.total
+
+  const activeCasesAgg = await db.orm.public.Case.where((c) => 
+    not(c.estado.in(['Finalizado', 'Archivado']))
+  ).aggregate((a) => ({ total: a.count() }))
+  const activeCasesCount = activeCasesAgg.total
   
   // En un sistema real esto sumaría la BD
-  const pendingFees = await db.orm.public.Fee.where({
-    fechaPago: null
-  }).count()
+  const pendingFeesAgg = await db.orm.public.Fee.where((f) => 
+    f.fechaPago.isNull()
+  ).aggregate((a) => ({ total: a.count() }))
+  const pendingFees = pendingFeesAgg.total
 
   return (
     <div className="animate-fade-in">
