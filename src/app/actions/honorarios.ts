@@ -115,3 +115,16 @@ export async function markFeeAsPaid(id: string) {
     console.error('Error marking fee as paid:', error)
   }
 }
+
+export async function deleteFee(id: string) {
+  try {
+    const fee = await db.orm.public.Fee.where({ id }).delete()
+    revalidatePath('/dashboard/honorarios')
+    revalidatePath(`/dashboard/casos/${fee?.caseId}`)
+    redirect(`/dashboard/casos/${fee?.caseId}`)
+  } catch (error: any) {
+    if (error.message === 'NEXT_REDIRECT') throw error
+    console.error('Error deleting fee:', error)
+    return { error: 'Ocurrió un error al eliminar el honorario.' }
+  }
+}

@@ -3,7 +3,7 @@
 import { useActionState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { createFee, updateFee } from '@/app/actions/honorarios'
+import { createFee, updateFee, deleteFee } from '@/app/actions/honorarios'
 
 type Fee = {
   id?: string
@@ -90,7 +90,21 @@ export function FeeForm({ feeData, caseId, actionType = 'create' }: { feeData?: 
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'flex-end' }}>
+      <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'flex-end', alignItems: 'center' }}>
+        {actionType === 'update' && feeData?.id && (
+          <button 
+            type="button" 
+            className="btn btn-outline" 
+            style={{ color: '#ef4444', borderColor: '#ef4444', marginRight: 'auto' }}
+            onClick={async () => {
+              if (confirm('¿Estás seguro de eliminar este registro?')) {
+                await deleteFee(feeData.id!)
+              }
+            }}
+          >
+            Eliminar
+          </button>
+        )}
         <Link href={`/dashboard/casos/${caseId}`} className="btn btn-outline">
           Cancelar
         </Link>
