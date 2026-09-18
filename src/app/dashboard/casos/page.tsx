@@ -77,7 +77,7 @@ export default async function CasosPage({
                     </td>
                     <td style={{ padding: '1rem 0.5rem' }}>
                       <Link href={`/dashboard/clientes/${c.clientId}`} style={{ color: 'var(--accent)', textDecoration: 'none' }}>
-                        {c.client.nombre}
+                        {c.client?.nombre}
                       </Link>
                     </td>
                     <td style={{ padding: '1rem 0.5rem' }}>{c.materia || '-'}</td>

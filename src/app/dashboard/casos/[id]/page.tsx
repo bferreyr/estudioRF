@@ -29,7 +29,7 @@ export default async function DetalleCasoPage({
           </Link>
           <h1 style={{ marginBottom: '0.5rem' }}>{caseData.caratula || 'Expediente Sin Carátula'}</h1>
           <p style={{ color: 'var(--text-muted)' }}>
-            Cliente: <Link href={`/dashboard/clientes/${caseData.clientId}`} style={{ color: 'var(--accent)', textDecoration: 'none' }}>{caseData.client.nombre}</Link> 
+            Cliente: <Link href={`/dashboard/clientes/${caseData.clientId}`} style={{ color: 'var(--accent)', textDecoration: 'none' }}>{caseData.client?.nombre}</Link> 
             {' • '} Exp: {caseData.nroExpediente || 'N/A'} 
             {' • '} Fuero: {caseData.materia || 'N/A'}
           </p>

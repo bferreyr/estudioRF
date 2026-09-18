@@ -30,7 +30,7 @@ export default async function NuevoHonorarioPage({
         </Link>
         <h1 style={{ marginBottom: '0.5rem' }}>Nuevo Cobro / Honorario</h1>
         <p style={{ color: 'var(--text-muted)' }}>
-          Caso: <strong>{caseData.caratula}</strong> - Cliente: <strong>{caseData.client.nombre}</strong>
+          Caso: <strong>{caseData.caratula}</strong> - Cliente: <strong>{caseData.client?.nombre}</strong>
         </p>
       </div>
 
