@@ -64,7 +64,7 @@ export default async function DashboardLayout({
             {/* Contextual title could go here */}
           </div>
           <div className="topbar-right">
-            <button className="btn btn-primary btn-sm">+ Nuevo Caso</button>
+            <Link href="/dashboard/casos/nuevo" className="btn btn-primary btn-sm">+ Nuevo Caso</Link>
           </div>
         </header>
         

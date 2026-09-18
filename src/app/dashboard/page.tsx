@@ -1,5 +1,5 @@
 import { db } from '@/prisma/db'
-
+import Link from 'next/link'
 import { not } from '@prisma/orm-postgres/orm-client'
 
 export default async function DashboardHome() {
@@ -16,6 +16,12 @@ export default async function DashboardHome() {
     f.fechaPago.isNull()
   ).aggregate((a) => ({ total: a.count() }))
   const pendingFees = pendingFeesAgg.total
+
+  const recentCases = await db.orm.public.Case
+    .include('client', c => c.select('nombre'))
+    .orderBy(c => c.createdAt.desc())
+    .limit(5)
+    .all()
 
   return (
     <div className="animate-fade-in">
@@ -58,9 +64,35 @@ export default async function DashboardHome() {
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
         <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
           <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Casos Recientes</h2>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', textAlign: 'center', padding: '2rem 0' }}>
-            Aún no hay casos cargados. Usá el botón "+ Nuevo Caso" para empezar.
-          </div>
+          {recentCases.length === 0 ? (
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', textAlign: 'center', padding: '2rem 0' }}>
+              Aún no hay casos cargados. Usá el botón "+ Nuevo Caso" para empezar.
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {recentCases.map(c => (
+                <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', backgroundColor: 'rgba(0,0,0,0.1)', borderRadius: 'var(--radius-sm)' }}>
+                  <div>
+                    <Link href={`/dashboard/casos/${c.id}`} style={{ fontWeight: 600, color: '#fff', textDecoration: 'none' }}>
+                      {c.caratula || 'Sin carátula'}
+                    </Link>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--accent)' }}>{c.client?.nombre}</div>
+                  </div>
+                  <div>
+                    <span style={{ 
+                      padding: '0.2rem 0.5rem', 
+                      borderRadius: '999px', 
+                      fontSize: '0.75rem',
+                      backgroundColor: c.estado === 'Activo' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.1)',
+                      color: c.estado === 'Activo' ? '#34d399' : '#fff'
+                    }}>
+                      {c.estado || 'S/E'}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
