@@ -11,6 +11,11 @@ export default async function DashboardHome() {
   ).aggregate((a) => ({ total: a.count() }))
   const activeCasesCount = activeCasesAgg.total
   
+  const closedCasesAgg = await db.orm.public.Case.where((c) => 
+    c.estado.in(['Finalizado', 'Archivado'])
+  ).aggregate((a) => ({ total: a.count() }))
+  const closedCasesCount = closedCasesAgg.total
+
   // En un sistema real esto sumaría la BD
   const pendingFeesAgg = await db.orm.public.Fee.where((f) => 
     f.fechaPago.isNull()
@@ -55,7 +60,7 @@ export default async function DashboardHome() {
         <div className="stat-card glass-panel">
           <div className="stat-icon" style={{ color: '#10b981', backgroundColor: '#ecfdf5' }}>✅</div>
           <div className="stat-info">
-            <div className="stat-value">0</div>
+            <div className="stat-value">{closedCasesCount}</div>
             <div className="stat-label">Casos Cerrados</div>
           </div>
         </div>
