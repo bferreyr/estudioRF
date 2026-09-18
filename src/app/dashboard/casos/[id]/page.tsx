@@ -82,7 +82,7 @@ export default async function DetalleCasoPage({
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                       {f.fechaPago ? (
-                        <span style={{ color: '#34d399', fontSize: '1.2rem', title: 'Pagado' }}>✓</span>
+                        <span style={{ color: '#34d399', fontSize: '1.2rem' }} title="Pagado">✓</span>
                       ) : (
                         <>
                           <span style={{ color: '#f59e0b', fontSize: '0.75rem', padding: '0.1rem 0.4rem', border: '1px solid #f59e0b', borderRadius: '4px' }}>Pendiente</span>
