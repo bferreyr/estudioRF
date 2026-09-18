@@ -71,3 +71,47 @@ export async function createFee(prevState: any, formData: FormData) {
   revalidatePath(`/dashboard/casos/${caseId}`)
   redirect(`/dashboard/casos/${caseId}`)
 }
+
+export async function updateFee(id: string, prevState: any, formData: FormData) {
+  const monto = parseFloat(formData.get('monto') as string)
+  const fechaVenc = formData.get('fechaVenc') as string
+  const fechaPago = formData.get('fechaPago') as string
+  const metodo = formData.get('metodo') as string
+  const recibo = formData.get('recibo') as string
+  const notas = formData.get('notas') as string
+
+  if (isNaN(monto)) {
+    return { error: 'El monto es obligatorio.' }
+  }
+
+  try {
+    const fee = await db.orm.public.Fee.where({ id }).update({
+      monto,
+      fechaVenc: fechaVenc || null,
+      fechaPago: fechaPago || null,
+      metodo: metodo || null,
+      recibo: recibo || null,
+      notas: notas || null
+    })
+    
+    revalidatePath('/dashboard/honorarios')
+    revalidatePath(`/dashboard/casos/${fee.caseId}`)
+    return { success: 'Honorario actualizado correctamente.', caseId: fee.caseId }
+  } catch (error) {
+    console.error('Error updating fee:', error)
+    return { error: 'Ocurrió un error al actualizar el honorario.' }
+  }
+}
+
+export async function markFeeAsPaid(id: string) {
+  try {
+    const today = new Date().toISOString().split('T')[0]
+    const fee = await db.orm.public.Fee.where({ id }).update({
+      fechaPago: today
+    })
+    revalidatePath('/dashboard/honorarios')
+    revalidatePath(`/dashboard/casos/${fee.caseId}`)
+  } catch (error) {
+    console.error('Error marking fee as paid:', error)
+  }
+}

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getFees } from '@/app/actions/honorarios'
+import { getFees, markFeeAsPaid } from '@/app/actions/honorarios'
 
 export default async function HonorariosPage({
   searchParams,
@@ -49,12 +49,13 @@ export default async function HonorariosPage({
                 <th style={{ padding: '1rem 0.5rem' }}>Monto</th>
                 <th style={{ padding: '1rem 0.5rem' }}>Cliente y Caso</th>
                 <th style={{ padding: '1rem 0.5rem' }}>Estado</th>
+                <th style={{ padding: '1rem 0.5rem', textAlign: 'right' }}>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {fees.length === 0 ? (
                 <tr>
-                  <td colSpan={4} style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                  <td colSpan={5} style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
                     No hay honorarios registrados en el sistema.
                   </td>
                 </tr>
@@ -95,6 +96,21 @@ export default async function HonorariosPage({
                           Pendiente
                         </span>
                       )}
+                    </td>
+                    <td style={{ padding: '1rem 0.5rem', textAlign: 'right', display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', alignItems: 'center' }}>
+                      {!fee.fechaPago && (
+                        <form action={async () => {
+                          'use server'
+                          await markFeeAsPaid(fee.id)
+                        }}>
+                          <button type="submit" className="btn btn-sm" style={{ backgroundColor: '#10b981', color: '#fff', border: 'none' }}>
+                            Pagar
+                          </button>
+                        </form>
+                      )}
+                      <Link href={`/dashboard/honorarios/editar/${fee.id}`} className="btn btn-sm btn-outline">
+                        Editar
+                      </Link>
                     </td>
                   </tr>
                 ))
