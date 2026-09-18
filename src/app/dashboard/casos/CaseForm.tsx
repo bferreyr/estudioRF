@@ -10,6 +10,7 @@ type Case = {
   clientId?: string
   caratula?: string | null
   materia?: string | null
+  entidadAsociada?: string | null
   estado?: string | null
   tribunal?: string | null
   nroExpediente?: string | null
