@@ -95,8 +95,8 @@ export async function updateFee(id: string, prevState: any, formData: FormData) 
     })
     
     revalidatePath('/dashboard/honorarios')
-    revalidatePath(`/dashboard/casos/${fee.caseId}`)
-    return { success: 'Honorario actualizado correctamente.', caseId: fee.caseId }
+    revalidatePath(`/dashboard/casos/${fee?.caseId}`)
+    return { success: 'Honorario actualizado correctamente.', caseId: fee?.caseId }
   } catch (error) {
     console.error('Error updating fee:', error)
     return { error: 'Ocurrió un error al actualizar el honorario.' }
@@ -110,7 +110,7 @@ export async function markFeeAsPaid(id: string) {
       fechaPago: today
     })
     revalidatePath('/dashboard/honorarios')
-    revalidatePath(`/dashboard/casos/${fee.caseId}`)
+    revalidatePath(`/dashboard/casos/${fee?.caseId}`)
   } catch (error) {
     console.error('Error marking fee as paid:', error)
   }
