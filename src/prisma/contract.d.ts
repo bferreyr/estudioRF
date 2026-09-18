@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'867113fad29cc89fd369f5c6e6fc20b29a7a5704f6294de719b6512be3652d77'>;
+  StorageHashBase<'809763782b720a904c637ea156e8f068f9bc80a4d48c370b9c6c21c12e67e70d'>;
 export type ExecutionHash =
   ExecutionHashBase<'9e33206f6ce82f351aa42b89e00c330cd9524f776f6be1c9cab2272a7a134120'>;
 export type ProfileHash =
@@ -248,6 +248,7 @@ export type FieldOutputTypes = {
       readonly caratula: CodecTypes['pg/text@1']['output'] | null;
       readonly materia: CodecTypes['pg/text@1']['output'] | null;
       readonly estudio: CodecTypes['pg/text@1']['output'] | null;
+      readonly entidadAsociada: CodecTypes['pg/text@1']['output'] | null;
       readonly estado: CodecTypes['pg/text@1']['output'] | null;
       readonly moroso: CodecTypes['pg/bool@1']['output'];
       readonly fechaEntrevista: CodecTypes['pg/text@1']['output'] | null;
@@ -335,6 +336,7 @@ export type FieldInputTypes = {
       readonly caratula: CodecTypes['pg/text@1']['input'] | null;
       readonly materia: CodecTypes['pg/text@1']['input'] | null;
       readonly estudio: CodecTypes['pg/text@1']['input'] | null;
+      readonly entidadAsociada: CodecTypes['pg/text@1']['input'] | null;
       readonly estado: CodecTypes['pg/text@1']['input'] | null;
       readonly moroso: CodecTypes['pg/bool@1']['input'];
       readonly fechaEntrevista: CodecTypes['pg/text@1']['input'] | null;
@@ -425,6 +427,7 @@ export type StorageColumnTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly descripcionCaso: CodecTypes['pg/text@1']['output'] | null;
       readonly detalleAsunto: CodecTypes['pg/text@1']['output'] | null;
+      readonly entidadAsociada: CodecTypes['pg/text@1']['output'] | null;
       readonly estado: CodecTypes['pg/text@1']['output'] | null;
       readonly estudio: CodecTypes['pg/text@1']['output'] | null;
       readonly fechaEntrevista: CodecTypes['pg/text@1']['output'] | null;
@@ -512,6 +515,7 @@ export type StorageColumnInputTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly descripcionCaso: CodecTypes['pg/text@1']['input'] | null;
       readonly detalleAsunto: CodecTypes['pg/text@1']['input'] | null;
+      readonly entidadAsociada: CodecTypes['pg/text@1']['input'] | null;
       readonly estado: CodecTypes['pg/text@1']['input'] | null;
       readonly estudio: CodecTypes['pg/text@1']['input'] | null;
       readonly fechaEntrevista: CodecTypes['pg/text@1']['input'] | null;
@@ -623,6 +627,7 @@ export namespace Models {
     caratula: CodecTypes['pg/text@1']['output'] | null;
     materia: CodecTypes['pg/text@1']['output'] | null;
     estudio: CodecTypes['pg/text@1']['output'] | null;
+    entidadAsociada: CodecTypes['pg/text@1']['output'] | null;
     estado: CodecTypes['pg/text@1']['output'] | null;
     moroso: CodecTypes['pg/bool@1']['output'];
     fechaEntrevista: CodecTypes['pg/text@1']['output'] | null;
@@ -741,6 +746,11 @@ type ContractBase = Omit<
                   readonly nullable: true;
                 };
                 readonly estudio: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly entidadAsociada: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
@@ -1255,6 +1265,10 @@ type ContractBase = Omit<
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
+              readonly entidadAsociada: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly estado: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
@@ -1407,6 +1421,7 @@ type ContractBase = Omit<
                 readonly caratula: { readonly column: 'caratula' };
                 readonly materia: { readonly column: 'materia' };
                 readonly estudio: { readonly column: 'estudio' };
+                readonly entidadAsociada: { readonly column: 'entidadAsociada' };
                 readonly estado: { readonly column: 'estado' };
                 readonly moroso: { readonly column: 'moroso' };
                 readonly fechaEntrevista: { readonly column: 'fechaEntrevista' };

@@ -33,6 +33,7 @@ export default async function DetalleCasoPage({
             Cliente: <Link href={`/dashboard/clientes/${caseData.clientId}`} style={{ color: 'var(--accent)', textDecoration: 'none' }}>{caseData.client?.nombre}</Link> 
             {' • '} Exp: {caseData.nroExpediente || 'N/A'} 
             {' • '} Fuero: {caseData.materia || 'N/A'}
+            {caseData.entidadAsociada && <> {' • '} Asociado a: <strong>{caseData.entidadAsociada}</strong></>}
           </p>
         </div>
       </div>

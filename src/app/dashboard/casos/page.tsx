@@ -4,14 +4,15 @@ import { getCases } from '@/app/actions/casos'
 export default async function CasosPage({
   searchParams,
 }: {
-  searchParams: Promise<{ query?: string; page?: string; estado?: string }>
+  searchParams: Promise<{ query?: string; page?: string; estado?: string; entidad?: string }>
 }) {
   const resolvedParams = await searchParams
   const query = resolvedParams.query || ''
   const filterState = resolvedParams.estado || ''
+  const filterEntidad = resolvedParams.entidad || ''
   const currentPage = Number(resolvedParams.page) || 1
 
-  const { cases, totalPages, totalCount } = await getCases(query, currentPage, filterState)
+  const { cases, totalPages, totalCount } = await getCases(query, currentPage, filterState, filterEntidad)
 
   return (
     <div className="animate-fade-in" style={{ padding: '1rem' }}>
@@ -35,7 +36,15 @@ export default async function CasosPage({
             className="input-field"
             style={{ maxWidth: '300px' }}
           />
-          <select name="estado" className="input-field" defaultValue={filterState} style={{ maxWidth: '200px' }}>
+          <input
+            type="text"
+            name="entidad"
+            defaultValue={filterEntidad}
+            placeholder="Abogado/Mutual..."
+            className="input-field"
+            style={{ maxWidth: '200px' }}
+          />
+          <select name="estado" className="input-field" defaultValue={filterState} style={{ maxWidth: '180px' }}>
             <option value="">Todos los estados</option>
             <option value="Activo">Activo</option>
             <option value="Finalizado">Finalizado</option>
@@ -53,6 +62,7 @@ export default async function CasosPage({
                 <th style={{ padding: '1rem 0.5rem' }}>Carátula</th>
                 <th style={{ padding: '1rem 0.5rem' }}>Cliente</th>
                 <th style={{ padding: '1rem 0.5rem' }}>Materia</th>
+                <th style={{ padding: '1rem 0.5rem' }}>Asociado a</th>
                 <th style={{ padding: '1rem 0.5rem' }}>Estado</th>
                 <th style={{ padding: '1rem 0.5rem', textAlign: 'right' }}>Acciones</th>
               </tr>
@@ -81,6 +91,7 @@ export default async function CasosPage({
                       </Link>
                     </td>
                     <td style={{ padding: '1rem 0.5rem' }}>{c.materia || '-'}</td>
+                    <td style={{ padding: '1rem 0.5rem', fontSize: '0.85rem' }}>{c.entidadAsociada || '-'}</td>
                     <td style={{ padding: '1rem 0.5rem' }}>
                       <span style={{ 
                         padding: '0.2rem 0.6rem', 
@@ -109,7 +120,7 @@ export default async function CasosPage({
             {Array.from({ length: totalPages }).map((_, i) => (
               <Link
                 key={i}
-                href={`/dashboard/casos?page=${i + 1}${query ? `&query=${query}` : ''}${filterState ? `&estado=${filterState}` : ''}`}
+                href={`/dashboard/casos?page=${i + 1}${query ? `&query=${query}` : ''}${filterState ? `&estado=${filterState}` : ''}${filterEntidad ? `&entidad=${filterEntidad}` : ''}`}
                 className={`btn btn-sm ${currentPage === i + 1 ? 'btn-primary' : 'btn-outline'}`}
               >
                 {i + 1}

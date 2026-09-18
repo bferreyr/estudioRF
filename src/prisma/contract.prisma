@@ -36,6 +36,7 @@ model Case {
   caratula           String?
   materia            String?
   estudio            String?
+  entidadAsociada    String?
   estado             String?
   moroso             Boolean  @default(false)
   

@@ -68,12 +68,17 @@ export function CaseForm({
         </div>
         
         <div>
-          <label className="input-label" htmlFor="estado">Estado Actual</label>
+          <label className="input-label" htmlFor="estado">Estado</label>
           <select id="estado" name="estado" className="input-field" defaultValue={caseData?.estado || 'Activo'}>
             <option value="Activo">Activo</option>
             <option value="Finalizado">Finalizado</option>
             <option value="Archivado">Archivado</option>
           </select>
+        </div>
+
+        <div>
+          <label className="input-label" htmlFor="entidadAsociada">Abogado, Estudio o Mutual asociado</label>
+          <input type="text" id="entidadAsociada" name="entidadAsociada" className="input-field" defaultValue={caseData?.entidadAsociada || ''} placeholder="Ej: Dr. Pérez / Mutual XYZ" />
         </div>
 
         {/* Judicial */}

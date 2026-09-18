@@ -91,6 +91,13 @@
                   "kind": "scalar"
                 }
               },
+              "entidadAsociada": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "estado": {
                 "nullable": true,
                 "type": {
@@ -320,6 +327,9 @@
                 },
                 "detalleAsunto": {
                   "column": "detalleAsunto"
+                },
+                "entidadAsociada": {
+                  "column": "entidadAsociada"
                 },
                 "estado": {
                   "column": "estado"
@@ -993,6 +1003,11 @@
                   "nativeType": "text",
                   "nullable": true
                 },
+                "entidadAsociada": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
                 "estado": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -1510,7 +1525,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "867113fad29cc89fd369f5c6e6fc20b29a7a5704f6294de719b6512be3652d77"
+    "storageHash": "809763782b720a904c637ea156e8f068f9bc80a4d48c370b9c6c21c12e67e70d"
   },
   "execution": {
     "executionHash": "9e33206f6ce82f351aa42b89e00c330cd9524f776f6be1c9cab2272a7a134120",
