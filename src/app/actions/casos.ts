@@ -3,7 +3,7 @@
 import { db } from '@/prisma/db'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { or } from '@prisma/orm-postgres/orm-client'
+import { or, and } from '@prisma/orm-postgres/orm-client'
 
 const PAGE_SIZE = 10
 
@@ -11,14 +11,14 @@ export async function getCases(query = '', page = 1, filterState = '') {
   const skip = (page - 1) * PAGE_SIZE
   
   const baseQuery = db.orm.public.Case.where((c) => {
-    let q = c.id.isNotNull() // dummy true
+    let q: any = c.id.isNotNull()
     
     if (filterState) {
-      q = q.and(c.estado.eq(filterState))
+      q = and(q, c.estado.eq(filterState))
     }
     
     if (query) {
-      q = q.and(
+      q = and(q, 
         or(
           c.caratula.ilike(`%${query}%`),
           c.nroExpediente.ilike(`%${query}%`)
