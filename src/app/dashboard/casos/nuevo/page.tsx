@@ -10,7 +10,8 @@ export default async function NuevoCasoPage({
   const { clientId } = await searchParams
   
   // We need to fetch all clients to populate the dropdown
-  const clients = await db.orm.public.Client.select('id', 'nombre').orderBy(c => c.nombre.asc()).all()
+  const clients = await db.orm.public.Client.orderBy((c) => c.nombre.asc()).all()
+  const asociados = await db.orm.public.Asociado.orderBy((a) => a.nombre.asc()).all()
 
   return (
     <div className="animate-fade-in" style={{ padding: '1rem' }}>
@@ -22,7 +23,7 @@ export default async function NuevoCasoPage({
         <p style={{ color: 'var(--text-muted)' }}>Abre un nuevo caso y asócialo a un cliente existente.</p>
       </div>
 
-      <CaseForm actionType="create" clients={clients} preSelectedClientId={clientId} />
+      <CaseForm clients={clients} asociados={asociados} preSelectedClientId={clientId} actionType="create" />
     </div>
   )
 }

@@ -8,9 +8,9 @@ type Client = { id: string; nombre: string }
 type Case = {
   id?: string
   clientId?: string
+  asociadoId?: string | null
   caratula?: string | null
   materia?: string | null
-  entidadAsociada?: string | null
   estado?: string | null
   tribunal?: string | null
   nroExpediente?: string | null
@@ -24,11 +24,13 @@ type Case = {
 export function CaseForm({ 
   caseData, 
   clients, 
+  asociados,
   preSelectedClientId, 
   actionType 
 }: { 
   caseData?: Case
   clients: Client[]
+  asociados: { id: string; nombre: string }[]
   preSelectedClientId?: string
   actionType: 'create' | 'update' 
 }) {
@@ -78,8 +80,13 @@ export function CaseForm({
         </div>
 
         <div>
-          <label className="input-label" htmlFor="entidadAsociada">Abogado, Estudio o Mutual asociado</label>
-          <input type="text" id="entidadAsociada" name="entidadAsociada" className="input-field" defaultValue={caseData?.entidadAsociada || ''} placeholder="Ej: Dr. Pérez / Mutual XYZ" />
+          <label className="input-label" htmlFor="asociadoId">Asociado a (Abogado, Estudio o Mutual)</label>
+          <select id="asociadoId" name="asociadoId" className="input-field" defaultValue={caseData?.asociadoId || ''}>
+            <option value="">Ninguno / Propio</option>
+            {asociados?.map(a => (
+              <option key={a.id} value={a.id}>{a.nombre}</option>
+            ))}
+          </select>
         </div>
 
         {/* Judicial */}

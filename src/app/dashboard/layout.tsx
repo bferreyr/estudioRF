@@ -40,20 +40,19 @@ export default async function DashboardLayout({
         
         <nav className="sidebar-nav">
           <Link href="/dashboard" className="nav-item active">
-            <span className="icon">📊</span>
-            Inicio
+            <span className="icon">🏠</span> Inicio
           </Link>
           <Link href="/dashboard/clientes" className="nav-item">
-            <span className="icon">👥</span>
-            Clientes
+            <span className="icon">👥</span> Clientes
           </Link>
           <Link href="/dashboard/casos" className="nav-item">
-            <span className="icon">📁</span>
-            Casos
+            <span className="icon">📁</span> Expedientes
+          </Link>
+          <Link href="/dashboard/asociados" className="nav-item">
+            <span className="icon">🤝</span> Asociados
           </Link>
           <Link href="/dashboard/honorarios" className="nav-item">
-            <span className="icon">💰</span>
-            Honorarios
+            <span className="icon">💰</span> Honorarios
           </Link>
         </nav>
         

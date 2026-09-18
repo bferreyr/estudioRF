@@ -28,6 +28,18 @@ model Client {
   cases          Case[]
 }
 
+model Asociado {
+  id             String   @id @default(uuid())
+  nombre         String   @unique
+  tipo           String?  // Ej: "Abogado", "Estudio", "Mutual"
+  telefono       String?
+  email          String?
+  createdAt      TimestamptzString @default(now())
+  updatedAt      temporal.updatedAtString()
+
+  cases          Case[]
+}
+
 model Case {
   id                 String   @id @default(uuid())
   clientId           String
@@ -36,7 +48,8 @@ model Case {
   caratula           String?
   materia            String?
   estudio            String?
-  entidadAsociada    String?
+  asociadoId         String?
+  asociado           Asociado? @relation(fields: [asociadoId], references: [id])
   estado             String?
   moroso             Boolean  @default(false)
   

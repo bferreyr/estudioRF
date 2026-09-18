@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { db } from '@/prisma/db'
 import { getCases } from '@/app/actions/casos'
 
 export default async function CasosPage({
@@ -13,6 +14,7 @@ export default async function CasosPage({
   const currentPage = Number(resolvedParams.page) || 1
 
   const { cases, totalPages, totalCount } = await getCases(query, currentPage, filterState, filterEntidad)
+  const asociados = await db.orm.public.Asociado.orderBy((a) => a.nombre.asc()).all()
 
   return (
     <div className="animate-fade-in" style={{ padding: '1rem' }}>
@@ -36,14 +38,12 @@ export default async function CasosPage({
             className="input-field"
             style={{ maxWidth: '300px' }}
           />
-          <input
-            type="text"
-            name="entidad"
-            defaultValue={filterEntidad}
-            placeholder="Abogado/Mutual..."
-            className="input-field"
-            style={{ maxWidth: '200px' }}
-          />
+          <select name="entidad" className="input-field" defaultValue={filterEntidad} style={{ maxWidth: '200px' }}>
+            <option value="">Cualquier Asociado</option>
+            {asociados.map(a => (
+              <option key={a.id} value={a.id}>{a.nombre}</option>
+            ))}
+          </select>
           <select name="estado" className="input-field" defaultValue={filterState} style={{ maxWidth: '180px' }}>
             <option value="">Todos los estados</option>
             <option value="Activo">Activo</option>
@@ -91,7 +91,7 @@ export default async function CasosPage({
                       </Link>
                     </td>
                     <td style={{ padding: '1rem 0.5rem' }}>{c.materia || '-'}</td>
-                    <td style={{ padding: '1rem 0.5rem', fontSize: '0.85rem' }}>{c.entidadAsociada || '-'}</td>
+                    <td style={{ padding: '1rem 0.5rem', fontSize: '0.85rem' }}>{c.asociado?.nombre || '-'}</td>
                     <td style={{ padding: '1rem 0.5rem' }}>
                       <span style={{ 
                         padding: '0.2rem 0.6rem', 

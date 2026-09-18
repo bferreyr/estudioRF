@@ -34,9 +34,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'809763782b720a904c637ea156e8f068f9bc80a4d48c370b9c6c21c12e67e70d'>;
+  StorageHashBase<'bd10f82702cb7ac36368a1b01abbe2313ace1a84e85a2121d0ea50eab561ea2e'>;
 export type ExecutionHash =
-  ExecutionHashBase<'9e33206f6ce82f351aa42b89e00c330cd9524f776f6be1c9cab2272a7a134120'>;
+  ExecutionHashBase<'5d4de644c1f22e646b6e92591a38b150b57b41bf10c3822fbc1c18c278f0684a'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -242,13 +242,22 @@ type DefaultLiteralValue<CodecId extends string, Encoded> = CodecId extends keyo
 
 export type FieldOutputTypes = {
   readonly public: {
+    readonly Asociado: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly nombre: CodecTypes['pg/text@1']['output'];
+      readonly tipo: CodecTypes['pg/text@1']['output'] | null;
+      readonly telefono: CodecTypes['pg/text@1']['output'] | null;
+      readonly email: CodecTypes['pg/text@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    };
     readonly Case: {
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly clientId: CodecTypes['pg/text@1']['output'];
       readonly caratula: CodecTypes['pg/text@1']['output'] | null;
       readonly materia: CodecTypes['pg/text@1']['output'] | null;
       readonly estudio: CodecTypes['pg/text@1']['output'] | null;
-      readonly entidadAsociada: CodecTypes['pg/text@1']['output'] | null;
+      readonly asociadoId: CodecTypes['pg/text@1']['output'] | null;
       readonly estado: CodecTypes['pg/text@1']['output'] | null;
       readonly moroso: CodecTypes['pg/bool@1']['output'];
       readonly fechaEntrevista: CodecTypes['pg/text@1']['output'] | null;
@@ -330,13 +339,22 @@ export type FieldOutputTypes = {
 };
 export type FieldInputTypes = {
   readonly public: {
+    readonly Asociado: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly nombre: CodecTypes['pg/text@1']['input'];
+      readonly tipo: CodecTypes['pg/text@1']['input'] | null;
+      readonly telefono: CodecTypes['pg/text@1']['input'] | null;
+      readonly email: CodecTypes['pg/text@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
+    };
     readonly Case: {
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly clientId: CodecTypes['pg/text@1']['input'];
       readonly caratula: CodecTypes['pg/text@1']['input'] | null;
       readonly materia: CodecTypes['pg/text@1']['input'] | null;
       readonly estudio: CodecTypes['pg/text@1']['input'] | null;
-      readonly entidadAsociada: CodecTypes['pg/text@1']['input'] | null;
+      readonly asociadoId: CodecTypes['pg/text@1']['input'] | null;
       readonly estado: CodecTypes['pg/text@1']['input'] | null;
       readonly moroso: CodecTypes['pg/bool@1']['input'];
       readonly fechaEntrevista: CodecTypes['pg/text@1']['input'] | null;
@@ -418,8 +436,18 @@ export type FieldInputTypes = {
 };
 export type StorageColumnTypes = {
   readonly public: {
+    readonly asociado: {
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly email: CodecTypes['pg/text@1']['output'] | null;
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly nombre: CodecTypes['pg/text@1']['output'];
+      readonly telefono: CodecTypes['pg/text@1']['output'] | null;
+      readonly tipo: CodecTypes['pg/text@1']['output'] | null;
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    };
     readonly case: {
       readonly anticipo: CodecTypes['pg/float8@1']['output'] | null;
+      readonly asociadoId: CodecTypes['pg/text@1']['output'] | null;
       readonly atendidoPor: CodecTypes['pg/text@1']['output'] | null;
       readonly caratula: CodecTypes['pg/text@1']['output'] | null;
       readonly clientId: CodecTypes['pg/text@1']['output'];
@@ -427,7 +455,6 @@ export type StorageColumnTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly descripcionCaso: CodecTypes['pg/text@1']['output'] | null;
       readonly detalleAsunto: CodecTypes['pg/text@1']['output'] | null;
-      readonly entidadAsociada: CodecTypes['pg/text@1']['output'] | null;
       readonly estado: CodecTypes['pg/text@1']['output'] | null;
       readonly estudio: CodecTypes['pg/text@1']['output'] | null;
       readonly fechaEntrevista: CodecTypes['pg/text@1']['output'] | null;
@@ -506,8 +533,18 @@ export type StorageColumnTypes = {
 };
 export type StorageColumnInputTypes = {
   readonly public: {
+    readonly asociado: {
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly email: CodecTypes['pg/text@1']['input'] | null;
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly nombre: CodecTypes['pg/text@1']['input'];
+      readonly telefono: CodecTypes['pg/text@1']['input'] | null;
+      readonly tipo: CodecTypes['pg/text@1']['input'] | null;
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
+    };
     readonly case: {
       readonly anticipo: CodecTypes['pg/float8@1']['input'] | null;
+      readonly asociadoId: CodecTypes['pg/text@1']['input'] | null;
       readonly atendidoPor: CodecTypes['pg/text@1']['input'] | null;
       readonly caratula: CodecTypes['pg/text@1']['input'] | null;
       readonly clientId: CodecTypes['pg/text@1']['input'];
@@ -515,7 +552,6 @@ export type StorageColumnInputTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly descripcionCaso: CodecTypes['pg/text@1']['input'] | null;
       readonly detalleAsunto: CodecTypes['pg/text@1']['input'] | null;
-      readonly entidadAsociada: CodecTypes['pg/text@1']['input'] | null;
       readonly estado: CodecTypes['pg/text@1']['input'] | null;
       readonly estudio: CodecTypes['pg/text@1']['input'] | null;
       readonly fechaEntrevista: CodecTypes['pg/text@1']['input'] | null;
@@ -621,13 +657,24 @@ export namespace Models {
     cases: public_Case[];
     readonly [RelationKeys]?: 'cases';
   };
+  export type public_Asociado = {
+    id: CodecTypes['pg/text@1']['output'];
+    nombre: CodecTypes['pg/text@1']['output'];
+    tipo: CodecTypes['pg/text@1']['output'] | null;
+    telefono: CodecTypes['pg/text@1']['output'] | null;
+    email: CodecTypes['pg/text@1']['output'] | null;
+    createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    cases: public_Case[];
+    readonly [RelationKeys]?: 'cases';
+  };
   export type public_Case = {
     id: CodecTypes['pg/text@1']['output'];
     clientId: CodecTypes['pg/text@1']['output'];
     caratula: CodecTypes['pg/text@1']['output'] | null;
     materia: CodecTypes['pg/text@1']['output'] | null;
     estudio: CodecTypes['pg/text@1']['output'] | null;
-    entidadAsociada: CodecTypes['pg/text@1']['output'] | null;
+    asociadoId: CodecTypes['pg/text@1']['output'] | null;
     estado: CodecTypes['pg/text@1']['output'] | null;
     moroso: CodecTypes['pg/bool@1']['output'];
     fechaEntrevista: CodecTypes['pg/text@1']['output'] | null;
@@ -651,11 +698,12 @@ export namespace Models {
     anticipo: CodecTypes['pg/float8@1']['output'] | null;
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    asociado: public_Asociado | null;
     client: public_Client;
     contributions: public_Contribution[];
     expenses: public_Expense[];
     fees: public_Fee[];
-    readonly [RelationKeys]?: 'client' | 'contributions' | 'expenses' | 'fees';
+    readonly [RelationKeys]?: 'asociado' | 'client' | 'contributions' | 'expenses' | 'fees';
   };
   export type public_Fee = {
     id: CodecTypes['pg/text@1']['output'];
@@ -698,6 +746,7 @@ export declare const models: {
   public: {
     User: Models.public_User;
     Client: Models.public_Client;
+    Asociado: Models.public_Asociado;
     Case: Models.public_Case;
     Fee: Models.public_Fee;
     Contribution: Models.public_Contribution;
@@ -723,6 +772,50 @@ type ContractBase = Omit<
         readonly kind: 'postgres-schema';
         readonly entries: {
           readonly table: {
+            readonly asociado: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly nombre: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly tipo: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly telefono: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly email: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly createdAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly updatedAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [{ readonly columns: readonly ['nombre'] }];
+              indexes: readonly [];
+              foreignKeys: readonly [];
+            };
             readonly case: {
               columns: {
                 readonly id: {
@@ -750,7 +843,7 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
                 };
-                readonly entidadAsociada: {
+                readonly asociadoId: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
@@ -885,6 +978,12 @@ type ContractBase = Omit<
                   readonly columns: readonly ['clientId'];
                   readonly unique: false;
                 },
+                {
+                  readonly name: 'case_asociadoId_idx_8c079410';
+                  readonly prefix: 'case_asociadoId_idx';
+                  readonly columns: readonly ['asociadoId'];
+                  readonly unique: false;
+                },
               ];
               foreignKeys: readonly [
                 {
@@ -896,6 +995,18 @@ type ContractBase = Omit<
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
                     readonly tableName: 'client';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'case';
+                    readonly columns: readonly ['asociadoId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'asociado';
                     readonly columns: readonly ['id'];
                   };
                 },
@@ -1231,6 +1342,7 @@ type ContractBase = Omit<
   readonly roots: {
     readonly user: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
     readonly client: { readonly namespace: 'public' & NamespaceId; readonly model: 'Client' };
+    readonly asociado: { readonly namespace: 'public' & NamespaceId; readonly model: 'Asociado' };
     readonly case: { readonly namespace: 'public' & NamespaceId; readonly model: 'Case' };
     readonly fee: { readonly namespace: 'public' & NamespaceId; readonly model: 'Fee' };
     readonly contribution: {
@@ -1243,6 +1355,67 @@ type ContractBase = Omit<
     readonly namespaces: {
       readonly public: {
         readonly models: {
+          readonly Asociado: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly nombre: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly tipo: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly telefono: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly email: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly cases: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'Case' };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['asociadoId'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'asociado';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly nombre: { readonly column: 'nombre' };
+                readonly tipo: { readonly column: 'tipo' };
+                readonly telefono: { readonly column: 'telefono' };
+                readonly email: { readonly column: 'email' };
+                readonly createdAt: { readonly column: 'createdAt' };
+                readonly updatedAt: { readonly column: 'updatedAt' };
+              };
+            };
+          };
           readonly Case: {
             readonly fields: {
               readonly id: {
@@ -1265,7 +1438,7 @@ type ContractBase = Omit<
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
-              readonly entidadAsociada: {
+              readonly asociadoId: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -1369,6 +1542,18 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
+              readonly asociado: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Asociado';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['asociadoId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
               readonly client: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -1421,7 +1606,7 @@ type ContractBase = Omit<
                 readonly caratula: { readonly column: 'caratula' };
                 readonly materia: { readonly column: 'materia' };
                 readonly estudio: { readonly column: 'estudio' };
-                readonly entidadAsociada: { readonly column: 'entidadAsociada' };
+                readonly asociadoId: { readonly column: 'asociadoId' };
                 readonly estado: { readonly column: 'estado' };
                 readonly moroso: { readonly column: 'moroso' };
                 readonly fechaEntrevista: { readonly column: 'fechaEntrevista' };
@@ -1796,6 +1981,23 @@ type ContractBase = Omit<
     readonly executionHash: ExecutionHash;
     readonly mutations: {
       readonly defaults: readonly [
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'asociado';
+            readonly column: 'id';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'asociado';
+            readonly column: 'updatedAt';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'timestampNow' };
+          readonly onUpdate: { readonly kind: 'generator'; readonly id: 'timestampNow' };
+        },
         {
           readonly ref: {
             readonly namespace: 'public';

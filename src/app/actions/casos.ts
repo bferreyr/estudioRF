@@ -7,7 +7,7 @@ import { or, and } from '@prisma/orm-postgres/orm-client'
 
 const PAGE_SIZE = 10
 
-export async function getCases(query = '', page = 1, filterState = '', filterEntidad = '') {
+export async function getCases(query = '', page = 1, filterState = '', filterAsociadoId = '') {
   const skip = (page - 1) * PAGE_SIZE
   
   const baseQuery = db.orm.public.Case.where((c) => {
@@ -17,8 +17,8 @@ export async function getCases(query = '', page = 1, filterState = '', filterEnt
       q = and(q, c.estado.eq(filterState))
     }
     
-    if (filterEntidad) {
-      q = and(q, c.entidadAsociada.ilike(`%${filterEntidad}%`))
+    if (filterAsociadoId) {
+      q = and(q, c.asociadoId.eq(filterAsociadoId))
     }
     
     if (query) {
@@ -35,6 +35,7 @@ export async function getCases(query = '', page = 1, filterState = '', filterEnt
   const [cases, totalAgg] = await Promise.all([
     baseQuery
       .include('client', client => client.select('nombre'))
+      .include('asociado', a => a.select('nombre'))
       .orderBy((c) => c.createdAt.desc())
       .limit(PAGE_SIZE)
       .offset(skip)
@@ -58,7 +59,7 @@ export async function createCase(prevState: any, formData: FormData) {
   const nroExpediente = formData.get('nroExpediente') as string
   const contraparte = formData.get('contraparte') as string
   const descripcionCaso = formData.get('descripcionCaso') as string
-  const entidadAsociada = formData.get('entidadAsociada') as string
+  const asociadoId = formData.get('asociadoId') as string
 
   if (!clientId) {
     return { error: 'Debes seleccionar un cliente.' }
@@ -76,7 +77,7 @@ export async function createCase(prevState: any, formData: FormData) {
       nroExpediente: nroExpediente || null,
       contraparte: contraparte || null,
       descripcionCaso: descripcionCaso || null,
-      entidadAsociada: entidadAsociada || null
+      asociadoId: asociadoId || null
     })
     newCaseId = c.id
   } catch (error) {
@@ -97,7 +98,7 @@ export async function updateCase(id: string, prevState: any, formData: FormData)
   const nroExpediente = formData.get('nroExpediente') as string
   const contraparte = formData.get('contraparte') as string
   const descripcionCaso = formData.get('descripcionCaso') as string
-  const entidadAsociada = formData.get('entidadAsociada') as string
+  const asociadoId = formData.get('asociadoId') as string
   const moroso = formData.get('moroso') === 'true'
   const honorariosTotales = formData.get('honorariosTotales') ? parseFloat(formData.get('honorariosTotales') as string) : null
   const anticipo = formData.get('anticipo') ? parseFloat(formData.get('anticipo') as string) : null
@@ -111,7 +112,7 @@ export async function updateCase(id: string, prevState: any, formData: FormData)
       nroExpediente: nroExpediente || null,
       contraparte: contraparte || null,
       descripcionCaso: descripcionCaso || null,
-      entidadAsociada: entidadAsociada || null,
+      asociadoId: asociadoId || null,
       moroso,
       honorariosTotales,
       anticipo

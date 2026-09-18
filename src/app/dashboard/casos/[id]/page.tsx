@@ -10,7 +10,8 @@ export default async function DetalleCasoPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const caseData = await db.orm.public.Case.include('client', c => c.select('nombre')).include('fees').first({ id })
+  const caseData = await db.orm.public.Case.include('client', c => c.select('nombre')).include('asociado', a => a.select('nombre')).include('fees').first({ id })
+  const asociados = await db.orm.public.Asociado.orderBy((a) => a.nombre.asc()).all()
 
   if (!caseData) {
     notFound()
@@ -33,7 +34,7 @@ export default async function DetalleCasoPage({
             Cliente: <Link href={`/dashboard/clientes/${caseData.clientId}`} style={{ color: 'var(--accent)', textDecoration: 'none' }}>{caseData.client?.nombre}</Link> 
             {' • '} Exp: {caseData.nroExpediente || 'N/A'} 
             {' • '} Fuero: {caseData.materia || 'N/A'}
-            {caseData.entidadAsociada && <> {' • '} Asociado a: <strong>{caseData.entidadAsociada}</strong></>}
+            {caseData.asociado && <> {' • '} Asociado a: <strong>{caseData.asociado.nombre}</strong></>}
           </p>
         </div>
       </div>
@@ -41,7 +42,7 @@ export default async function DetalleCasoPage({
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '2rem' }}>
         {/* Formulario / Edición */}
         <div>
-          <CaseForm caseData={caseData} actionType="update" clients={[]} />
+          <CaseForm caseData={caseData} actionType="update" clients={[]} asociados={asociados} />
         </div>
 
         {/* Panel lateral: Finanzas del Caso */}
