@@ -14,11 +14,27 @@ export default async function DashboardLayout({
     <div className="dashboard-layout">
       {/* Sidebar */}
       <aside className="sidebar">
-        <div className="sidebar-header">
-          <div className="logo-placeholder small">RF</div>
-          <div className="brand-text">
-            <h2>Estudio Jurídico</h2>
-            <p>Panel de Gestión</p>
+        <div className="sidebar-header" style={{ padding: '2rem 1.5rem', display: 'flex', justifyContent: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textDecoration: 'none' }}>
+            <div style={{ 
+              fontFamily: 'Cinzel, serif', 
+              fontSize: '2.8rem', 
+              lineHeight: '1',
+              color: '#faf6f1',
+              display: 'flex',
+              alignItems: 'center'
+            }}>
+              R<span style={{ fontSize: '1.2rem', margin: '0 -0.2rem 0 -0.1rem', color: 'var(--accent)' }}>&</span>F
+            </div>
+            <div style={{ 
+              fontFamily: 'Tenor Sans, sans-serif', 
+              fontSize: '0.55rem', 
+              letterSpacing: '0.2em', 
+              color: 'var(--accent)', 
+              marginTop: '0.3rem' 
+            }}>
+              ESTUDIO JURÍDICO
+            </div>
           </div>
         </div>
         
