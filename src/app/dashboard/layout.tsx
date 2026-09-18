@@ -46,7 +46,7 @@ export default async function DashboardLayout({
             <span className="icon">👥</span> Clientes
           </Link>
           <Link href="/dashboard/casos" className="nav-item">
-            <span className="icon">📁</span> Expedientes
+            <span className="icon">📁</span> Casos
           </Link>
           <Link href="/dashboard/asociados" className="nav-item">
             <span className="icon">🤝</span> Asociados
