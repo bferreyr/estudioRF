@@ -29,7 +29,7 @@ export default async function DashboardHome() {
     .limit(5)
     .all()
 
-  const jusSetting = await db.orm.public.Setting.where((s, fns) => fns.eq(s.key, 'JUS_QUOTE')).first()
+  const jusSetting = await db.orm.public.Setting.where({ key: 'JUS_QUOTE' }).first()
 
   return (
     <div className="animate-fade-in">
