@@ -1,6 +1,7 @@
 import { db } from '@/prisma/db'
 import Link from 'next/link'
 import { not } from '@prisma/orm-postgres/orm-client'
+import { JusWidget } from './JusWidget'
 
 export default async function DashboardHome() {
   const clientsAgg = await db.orm.public.Client.aggregate((a) => ({ total: a.count() }))
@@ -28,11 +29,18 @@ export default async function DashboardHome() {
     .limit(5)
     .all()
 
+  const jusSetting = await db.orm.public.Setting.where((s, fns) => fns.eq(s.key, 'JUS_QUOTE')).first()
+
   return (
     <div className="animate-fade-in">
       <h1 style={{ marginBottom: '1.5rem' }}>Resumen del Estudio</h1>
       
       <div className="stats-grid">
+        <JusWidget 
+          initialValue={jusSetting?.value || null} 
+          updatedAt={jusSetting?.updatedAt || null} 
+        />
+        
         <div className="stat-card glass-panel">
           <div className="stat-icon" style={{ color: '#3b82f6', backgroundColor: '#eff6ff' }}>👥</div>
           <div className="stat-info">

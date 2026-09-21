@@ -28,6 +28,10 @@
       "model": "Fee",
       "namespace": "public"
     },
+    "setting": {
+      "model": "Setting",
+      "namespace": "public"
+    },
     "user": {
       "model": "User",
       "namespace": "public"
@@ -994,6 +998,47 @@
               "table": "fee"
             }
           },
+          "Setting": {
+            "fields": {
+              "key": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "value": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "fields": {
+                "key": {
+                  "column": "key"
+                },
+                "updatedAt": {
+                  "column": "updatedAt"
+                },
+                "value": {
+                  "column": "value"
+                }
+              },
+              "namespaceId": "public",
+              "table": "setting"
+            }
+          },
           "User": {
             "fields": {
               "createdAt": {
@@ -1665,6 +1710,33 @@
               },
               "uniques": []
             },
+            "setting": {
+              "columns": {
+                "key": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "updatedAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "value": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "key"
+                ]
+              },
+              "uniques": []
+            },
             "user": {
               "columns": {
                 "createdAt": {
@@ -1723,10 +1795,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "bd10f82702cb7ac36368a1b01abbe2313ace1a84e85a2121d0ea50eab561ea2e"
+    "storageHash": "575ff9d21737e3cde6c2b7036315fc9e8425d31218adc8c4b30054803970cb76"
   },
   "execution": {
-    "executionHash": "5d4de644c1f22e646b6e92591a38b150b57b41bf10c3822fbc1c18c278f0684a",
+    "executionHash": "1dfad0d8e4a5648f81e2c2d4c16887e5e46b7703c925ad2181b3f6bcdf12649f",
     "mutations": {
       "defaults": [
         {
@@ -1838,6 +1910,21 @@
             "column": "id",
             "namespace": "public",
             "table": "fee"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "onUpdate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "updatedAt",
+            "namespace": "public",
+            "table": "setting"
           }
         },
         {

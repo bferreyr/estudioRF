@@ -118,3 +118,9 @@ model Expense {
   comprobante String?
   notas     String?
 }
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt temporal.updatedAtString()
+}
