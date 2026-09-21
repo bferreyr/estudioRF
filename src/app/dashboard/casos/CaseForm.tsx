@@ -10,9 +10,9 @@ type Case = {
   clientId?: string
   asociadoId?: string | null
   caratula?: string | null
-  materia?: string | null
+  materiaId?: string | null
+  juzgadoId?: string | null
   estado?: string | null
-  tribunal?: string | null
   nroExpediente?: string | null
   contraparte?: string | null
   descripcionCaso?: string | null
@@ -27,6 +27,8 @@ export function CaseForm({
   caseData, 
   clients, 
   asociados,
+  materias,
+  juzgados,
   jusValue,
   preSelectedClientId, 
   actionType 
@@ -34,6 +36,8 @@ export function CaseForm({
   caseData?: Case
   clients: Client[]
   asociados: { id: string; nombre: string }[]
+  materias: { id: string; nombre: string }[]
+  juzgados: { id: string; nombre: string }[]
   jusValue?: number
   preSelectedClientId?: string
   actionType: 'create' | 'update' 
@@ -71,8 +75,13 @@ export function CaseForm({
         </div>
 
         <div>
-          <label className="input-label" htmlFor="materia">Materia / Fuero</label>
-          <input type="text" id="materia" name="materia" className="input-field" defaultValue={caseData?.materia || ''} placeholder="Civil, Penal, Laboral..." />
+          <label className="input-label" htmlFor="materiaId">Materia / Fuero</label>
+          <select id="materiaId" name="materiaId" className="input-field" defaultValue={caseData?.materiaId || ''}>
+            <option value="">Seleccione materia...</option>
+            {materias?.map(m => (
+              <option key={m.id} value={m.id}>{m.nombre}</option>
+            ))}
+          </select>
         </div>
         
         <div>
@@ -96,8 +105,13 @@ export function CaseForm({
 
         {/* Judicial */}
         <div>
-          <label className="input-label" htmlFor="tribunal">Juzgado / Tribunal</label>
-          <input type="text" id="tribunal" name="tribunal" className="input-field" defaultValue={caseData?.tribunal || ''} />
+          <label className="input-label" htmlFor="juzgadoId">Juzgado / Tribunal</label>
+          <select id="juzgadoId" name="juzgadoId" className="input-field" defaultValue={caseData?.juzgadoId || ''}>
+            <option value="">Seleccione juzgado...</option>
+            {juzgados?.map(j => (
+              <option key={j.id} value={j.id}>{j.nombre}</option>
+            ))}
+          </select>
         </div>
         <div>
           <label className="input-label" htmlFor="nroExpediente">Nro. de Expediente</label>

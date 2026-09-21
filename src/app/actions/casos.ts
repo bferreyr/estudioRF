@@ -36,6 +36,7 @@ export async function getCases(query = '', page = 1, filterState = '', filterAso
     baseQuery
       .include('client', client => client.select('nombre'))
       .include('asociado', a => a.select('nombre'))
+      .include('materia', m => m.select('nombre'))
       .orderBy((c) => c.createdAt.desc())
       .limit(PAGE_SIZE)
       .offset(skip)
@@ -53,9 +54,9 @@ export async function getCases(query = '', page = 1, filterState = '', filterAso
 export async function createCase(prevState: any, formData: FormData) {
   const clientId = formData.get('clientId') as string
   const caratula = formData.get('caratula') as string
-  const materia = formData.get('materia') as string
+  const materiaId = formData.get('materiaId') as string
   const estado = formData.get('estado') as string
-  const tribunal = formData.get('tribunal') as string
+  const juzgadoId = formData.get('juzgadoId') as string
   const nroExpediente = formData.get('nroExpediente') as string
   const contraparte = formData.get('contraparte') as string
   const descripcionCaso = formData.get('descripcionCaso') as string
@@ -71,9 +72,9 @@ export async function createCase(prevState: any, formData: FormData) {
     const c = await db.orm.public.Case.create({
       clientId,
       caratula: caratula || null,
-      materia: materia || null,
+      materiaId: materiaId || null,
       estado: estado || 'Activo',
-      tribunal: tribunal || null,
+      juzgadoId: juzgadoId || null,
       nroExpediente: nroExpediente || null,
       contraparte: contraparte || null,
       descripcionCaso: descripcionCaso || null,
@@ -92,9 +93,9 @@ export async function createCase(prevState: any, formData: FormData) {
 
 export async function updateCase(id: string, prevState: any, formData: FormData) {
   const caratula = formData.get('caratula') as string
-  const materia = formData.get('materia') as string
+  const materiaId = formData.get('materiaId') as string
   const estado = formData.get('estado') as string
-  const tribunal = formData.get('tribunal') as string
+  const juzgadoId = formData.get('juzgadoId') as string
   const nroExpediente = formData.get('nroExpediente') as string
   const contraparte = formData.get('contraparte') as string
   const descripcionCaso = formData.get('descripcionCaso') as string
@@ -108,9 +109,9 @@ export async function updateCase(id: string, prevState: any, formData: FormData)
   try {
     await db.orm.public.Case.where({ id }).update({
       caratula: caratula || null,
-      materia: materia || null,
+      materiaId: materiaId || null,
       estado: estado || 'Activo',
-      tribunal: tribunal || null,
+      juzgadoId: juzgadoId || null,
       nroExpediente: nroExpediente || null,
       contraparte: contraparte || null,
       descripcionCaso: descripcionCaso || null,

@@ -9,7 +9,7 @@ export default async function DetalleAsociadoPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const asociado = await db.orm.public.Asociado.include('cases', c => c.select('id', 'caratula', 'estado', 'materia')).first({ id })
+  const asociado = await db.orm.public.Asociado.include('cases', c => c.select('id', 'caratula', 'estado', 'nroExpediente')).first({ id })
 
   if (!asociado) {
     notFound()
@@ -48,7 +48,7 @@ export default async function DetalleAsociadoPage({
                       {c.caratula || 'Caso sin carátula'}
                     </Link>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                      <span>{c.materia || '-'}</span>
+                      <span>Exp: {c.nroExpediente || '-'}</span>
                       <span style={{ 
                         padding: '0.1rem 0.5rem', 
                         borderRadius: '999px', 

@@ -40,16 +40,41 @@ model Asociado {
   cases          Case[]
 }
 
+model Materia {
+  id             String   @id @default(uuid())
+  nombre         String   @unique
+  descripcion    String?
+  createdAt      TimestamptzString @default(now())
+  updatedAt      temporal.updatedAtString()
+
+  cases          Case[]
+}
+
+model Juzgado {
+  id             String   @id @default(uuid())
+  nombre         String   @unique
+  ubicacion      String?
+  createdAt      TimestamptzString @default(now())
+  updatedAt      temporal.updatedAtString()
+
+  cases          Case[]
+}
+
 model Case {
   id                 String   @id @default(uuid())
   clientId           String
   client             Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
   
   caratula           String?
-  materia            String?
+  
+  materiaId          String?
+  materia            Materia? @relation(fields: [materiaId], references: [id])
+  
   estudio            String?
+  
   asociadoId         String?
   asociado           Asociado? @relation(fields: [asociadoId], references: [id])
+  
   estado             String?
   moroso             Boolean  @default(false)
   
@@ -69,7 +94,10 @@ model Case {
   
   fechaFinalizacion  String?
   proximoMovimiento  String?
-  tribunal           String?
+  
+  juzgadoId          String?
+  juzgado            Juzgado? @relation(fields: [juzgadoId], references: [id])
+  
   contraparte        String?
   fechaInicio        String?
   nroExpediente      String?

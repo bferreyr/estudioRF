@@ -1,17 +1,17 @@
 import { db } from '@/prisma/db'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ClientForm } from '../ClientForm'
+import { JuzgadoForm } from '../JuzgadoForm'
 
-export default async function DetalleClientePage({
+export default async function DetalleJuzgadoPage({
   params
 }: {
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const client = await db.orm.public.Client.include('cases', c => c.select('id', 'caratula', 'estado', 'nroExpediente')).first({ id })
+  const juzgado = await db.orm.public.Juzgado.include('cases', c => c.select('id', 'caratula', 'estado', 'nroExpediente')).first({ id })
 
-  if (!client) {
+  if (!juzgado) {
     notFound()
   }
 
@@ -19,36 +19,33 @@ export default async function DetalleClientePage({
     <div className="animate-fade-in" style={{ padding: '1rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
         <div>
-          <Link href="/dashboard/clientes" style={{ color: 'var(--accent)', textDecoration: 'none', fontSize: '0.9rem', marginBottom: '1rem', display: 'inline-block' }}>
-            ← Volver a Clientes
+          <Link href="/dashboard/juzgados" style={{ color: 'var(--accent)', textDecoration: 'none', fontSize: '0.9rem', marginBottom: '1rem', display: 'inline-block' }}>
+            ← Volver a Juzgados
           </Link>
-          <h1 style={{ marginBottom: '0.5rem' }}>Perfil: {client.nombre}</h1>
-          <p style={{ color: 'var(--text-muted)' }}>{client.dni || 'Sin documento registrado'}</p>
+          <h1 style={{ marginBottom: '0.5rem' }}>Perfil: {juzgado.nombre}</h1>
+          <p style={{ color: 'var(--text-muted)' }}>Tipo: {juzgado.ubicacion || ''}</p>
         </div>
-        <Link href={`/dashboard/casos/nuevo?clientId=${client.id}`} className="btn btn-primary">
-          + Nuevo Expediente
-        </Link>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '2rem' }}>
         {/* Formulario / Edición */}
         <div>
-          <ClientForm client={client} actionType="update" />
+          <JuzgadoForm juzgado={juzgado} actionType="update" />
         </div>
 
-        {/* Panel lateral: Casos del cliente */}
+        {/* Panel lateral: Casos del juzgado */}
         <div>
           <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h3 style={{ fontSize: '1.1rem' }}>Expedientes</h3>
+              <h3 style={{ fontSize: '1.1rem' }}>Casos Derivados</h3>
             </div>
             
-            {client.cases && client.cases.length > 0 ? (
+            {juzgado.cases && juzgado.cases.length > 0 ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {client.cases.map((c: any) => (
+                {juzgado.cases.map((c: any) => (
                   <div key={c.id} style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)' }}>
                     <Link href={`/dashboard/casos/${c.id}`} style={{ fontWeight: 600, color: 'var(--text-main)', textDecoration: 'none', display: 'block', marginBottom: '0.25rem' }}>
-                      {c.caratula || 'Expediente sin carátula'}
+                      {c.caratula || 'Caso sin carátula'}
                     </Link>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                       <span>Exp: {c.nroExpediente || '-'}</span>
@@ -66,7 +63,7 @@ export default async function DetalleClientePage({
               </div>
             ) : (
               <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', textAlign: 'center', padding: '1rem 0' }}>
-                Este cliente no tiene casos registrados.
+                Este juzgado no tiene casos derivados.
               </p>
             )}
           </div>

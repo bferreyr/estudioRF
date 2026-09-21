@@ -12,6 +12,8 @@ export default async function NuevoCasoPage({
   // We need to fetch all clients to populate the dropdown
   const clients = await db.orm.public.Client.orderBy((c) => c.nombre.asc()).all()
   const asociados = await db.orm.public.Asociado.orderBy((a) => a.nombre.asc()).all()
+  const materias = await db.orm.public.Materia.orderBy((m) => m.nombre.asc()).all()
+  const juzgados = await db.orm.public.Juzgado.orderBy((j) => j.nombre.asc()).all()
 
   const jusSetting = await db.orm.public.Setting.where({ key: 'JUS_QUOTE' }).first()
   const jusValue = jusSetting?.value ? parseFloat(jusSetting.value) : undefined
@@ -26,7 +28,7 @@ export default async function NuevoCasoPage({
         <p style={{ color: 'var(--text-muted)' }}>Abre un nuevo caso y asócialo a un cliente existente.</p>
       </div>
 
-      <CaseForm clients={clients} asociados={asociados} jusValue={jusValue} preSelectedClientId={clientId} actionType="create" />
+      <CaseForm clients={clients} asociados={asociados} materias={materias} juzgados={juzgados} jusValue={jusValue} preSelectedClientId={clientId} actionType="create" />
     </div>
   )
 }

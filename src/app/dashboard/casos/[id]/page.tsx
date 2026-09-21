@@ -10,8 +10,10 @@ export default async function DetalleCasoPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const caseData = await db.orm.public.Case.include('client', c => c.select('nombre')).include('asociado', a => a.select('nombre')).include('fees').first({ id })
+  const caseData = await db.orm.public.Case.include('client', c => c.select('nombre')).include('asociado', a => a.select('nombre')).include('materia', m => m.select('nombre')).include('juzgado', j => j.select('nombre')).include('fees').first({ id })
   const asociados = await db.orm.public.Asociado.orderBy((a) => a.nombre.asc()).all()
+  const materias = await db.orm.public.Materia.orderBy((m) => m.nombre.asc()).all()
+  const juzgados = await db.orm.public.Juzgado.orderBy((j) => j.nombre.asc()).all()
 
   const jusSetting = await db.orm.public.Setting.where({ key: 'JUS_QUOTE' }).first()
   const jusValue = jusSetting?.value ? parseFloat(jusSetting.value) : undefined
@@ -50,7 +52,7 @@ export default async function DetalleCasoPage({
           <p style={{ color: 'var(--text-muted)' }}>
             Cliente: <Link href={`/dashboard/clientes/${caseData.clientId}`} style={{ color: 'var(--accent)', textDecoration: 'none' }}>{caseData.client?.nombre}</Link> 
             {' • '} Exp: {caseData.nroExpediente || 'N/A'} 
-            {' • '} Fuero: {caseData.materia || 'N/A'}
+            {' • '} Fuero: {caseData.materia?.nombre || 'N/A'}
             {caseData.asociado && <> {' • '} Asociado a: <strong>{caseData.asociado.nombre}</strong></>}
           </p>
         </div>
@@ -59,7 +61,7 @@ export default async function DetalleCasoPage({
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '2rem' }}>
         {/* Formulario / Edición */}
         <div>
-          <CaseForm caseData={caseData} actionType="update" clients={[]} asociados={asociados} jusValue={jusValue} />
+          <CaseForm caseData={caseData} actionType="update" clients={[]} asociados={asociados} materias={materias} juzgados={juzgados} jusValue={jusValue} />
         </div>
 
         {/* Panel lateral: Finanzas del Caso */}

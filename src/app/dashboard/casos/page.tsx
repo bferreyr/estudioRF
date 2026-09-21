@@ -90,7 +90,7 @@ export default async function CasosPage({
                         {c.client?.nombre}
                       </Link>
                     </td>
-                    <td style={{ padding: '1rem 0.5rem' }}>{c.materia || '-'}</td>
+                    <td style={{ padding: '1rem 0.5rem' }}>{c.materia?.nombre || '-'}</td>
                     <td style={{ padding: '1rem 0.5rem', fontSize: '0.85rem' }}>{c.asociado?.nombre || '-'}</td>
                     <td style={{ padding: '1rem 0.5rem' }}>
                       <span style={{ 

@@ -28,6 +28,14 @@
       "model": "Fee",
       "namespace": "public"
     },
+    "juzgado": {
+      "model": "Juzgado",
+      "namespace": "public"
+    },
+    "materia": {
+      "model": "Materia",
+      "namespace": "public"
+    },
     "setting": {
       "model": "Setting",
       "namespace": "public"
@@ -273,7 +281,14 @@
                   "kind": "scalar"
                 }
               },
-              "materia": {
+              "juzgadoId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "materiaId": {
                 "nullable": true,
                 "type": {
                   "codecId": "pg/text@1",
@@ -337,13 +352,6 @@
                 }
               },
               "tareasDetalle": {
-                "nullable": true,
-                "type": {
-                  "codecId": "pg/text@1",
-                  "kind": "scalar"
-                }
-              },
-              "tribunal": {
                 "nullable": true,
                 "type": {
                   "codecId": "pg/text@1",
@@ -435,6 +443,38 @@
                   "model": "Fee",
                   "namespace": "public"
                 }
+              },
+              "juzgado": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "juzgadoId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Juzgado",
+                  "namespace": "public"
+                }
+              },
+              "materia": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "materiaId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Materia",
+                  "namespace": "public"
+                }
               }
             },
             "storage": {
@@ -496,8 +536,11 @@
                 "id": {
                   "column": "id"
                 },
-                "materia": {
-                  "column": "materia"
+                "juzgadoId": {
+                  "column": "juzgadoId"
+                },
+                "materiaId": {
+                  "column": "materiaId"
                 },
                 "modalidadTrabajo": {
                   "column": "modalidadTrabajo"
@@ -525,9 +568,6 @@
                 },
                 "tareasDetalle": {
                   "column": "tareasDetalle"
-                },
-                "tribunal": {
-                  "column": "tribunal"
                 },
                 "updatedAt": {
                   "column": "updatedAt"
@@ -1018,6 +1058,160 @@
               "table": "fee"
             }
           },
+          "Juzgado": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "nombre": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "ubicacion": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "cases": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "juzgadoId"
+                  ]
+                },
+                "to": {
+                  "model": "Case",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "createdAt"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "nombre": {
+                  "column": "nombre"
+                },
+                "ubicacion": {
+                  "column": "ubicacion"
+                },
+                "updatedAt": {
+                  "column": "updatedAt"
+                }
+              },
+              "namespaceId": "public",
+              "table": "juzgado"
+            }
+          },
+          "Materia": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "descripcion": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "nombre": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "cases": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "materiaId"
+                  ]
+                },
+                "to": {
+                  "model": "Case",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "createdAt"
+                },
+                "descripcion": {
+                  "column": "descripcion"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "nombre": {
+                  "column": "nombre"
+                },
+                "updatedAt": {
+                  "column": "updatedAt"
+                }
+              },
+              "namespaceId": "public",
+              "table": "materia"
+            }
+          },
           "Setting": {
             "fields": {
               "key": {
@@ -1297,7 +1491,12 @@
                   "nativeType": "text",
                   "nullable": false
                 },
-                "materia": {
+                "juzgadoId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "materiaId": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": true
@@ -1351,11 +1550,6 @@
                   "nativeType": "text",
                   "nullable": true
                 },
-                "tribunal": {
-                  "codecId": "pg/text@1",
-                  "nativeType": "text",
-                  "nullable": true
-                },
                 "updatedAt": {
                   "codecId": "pg/timestamptz-string@1",
                   "nativeType": "timestamptz",
@@ -1383,6 +1577,22 @@
                 {
                   "source": {
                     "columns": [
+                      "materiaId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "case"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "materia"
+                  }
+                },
+                {
+                  "source": {
+                    "columns": [
                       "asociadoId"
                     ],
                     "namespaceId": "public",
@@ -1394,6 +1604,22 @@
                     ],
                     "namespaceId": "public",
                     "tableName": "asociado"
+                  }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "juzgadoId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "case"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "juzgado"
                   }
                 }
               ],
@@ -1412,6 +1638,22 @@
                   ],
                   "name": "case_clientId_idx_153a9a49",
                   "prefix": "case_clientId_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "juzgadoId"
+                  ],
+                  "name": "case_juzgadoId_idx_39702149",
+                  "prefix": "case_juzgadoId_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "materiaId"
+                  ],
+                  "name": "case_materiaId_idx_1e708a0a",
+                  "prefix": "case_materiaId_idx",
                   "unique": false
                 }
               ],
@@ -1740,6 +1982,100 @@
               },
               "uniques": []
             },
+            "juzgado": {
+              "columns": {
+                "createdAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "nombre": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "ubicacion": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "updatedAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "nombre"
+                  ]
+                }
+              ]
+            },
+            "materia": {
+              "columns": {
+                "createdAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "descripcion": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "nombre": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "updatedAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "nombre"
+                  ]
+                }
+              ]
+            },
             "setting": {
               "columns": {
                 "key": {
@@ -1825,10 +2161,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "3298077d323e4fe84254d3c8a90540f2ad9a128af47e89dd345427ab22aaa7d1"
+    "storageHash": "2b62f3d3548f4efb7b0f863f082127c76d2f5b95f54cba7dfab3f7c508a196ce"
   },
   "execution": {
-    "executionHash": "1dfad0d8e4a5648f81e2c2d4c16887e5e46b7703c925ad2181b3f6bcdf12649f",
+    "executionHash": "c20dcf63f87e374724af70ee7c0c45f11ad2818f82a9d4756943fb178858dab8",
     "mutations": {
       "defaults": [
         {
@@ -1940,6 +2276,58 @@
             "column": "id",
             "namespace": "public",
             "table": "fee"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "id",
+            "namespace": "public",
+            "table": "juzgado"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "onUpdate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "updatedAt",
+            "namespace": "public",
+            "table": "juzgado"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "id",
+            "namespace": "public",
+            "table": "materia"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "onUpdate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "updatedAt",
+            "namespace": "public",
+            "table": "materia"
           }
         },
         {
