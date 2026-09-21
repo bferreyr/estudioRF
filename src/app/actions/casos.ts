@@ -101,6 +101,8 @@ export async function updateCase(id: string, prevState: any, formData: FormData)
   const asociadoId = formData.get('asociadoId') as string
   const moroso = formData.get('moroso') === 'true'
   const honorariosTotales = formData.get('honorariosTotales') ? parseFloat(formData.get('honorariosTotales') as string) : null
+  const honorariosDolares = formData.get('honorariosDolares') ? parseFloat(formData.get('honorariosDolares') as string) : null
+  const honorariosJus = formData.get('honorariosJus') ? parseFloat(formData.get('honorariosJus') as string) : null
   const anticipo = formData.get('anticipo') ? parseFloat(formData.get('anticipo') as string) : null
 
   try {
@@ -115,6 +117,8 @@ export async function updateCase(id: string, prevState: any, formData: FormData)
       asociadoId: asociadoId || null,
       moroso,
       honorariosTotales,
+      honorariosDolares,
+      honorariosJus,
       anticipo
     })
   } catch (error) {

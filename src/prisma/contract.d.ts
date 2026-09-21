@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'575ff9d21737e3cde6c2b7036315fc9e8425d31218adc8c4b30054803970cb76'>;
+  StorageHashBase<'3298077d323e4fe84254d3c8a90540f2ad9a128af47e89dd345427ab22aaa7d1'>;
 export type ExecutionHash =
   ExecutionHashBase<'1dfad0d8e4a5648f81e2c2d4c16887e5e46b7703c925ad2181b3f6bcdf12649f'>;
 export type ProfileHash =
@@ -278,6 +278,8 @@ export type FieldOutputTypes = {
       readonly fechaInicio: CodecTypes['pg/text@1']['output'] | null;
       readonly nroExpediente: CodecTypes['pg/text@1']['output'] | null;
       readonly honorariosTotales: CodecTypes['pg/float8@1']['output'] | null;
+      readonly honorariosDolares: CodecTypes['pg/float8@1']['output'] | null;
+      readonly honorariosJus: CodecTypes['pg/float8@1']['output'] | null;
       readonly anticipo: CodecTypes['pg/float8@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -380,6 +382,8 @@ export type FieldInputTypes = {
       readonly fechaInicio: CodecTypes['pg/text@1']['input'] | null;
       readonly nroExpediente: CodecTypes['pg/text@1']['input'] | null;
       readonly honorariosTotales: CodecTypes['pg/float8@1']['input'] | null;
+      readonly honorariosDolares: CodecTypes['pg/float8@1']['input'] | null;
+      readonly honorariosJus: CodecTypes['pg/float8@1']['input'] | null;
       readonly anticipo: CodecTypes['pg/float8@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
@@ -470,6 +474,8 @@ export type StorageColumnTypes = {
       readonly fechaEntrevista: CodecTypes['pg/text@1']['output'] | null;
       readonly fechaFinalizacion: CodecTypes['pg/text@1']['output'] | null;
       readonly fechaInicio: CodecTypes['pg/text@1']['output'] | null;
+      readonly honorariosDolares: CodecTypes['pg/float8@1']['output'] | null;
+      readonly honorariosJus: CodecTypes['pg/float8@1']['output'] | null;
       readonly honorariosTotales: CodecTypes['pg/float8@1']['output'] | null;
       readonly horaEntrevista: CodecTypes['pg/text@1']['output'] | null;
       readonly id: CodecTypes['pg/text@1']['output'];
@@ -572,6 +578,8 @@ export type StorageColumnInputTypes = {
       readonly fechaEntrevista: CodecTypes['pg/text@1']['input'] | null;
       readonly fechaFinalizacion: CodecTypes['pg/text@1']['input'] | null;
       readonly fechaInicio: CodecTypes['pg/text@1']['input'] | null;
+      readonly honorariosDolares: CodecTypes['pg/float8@1']['input'] | null;
+      readonly honorariosJus: CodecTypes['pg/float8@1']['input'] | null;
       readonly honorariosTotales: CodecTypes['pg/float8@1']['input'] | null;
       readonly horaEntrevista: CodecTypes['pg/text@1']['input'] | null;
       readonly id: CodecTypes['pg/text@1']['input'];
@@ -715,6 +723,8 @@ export namespace Models {
     fechaInicio: CodecTypes['pg/text@1']['output'] | null;
     nroExpediente: CodecTypes['pg/text@1']['output'] | null;
     honorariosTotales: CodecTypes['pg/float8@1']['output'] | null;
+    honorariosDolares: CodecTypes['pg/float8@1']['output'] | null;
+    honorariosJus: CodecTypes['pg/float8@1']['output'] | null;
     anticipo: CodecTypes['pg/float8@1']['output'] | null;
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -975,6 +985,16 @@ type ContractBase = Omit<
                   readonly nullable: true;
                 };
                 readonly honorariosTotales: {
+                  readonly nativeType: 'float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: true;
+                };
+                readonly honorariosDolares: {
+                  readonly nativeType: 'float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: true;
+                };
+                readonly honorariosJus: {
                   readonly nativeType: 'float8';
                   readonly codecId: 'pg/float8@1';
                   readonly nullable: true;
@@ -1573,6 +1593,14 @@ type ContractBase = Omit<
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
               };
+              readonly honorariosDolares: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
+              };
+              readonly honorariosJus: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
+              };
               readonly anticipo: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
@@ -1678,6 +1706,8 @@ type ContractBase = Omit<
                 readonly fechaInicio: { readonly column: 'fechaInicio' };
                 readonly nroExpediente: { readonly column: 'nroExpediente' };
                 readonly honorariosTotales: { readonly column: 'honorariosTotales' };
+                readonly honorariosDolares: { readonly column: 'honorariosDolares' };
+                readonly honorariosJus: { readonly column: 'honorariosJus' };
                 readonly anticipo: { readonly column: 'anticipo' };
                 readonly createdAt: { readonly column: 'createdAt' };
                 readonly updatedAt: { readonly column: 'updatedAt' };

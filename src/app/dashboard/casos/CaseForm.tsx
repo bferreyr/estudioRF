@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useState } from 'react'
 import Link from 'next/link'
 import { createCase, updateCase, deleteCase } from '@/app/actions/casos'
 
@@ -18,6 +18,8 @@ type Case = {
   descripcionCaso?: string | null
   moroso?: boolean
   honorariosTotales?: number | null
+  honorariosDolares?: number | null
+  honorariosJus?: number | null
   anticipo?: number | null
 }
 
@@ -25,12 +27,14 @@ export function CaseForm({
   caseData, 
   clients, 
   asociados,
+  jusValue,
   preSelectedClientId, 
   actionType 
 }: { 
   caseData?: Case
   clients: Client[]
   asociados: { id: string; nombre: string }[]
+  jusValue?: number
   preSelectedClientId?: string
   actionType: 'create' | 'update' 
 }) {
@@ -39,6 +43,7 @@ export function CaseForm({
     : createCase
 
   const [state, formAction, isPending] = useActionState(boundAction, null)
+  const [jusAmount, setJusAmount] = useState<number | ''>(caseData?.honorariosJus || '')
 
   return (
     <form action={formAction} className="glass-panel" style={{ padding: '2rem', borderRadius: 'var(--radius-md)' }}>
@@ -106,9 +111,32 @@ export function CaseForm({
         {/* Financiero (Básico) */}
         {actionType === 'update' && (
           <>
-            <div>
-              <label className="input-label" htmlFor="honorariosTotales">Honorarios Totales Pactados ($)</label>
-              <input type="number" step="0.01" id="honorariosTotales" name="honorariosTotales" className="input-field" defaultValue={caseData?.honorariosTotales || ''} />
+            <div style={{ gridColumn: '1 / -1', display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
+              <div style={{ flex: '1 1 200px' }}>
+                <label className="input-label" htmlFor="honorariosTotales">Honorarios Pactados ($)</label>
+                <input type="number" step="0.01" id="honorariosTotales" name="honorariosTotales" className="input-field" defaultValue={caseData?.honorariosTotales || ''} />
+              </div>
+              <div style={{ flex: '1 1 200px' }}>
+                <label className="input-label" htmlFor="honorariosDolares">Honorarios Pactados (U$S)</label>
+                <input type="number" step="0.01" id="honorariosDolares" name="honorariosDolares" className="input-field" defaultValue={caseData?.honorariosDolares || ''} />
+              </div>
+              <div style={{ flex: '1 1 200px' }}>
+                <label className="input-label" htmlFor="honorariosJus">Honorarios Pactados (JUS)</label>
+                <input 
+                  type="number" 
+                  step="0.01" 
+                  id="honorariosJus" 
+                  name="honorariosJus" 
+                  className="input-field" 
+                  value={jusAmount}
+                  onChange={(e) => setJusAmount(e.target.value === '' ? '' : parseFloat(e.target.value))}
+                />
+                {jusValue && jusAmount !== '' && (
+                  <div style={{ fontSize: '0.8rem', color: 'var(--accent)', marginTop: '0.25rem' }}>
+                    Equivale a ${(jusAmount * jusValue).toLocaleString('es-AR')}
+                  </div>
+                )}
+              </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '1.5rem' }}>
               <input type="checkbox" id="moroso" name="moroso" value="true" defaultChecked={caseData?.moroso} style={{ width: '1.25rem', height: '1.25rem' }} />

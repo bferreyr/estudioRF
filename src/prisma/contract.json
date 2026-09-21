@@ -238,6 +238,20 @@
                   "kind": "scalar"
                 }
               },
+              "honorariosDolares": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "honorariosJus": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
               "honorariosTotales": {
                 "nullable": true,
                 "type": {
@@ -466,6 +480,12 @@
                 },
                 "fechaInicio": {
                   "column": "fechaInicio"
+                },
+                "honorariosDolares": {
+                  "column": "honorariosDolares"
+                },
+                "honorariosJus": {
+                  "column": "honorariosJus"
                 },
                 "honorariosTotales": {
                   "column": "honorariosTotales"
@@ -1252,6 +1272,16 @@
                   "nativeType": "text",
                   "nullable": true
                 },
+                "honorariosDolares": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
+                "honorariosJus": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
                 "honorariosTotales": {
                   "codecId": "pg/float8@1",
                   "nativeType": "float8",
@@ -1795,7 +1825,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "575ff9d21737e3cde6c2b7036315fc9e8425d31218adc8c4b30054803970cb76"
+    "storageHash": "3298077d323e4fe84254d3c8a90540f2ad9a128af47e89dd345427ab22aaa7d1"
   },
   "execution": {
     "executionHash": "1dfad0d8e4a5648f81e2c2d4c16887e5e46b7703c925ad2181b3f6bcdf12649f",
