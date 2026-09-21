@@ -6,12 +6,11 @@ import { revalidatePath } from 'next/cache'
 export async function updateJusQuote(value: string) {
   try {
     await db.orm.public.Setting.upsert({
-      where: (f, fns) => fns.eq(f.key, 'JUS_QUOTE'),
-      update: {
-        value
-      },
       create: {
         key: 'JUS_QUOTE',
+        value
+      },
+      update: {
         value
       }
     })
