@@ -105,6 +105,7 @@ model Case {
   honorariosDolares  Float?
   honorariosJus      Float?
   anticipo           Float?
+  cuotasPactadas     Int?
   
   createdAt          TimestamptzString @default(now())
   updatedAt          temporal.updatedAtString()

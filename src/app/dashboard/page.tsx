@@ -23,9 +23,19 @@ export default async function DashboardHome() {
   ).aggregate((a) => ({ total: a.count() }))
   const pendingFees = pendingFeesAgg.total
 
+  const totalExpensesAgg = await db.orm.public.Expense.aggregate((a) => ({ total: a.sum('monto') }))
+  const totalExpenses = totalExpensesAgg.total || 0
+
   const recentCases = await db.orm.public.Case
     .include('client', c => c.select('nombre'))
     .orderBy(c => c.createdAt.desc())
+    .limit(5)
+    .all()
+
+  const recentExpenses = await db.orm.public.Expense
+    .include('case', c => c.select('caratula').include('client', cl => cl.select('nombre')))
+    // Order by ID since there's no createdAt, assuming ULID/UUID v7 or similar sequential ID, else order by fecha if it were a sortable string
+    .orderBy(e => e.id.desc())
     .limit(5)
     .all()
 
@@ -72,6 +82,14 @@ export default async function DashboardHome() {
             <div className="stat-label">Casos Cerrados</div>
           </div>
         </div>
+
+        <div className="stat-card glass-panel">
+          <div className="stat-icon" style={{ color: '#ef4444', backgroundColor: '#fef2f2' }}>💸</div>
+          <div className="stat-info">
+            <div className="stat-value">${totalExpenses.toLocaleString()}</div>
+            <div className="stat-label">Gastos del Estudio</div>
+          </div>
+        </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
@@ -109,10 +127,29 @@ export default async function DashboardHome() {
         </div>
 
         <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
-          <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Vencimientos</h2>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', textAlign: 'center', padding: '2rem 0' }}>
-            No hay vencimientos próximos.
-          </div>
+          <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Gastos Recientes</h2>
+          {recentExpenses.length === 0 ? (
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', textAlign: 'center', padding: '2rem 0' }}>
+              No hay gastos registrados.
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {recentExpenses.map(e => (
+                <div key={e.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', backgroundColor: 'rgba(59, 130, 246, 0.05)', borderRadius: 'var(--radius-sm)', borderLeft: '2px solid #60a5fa' }}>
+                  <div>
+                    <div style={{ fontWeight: 600, color: '#ef4444' }}>${e.monto.toLocaleString()}</div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{e.concepto}</div>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <Link href={`/dashboard/casos/${e.caseId}`} style={{ fontWeight: 600, fontSize: '0.8rem', color: 'var(--text-main)', textDecoration: 'none' }}>
+                      {e.case?.caratula || 'Sin carátula'}
+                    </Link>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--accent)' }}>{e.case?.client?.nombre}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

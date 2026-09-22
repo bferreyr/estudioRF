@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'2b62f3d3548f4efb7b0f863f082127c76d2f5b95f54cba7dfab3f7c508a196ce'>;
+  StorageHashBase<'06cd1c9d502cdbc17becdb6a666feb3e38c4f221fb79c927b09b9801770f0f1b'>;
 export type ExecutionHash =
   ExecutionHashBase<'c20dcf63f87e374724af70ee7c0c45f11ad2818f82a9d4756943fb178858dab8'>;
 export type ProfileHash =
@@ -281,6 +281,7 @@ export type FieldOutputTypes = {
       readonly honorariosDolares: CodecTypes['pg/float8@1']['output'] | null;
       readonly honorariosJus: CodecTypes['pg/float8@1']['output'] | null;
       readonly anticipo: CodecTypes['pg/float8@1']['output'] | null;
+      readonly cuotasPactadas: CodecTypes['pg/int4@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
@@ -399,6 +400,7 @@ export type FieldInputTypes = {
       readonly honorariosDolares: CodecTypes['pg/float8@1']['input'] | null;
       readonly honorariosJus: CodecTypes['pg/float8@1']['input'] | null;
       readonly anticipo: CodecTypes['pg/float8@1']['input'] | null;
+      readonly cuotasPactadas: CodecTypes['pg/int4@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
@@ -495,6 +497,7 @@ export type StorageColumnTypes = {
       readonly clientId: CodecTypes['pg/text@1']['output'];
       readonly contraparte: CodecTypes['pg/text@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly cuotasPactadas: CodecTypes['pg/int4@1']['output'] | null;
       readonly descripcionCaso: CodecTypes['pg/text@1']['output'] | null;
       readonly detalleAsunto: CodecTypes['pg/text@1']['output'] | null;
       readonly estado: CodecTypes['pg/text@1']['output'] | null;
@@ -613,6 +616,7 @@ export type StorageColumnInputTypes = {
       readonly clientId: CodecTypes['pg/text@1']['input'];
       readonly contraparte: CodecTypes['pg/text@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly cuotasPactadas: CodecTypes['pg/int4@1']['input'] | null;
       readonly descripcionCaso: CodecTypes['pg/text@1']['input'] | null;
       readonly detalleAsunto: CodecTypes['pg/text@1']['input'] | null;
       readonly estado: CodecTypes['pg/text@1']['input'] | null;
@@ -800,6 +804,7 @@ export namespace Models {
     honorariosDolares: CodecTypes['pg/float8@1']['output'] | null;
     honorariosJus: CodecTypes['pg/float8@1']['output'] | null;
     anticipo: CodecTypes['pg/float8@1']['output'] | null;
+    cuotasPactadas: CodecTypes['pg/int4@1']['output'] | null;
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     asociado: public_Asociado | null;
@@ -1081,6 +1086,11 @@ type ContractBase = Omit<
                 readonly anticipo: {
                   readonly nativeType: 'float8';
                   readonly codecId: 'pg/float8@1';
+                  readonly nullable: true;
+                };
+                readonly cuotasPactadas: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
                   readonly nullable: true;
                 };
                 readonly createdAt: {
@@ -1790,6 +1800,10 @@ type ContractBase = Omit<
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
               };
+              readonly cuotasPactadas: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
               readonly createdAt: {
                 readonly nullable: false;
                 readonly type: {
@@ -1918,6 +1932,7 @@ type ContractBase = Omit<
                 readonly honorariosDolares: { readonly column: 'honorariosDolares' };
                 readonly honorariosJus: { readonly column: 'honorariosJus' };
                 readonly anticipo: { readonly column: 'anticipo' };
+                readonly cuotasPactadas: { readonly column: 'cuotasPactadas' };
                 readonly createdAt: { readonly column: 'createdAt' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
               };

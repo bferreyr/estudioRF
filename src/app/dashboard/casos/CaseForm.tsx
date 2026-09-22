@@ -21,6 +21,7 @@ type Case = {
   honorariosDolares?: number | null
   honorariosJus?: number | null
   anticipo?: number | null
+  cuotasPactadas?: number | null
 }
 
 export function CaseForm({ 
@@ -150,6 +151,12 @@ export function CaseForm({
                     Equivale a ${(jusAmount * jusValue).toLocaleString('es-AR')}
                   </div>
                 )}
+              </div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginTop: '1.5rem' }}>
+              <div>
+                <label className="input-label" htmlFor="cuotasPactadas">Cuotas Pactadas (Cantidad)</label>
+                <input type="number" id="cuotasPactadas" name="cuotasPactadas" className="input-field" defaultValue={caseData?.cuotasPactadas || ''} placeholder="Ej: 3, 6, 12" />
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '1.5rem' }}>
