@@ -29,7 +29,7 @@ export default async function EditarHonorarioPage({
       </div>
 
       <div style={{ maxWidth: '800px' }}>
-        <FeeForm feeData={feeData} caseId={feeData.caseId} actionType="update" />
+        <FeeForm initialData={feeData} caseId={feeData.caseId} actionType="update" />
       </div>
     </div>
   )
