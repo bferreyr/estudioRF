@@ -115,7 +115,7 @@ export function FeeForm({
                 onChange={() => setType('gasto')}
                 style={{ cursor: 'pointer' }}
               />
-              Gasto (A cargo del cliente)
+              Gasto
             </label>
           </div>
         </div>
