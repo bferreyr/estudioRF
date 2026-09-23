@@ -997,6 +997,13 @@
                   "kind": "scalar"
                 }
               },
+              "moneda": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "monto": {
                 "nullable": false,
                 "type": {
@@ -1053,6 +1060,9 @@
                 },
                 "metodo": {
                   "column": "metodo"
+                },
+                "moneda": {
+                  "column": "moneda"
                 },
                 "monto": {
                   "column": "monto"
@@ -1945,6 +1955,15 @@
                   "nativeType": "text",
                   "nullable": true
                 },
+                "moneda": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "Pesos"
+                  },
+                  "nativeType": "text",
+                  "nullable": true
+                },
                 "monto": {
                   "codecId": "pg/float8@1",
                   "nativeType": "float8",
@@ -2176,7 +2195,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "06cd1c9d502cdbc17becdb6a666feb3e38c4f221fb79c927b09b9801770f0f1b"
+    "storageHash": "d689d2472a850c5e08ff2b2f0754c3aad3c3a1e82760dbea452954ca51e92072"
   },
   "execution": {
     "executionHash": "c20dcf63f87e374724af70ee7c0c45f11ad2818f82a9d4756943fb178858dab8",

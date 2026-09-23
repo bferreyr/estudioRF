@@ -15,6 +15,7 @@ type Fee = {
   metodo?: string | null
   recibo?: string | null
   notas?: string | null
+  moneda?: string | null
 }
 
 type Expense = {
@@ -134,8 +135,19 @@ export function FeeForm({
       )}
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+        {type === 'honorario' && (
+          <div>
+            <label className="input-label" htmlFor="moneda">Moneda / Denominación</label>
+            <select id="moneda" name="moneda" className="input-field" defaultValue={dataAsFee?.moneda || 'Pesos'}>
+              <option value="Pesos">Pesos ($)</option>
+              <option value="Dólares">Dólares (U$S)</option>
+              <option value="JUS">JUS</option>
+            </select>
+          </div>
+        )}
+        
         <div>
-          <label className="input-label" htmlFor="monto">Monto ($) *</label>
+          <label className="input-label" htmlFor="monto">Monto *</label>
           <input type="number" step="0.01" id="monto" name="monto" className="input-field" defaultValue={initialData?.monto || ''} required />
         </div>
         

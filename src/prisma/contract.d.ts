@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'06cd1c9d502cdbc17becdb6a666feb3e38c4f221fb79c927b09b9801770f0f1b'>;
+  StorageHashBase<'d689d2472a850c5e08ff2b2f0754c3aad3c3a1e82760dbea452954ca51e92072'>;
 export type ExecutionHash =
   ExecutionHashBase<'c20dcf63f87e374724af70ee7c0c45f11ad2818f82a9d4756943fb178858dab8'>;
 export type ProfileHash =
@@ -323,6 +323,7 @@ export type FieldOutputTypes = {
     readonly Fee: {
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly caseId: CodecTypes['pg/text@1']['output'];
+      readonly moneda: CodecTypes['pg/text@1']['output'] | null;
       readonly monto: CodecTypes['pg/float8@1']['output'];
       readonly fechaVenc: CodecTypes['pg/text@1']['output'] | null;
       readonly fechaPago: CodecTypes['pg/text@1']['output'] | null;
@@ -442,6 +443,7 @@ export type FieldInputTypes = {
     readonly Fee: {
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly caseId: CodecTypes['pg/text@1']['input'];
+      readonly moneda: CodecTypes['pg/text@1']['input'] | null;
       readonly monto: CodecTypes['pg/float8@1']['input'];
       readonly fechaVenc: CodecTypes['pg/text@1']['input'] | null;
       readonly fechaPago: CodecTypes['pg/text@1']['input'] | null;
@@ -564,6 +566,7 @@ export type StorageColumnTypes = {
       readonly fechaVenc: CodecTypes['pg/text@1']['output'] | null;
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly metodo: CodecTypes['pg/text@1']['output'] | null;
+      readonly moneda: CodecTypes['pg/text@1']['output'] | null;
       readonly monto: CodecTypes['pg/float8@1']['output'];
       readonly notas: CodecTypes['pg/text@1']['output'] | null;
       readonly recibo: CodecTypes['pg/text@1']['output'] | null;
@@ -683,6 +686,7 @@ export type StorageColumnInputTypes = {
       readonly fechaVenc: CodecTypes['pg/text@1']['input'] | null;
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly metodo: CodecTypes['pg/text@1']['input'] | null;
+      readonly moneda: CodecTypes['pg/text@1']['input'] | null;
       readonly monto: CodecTypes['pg/float8@1']['input'];
       readonly notas: CodecTypes['pg/text@1']['input'] | null;
       readonly recibo: CodecTypes['pg/text@1']['input'] | null;
@@ -820,6 +824,7 @@ export namespace Models {
   export type public_Fee = {
     id: CodecTypes['pg/text@1']['output'];
     caseId: CodecTypes['pg/text@1']['output'];
+    moneda: CodecTypes['pg/text@1']['output'] | null;
     monto: CodecTypes['pg/float8@1']['output'];
     fechaVenc: CodecTypes['pg/text@1']['output'] | null;
     fechaPago: CodecTypes['pg/text@1']['output'] | null;
@@ -1405,6 +1410,15 @@ type ContractBase = Omit<
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
+                };
+                readonly moneda: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'Pesos'>;
+                  };
                 };
                 readonly monto: {
                   readonly nativeType: 'float8';
@@ -2161,6 +2175,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
+              readonly moneda: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly monto: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
@@ -2203,6 +2221,7 @@ type ContractBase = Omit<
               readonly fields: {
                 readonly id: { readonly column: 'id' };
                 readonly caseId: { readonly column: 'caseId' };
+                readonly moneda: { readonly column: 'moneda' };
                 readonly monto: { readonly column: 'monto' };
                 readonly fechaVenc: { readonly column: 'fechaVenc' };
                 readonly fechaPago: { readonly column: 'fechaPago' };

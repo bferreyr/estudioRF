@@ -47,6 +47,7 @@ export async function createFee(prevState: any, formData: FormData) {
   const metodo = formData.get('metodo') as string
   const recibo = formData.get('recibo') as string
   const notas = formData.get('notas') as string
+  const moneda = (formData.get('moneda') as string) || 'Pesos'
 
   if (!caseId || isNaN(monto)) {
     return { error: 'El caso y el monto son obligatorios.' }
@@ -60,7 +61,8 @@ export async function createFee(prevState: any, formData: FormData) {
       fechaPago: fechaPago || null,
       metodo: metodo || null,
       recibo: recibo || null,
-      notas: notas || null
+      notas: notas || null,
+      moneda
     })
   } catch (error) {
     console.error('Error creating fee:', error)
@@ -79,6 +81,7 @@ export async function updateFee(id: string, prevState: any, formData: FormData) 
   const metodo = formData.get('metodo') as string
   const recibo = formData.get('recibo') as string
   const notas = formData.get('notas') as string
+  const moneda = (formData.get('moneda') as string) || 'Pesos'
 
   if (isNaN(monto)) {
     return { error: 'El monto es obligatorio.' }
@@ -91,7 +94,8 @@ export async function updateFee(id: string, prevState: any, formData: FormData) 
       fechaPago: fechaPago || null,
       metodo: metodo || null,
       recibo: recibo || null,
-      notas: notas || null
+      notas: notas || null,
+      moneda
     })
     
     revalidatePath('/dashboard/honorarios')

@@ -119,6 +119,7 @@ model Fee {
   id        String   @id @default(uuid())
   caseId    String
   case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  moneda    String?  @default("Pesos")
   monto     Float
   fechaVenc String?
   fechaPago String?

@@ -150,7 +150,9 @@ export default async function DetalleCasoPage({
                 {caseData.fees?.map(f => (
                   <div key={f.id} style={{ padding: '0.75rem', backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: 'var(--radius-sm)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
-                      <div style={{ fontWeight: 600 }}>${f.monto.toLocaleString()} <span style={{ fontSize: '0.7rem', color: '#10b981', padding: '0.1rem 0.3rem', borderRadius: '4px', backgroundColor: 'rgba(16, 185, 129, 0.1)' }}>HONORARIO</span></div>
+                      <div style={{ fontWeight: 600 }}>
+                        {f.moneda === 'Dólares' ? 'U$S' : (f.moneda === 'JUS' ? '' : '$')}{f.monto.toLocaleString()} {f.moneda === 'JUS' ? 'JUS' : ''} <span style={{ fontSize: '0.7rem', color: '#10b981', padding: '0.1rem 0.3rem', borderRadius: '4px', backgroundColor: 'rgba(16, 185, 129, 0.1)' }}>HONORARIO</span>
+                      </div>
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{f.fechaPago ? `Pagado: ${f.fechaPago}` : `Vence: ${f.fechaVenc}`}</div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>

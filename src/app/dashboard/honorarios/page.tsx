@@ -76,7 +76,7 @@ export default async function HonorariosPage({
                       )}
                     </td>
                     <td style={{ padding: '1rem 0.5rem', fontWeight: 'bold', fontSize: '1.1rem' }}>
-                      ${fee.monto.toLocaleString()}
+                      {fee.moneda === 'Dólares' ? 'U$S' : (fee.moneda === 'JUS' ? '' : '$')}{fee.monto.toLocaleString()} {fee.moneda === 'JUS' ? 'JUS' : ''}
                     </td>
                     <td style={{ padding: '1rem 0.5rem' }}>
                       <Link href={`/dashboard/casos/${fee.caseId}`} style={{ color: 'var(--text-main)', textDecoration: 'none', fontWeight: 500 }}>
