@@ -106,6 +106,7 @@ export async function updateCase(id: string, prevState: any, formData: FormData)
   const honorariosJus = formData.get('honorariosJus') ? parseFloat(formData.get('honorariosJus') as string) : null
   const anticipo = formData.get('anticipo') ? parseFloat(formData.get('anticipo') as string) : null
   const cuotasPactadas = formData.get('cuotasPactadas') ? parseInt(formData.get('cuotasPactadas') as string) : null
+  const interesCuotas = formData.get('interesCuotas') ? parseFloat(formData.get('interesCuotas') as string) : null
 
   try {
     await db.orm.public.Case.where({ id }).update({
@@ -122,7 +123,8 @@ export async function updateCase(id: string, prevState: any, formData: FormData)
       honorariosDolares,
       honorariosJus,
       anticipo,
-      cuotasPactadas
+      cuotasPactadas,
+      interesCuotas
     })
   } catch (error) {
     console.error('Error updating case:', error)

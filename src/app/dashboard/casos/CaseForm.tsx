@@ -22,6 +22,7 @@ type Case = {
   honorariosJus?: number | null
   anticipo?: number | null
   cuotasPactadas?: number | null
+  interesCuotas?: number | null
 }
 
 export function CaseForm({ 
@@ -157,6 +158,10 @@ export function CaseForm({
               <div>
                 <label className="input-label" htmlFor="cuotasPactadas">Cuotas Pactadas (Cantidad)</label>
                 <input type="number" id="cuotasPactadas" name="cuotasPactadas" className="input-field" defaultValue={caseData?.cuotasPactadas || ''} placeholder="Ej: 3, 6, 12" />
+              </div>
+              <div>
+                <label className="input-label" htmlFor="interesCuotas">Interés (%)</label>
+                <input type="number" step="0.1" id="interesCuotas" name="interesCuotas" className="input-field" defaultValue={caseData?.interesCuotas || ''} placeholder="Ej: 10, 15.5" />
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '1.5rem' }}>

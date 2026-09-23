@@ -288,6 +288,13 @@
                   "kind": "scalar"
                 }
               },
+              "interesCuotas": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
               "juzgadoId": {
                 "nullable": true,
                 "type": {
@@ -545,6 +552,9 @@
                 },
                 "id": {
                   "column": "id"
+                },
+                "interesCuotas": {
+                  "column": "interesCuotas"
                 },
                 "juzgadoId": {
                   "column": "juzgadoId"
@@ -1516,6 +1526,11 @@
                   "nativeType": "text",
                   "nullable": false
                 },
+                "interesCuotas": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
                 "juzgadoId": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -2195,7 +2210,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "d689d2472a850c5e08ff2b2f0754c3aad3c3a1e82760dbea452954ca51e92072"
+    "storageHash": "74caa87dc262816bdd07638e958b617d19ece24c84d4b9c0e540e141d53e7c0d"
   },
   "execution": {
     "executionHash": "c20dcf63f87e374724af70ee7c0c45f11ad2818f82a9d4756943fb178858dab8",

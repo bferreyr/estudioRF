@@ -96,10 +96,10 @@ export default async function DetalleCasoPage({
                 <div style={{ marginTop: '0.5rem', padding: '1rem', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-sm)' }}>
                   {caseData.cuotasPactadas ? (
                     <>
-                      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.75rem', fontWeight: 600 }}>Plan de pago acordado ({caseData.cuotasPactadas} cuotas):</div>
+                      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.75rem', fontWeight: 600 }}>Plan de pago acordado ({caseData.cuotasPactadas} cuotas{caseData.interesCuotas ? ` con ${caseData.interesCuotas}% de interés` : ''}):</div>
                       <div style={{ padding: '0.75rem', backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: 'var(--radius-sm)', textAlign: 'center', border: '1px solid var(--accent)' }}>
                         <div style={{ fontSize: '1.2rem', fontWeight: 600, color: 'var(--text-main)' }}>
-                          {activeCurrency === '$' || activeCurrency === 'U$S' ? activeCurrency : ''} {(honorariosPactados / caseData.cuotasPactadas).toLocaleString(undefined, { maximumFractionDigits: 2 })} {activeCurrency === 'JUS' ? 'JUS' : ''} <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>x {caseData.cuotasPactadas}</span>
+                          {activeCurrency === '$' || activeCurrency === 'U$S' ? activeCurrency : ''} {((honorariosPactados * (1 + (caseData.interesCuotas || 0) / 100)) / caseData.cuotasPactadas).toLocaleString(undefined, { maximumFractionDigits: 2 })} {activeCurrency === 'JUS' ? 'JUS' : ''} <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>x {caseData.cuotasPactadas}</span>
                         </div>
                       </div>
                     </>
