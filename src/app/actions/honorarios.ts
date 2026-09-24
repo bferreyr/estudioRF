@@ -3,6 +3,19 @@
 import { db } from '@/prisma/db'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { promises as fs } from 'fs'
+import path from 'path'
+
+async function saveFile(file: File | null): Promise<string | null> {
+  if (!file || file.size === 0 || file.name === 'undefined') return null;
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const uniquePrefix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+  const filename = `${uniquePrefix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+  const dir = path.join(process.cwd(), 'public', 'uploads');
+  await fs.mkdir(dir, { recursive: true });
+  await fs.writeFile(path.join(dir, filename), buffer);
+  return `/uploads/${filename}`;
+}
 
 export async function getFees(page = 1) {
   const PAGE_SIZE = 20
@@ -48,12 +61,18 @@ export async function createFee(prevState: any, formData: FormData) {
   const recibo = formData.get('recibo') as string
   const notas = formData.get('notas') as string
   const moneda = (formData.get('moneda') as string) || 'Pesos'
+  const archivo = formData.get('archivo') as File | null
 
   if (!caseId || isNaN(monto)) {
     return { error: 'El caso y el monto son obligatorios.' }
   }
 
   try {
+    let archivoUrl = null;
+    if (archivo && typeof archivo === 'object' && archivo.size > 0) {
+      archivoUrl = await saveFile(archivo);
+    }
+
     await db.orm.public.Fee.create({
       caseId,
       monto,
@@ -62,7 +81,8 @@ export async function createFee(prevState: any, formData: FormData) {
       metodo: metodo || null,
       recibo: recibo || null,
       notas: notas || null,
-      moneda
+      moneda,
+      archivoUrl
     })
   } catch (error) {
     console.error('Error creating fee:', error)
@@ -82,13 +102,14 @@ export async function updateFee(id: string, prevState: any, formData: FormData) 
   const recibo = formData.get('recibo') as string
   const notas = formData.get('notas') as string
   const moneda = (formData.get('moneda') as string) || 'Pesos'
+  const archivo = formData.get('archivo') as File | null
 
   if (isNaN(monto)) {
     return { error: 'El monto es obligatorio.' }
   }
 
   try {
-    const fee = await db.orm.public.Fee.where({ id }).update({
+    const updateData: any = {
       monto,
       fechaVenc: fechaVenc || null,
       fechaPago: fechaPago || null,
@@ -96,7 +117,16 @@ export async function updateFee(id: string, prevState: any, formData: FormData) 
       recibo: recibo || null,
       notas: notas || null,
       moneda
-    })
+    }
+
+    if (archivo && typeof archivo === 'object' && archivo.size > 0) {
+      const archivoUrl = await saveFile(archivo)
+      if (archivoUrl) {
+        updateData.archivoUrl = archivoUrl
+      }
+    }
+
+    const fee = await db.orm.public.Fee.where({ id }).update(updateData)
     
     revalidatePath('/dashboard/honorarios')
     revalidatePath(`/dashboard/casos/${fee?.caseId}`)

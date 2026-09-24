@@ -16,6 +16,7 @@ type Fee = {
   recibo?: string | null
   notas?: string | null
   moneda?: string | null
+  archivoUrl?: string | null
 }
 
 type Expense = {
@@ -26,6 +27,7 @@ type Expense = {
   fecha?: string | null
   comprobante?: string | null
   notas?: string | null
+  archivoUrl?: string | null
 }
 
 export function FeeForm({ 
@@ -87,7 +89,7 @@ export function FeeForm({
   const dataAsExpense = type === 'gasto' ? (initialData as Expense) : undefined
 
   return (
-    <form action={formAction} className="glass-panel" style={{ padding: '2rem', borderRadius: 'var(--radius-md)' }}>
+    <form action={formAction} className="glass-panel" style={{ padding: '2rem', borderRadius: 'var(--radius-md)' }} encType="multipart/form-data">
       <h2 style={{ marginBottom: '1.5rem', fontSize: '1.25rem' }}>
         {actionType === 'create' 
           ? 'Registrar Movimiento' 
@@ -142,7 +144,7 @@ export function FeeForm({
       {type === 'gasto' && actionType === 'create' ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
           {expenseRows.map((rowId, index) => (
-            <div key={rowId} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1.5fr auto', gap: '1rem', alignItems: 'end', padding: '1rem', backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(255,255,255,0.05)' }}>
+            <div key={rowId} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1.5fr 1.5fr auto', gap: '1rem', alignItems: 'end', padding: '1rem', backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(255,255,255,0.05)' }}>
               <div>
                 <label className="input-label" htmlFor={`monto-${index}`}>Monto *</label>
                 <input type="number" step="0.01" id={`monto-${index}`} name="monto" className="input-field" required />
@@ -154,6 +156,10 @@ export function FeeForm({
               <div>
                 <label className="input-label" htmlFor={`notas-${index}`}>Breve nombre (Notas)</label>
                 <input type="text" id={`notas-${index}`} name="notas" className="input-field" placeholder="Ej. Tasa de justicia" />
+              </div>
+              <div>
+                <label className="input-label" htmlFor={`archivo-${index}`}>Adjunto (Opcional)</label>
+                <input type="file" id={`archivo-${index}`} name="archivo" className="input-field" accept="image/*,application/pdf" style={{ padding: '0.4rem' }} />
               </div>
               <input type="hidden" name="comprobante" value="" />
               {expenseRows.length > 1 && (
@@ -222,6 +228,16 @@ export function FeeForm({
               <input type="text" id="comprobante" name="comprobante" className="input-field" defaultValue={dataAsExpense?.comprobante || ''} />
             </div>
           )}
+          
+          <div style={{ gridColumn: '1 / -1' }}>
+            <label className="input-label" htmlFor="archivo">Archivo Adjunto (Opcional)</label>
+            <input type="file" id="archivo" name="archivo" className="input-field" accept="image/*,application/pdf" style={{ padding: '0.4rem' }} />
+            {initialData?.archivoUrl && (
+              <div style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
+                Archivo actual: <a href={initialData.archivoUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Ver archivo</a>
+              </div>
+            )}
+          </div>
           
           <div style={{ gridColumn: '1 / -1' }}>
             <label className="input-label" htmlFor="notas">Notas u Observaciones</label>

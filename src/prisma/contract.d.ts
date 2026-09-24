@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'74caa87dc262816bdd07638e958b617d19ece24c84d4b9c0e540e141d53e7c0d'>;
+  StorageHashBase<'216294f815985cbd7f7023b717c7241fd9ac784e070d0389c23f74b2cec73413'>;
 export type ExecutionHash =
   ExecutionHashBase<'c20dcf63f87e374724af70ee7c0c45f11ad2818f82a9d4756943fb178858dab8'>;
 export type ProfileHash =
@@ -320,6 +320,7 @@ export type FieldOutputTypes = {
       readonly fecha: CodecTypes['pg/text@1']['output'] | null;
       readonly comprobante: CodecTypes['pg/text@1']['output'] | null;
       readonly notas: CodecTypes['pg/text@1']['output'] | null;
+      readonly archivoUrl: CodecTypes['pg/text@1']['output'] | null;
     };
     readonly Fee: {
       readonly id: CodecTypes['pg/text@1']['output'];
@@ -331,6 +332,7 @@ export type FieldOutputTypes = {
       readonly metodo: CodecTypes['pg/text@1']['output'] | null;
       readonly recibo: CodecTypes['pg/text@1']['output'] | null;
       readonly notas: CodecTypes['pg/text@1']['output'] | null;
+      readonly archivoUrl: CodecTypes['pg/text@1']['output'] | null;
     };
     readonly Juzgado: {
       readonly id: CodecTypes['pg/text@1']['output'];
@@ -441,6 +443,7 @@ export type FieldInputTypes = {
       readonly fecha: CodecTypes['pg/text@1']['input'] | null;
       readonly comprobante: CodecTypes['pg/text@1']['input'] | null;
       readonly notas: CodecTypes['pg/text@1']['input'] | null;
+      readonly archivoUrl: CodecTypes['pg/text@1']['input'] | null;
     };
     readonly Fee: {
       readonly id: CodecTypes['pg/text@1']['input'];
@@ -452,6 +455,7 @@ export type FieldInputTypes = {
       readonly metodo: CodecTypes['pg/text@1']['input'] | null;
       readonly recibo: CodecTypes['pg/text@1']['input'] | null;
       readonly notas: CodecTypes['pg/text@1']['input'] | null;
+      readonly archivoUrl: CodecTypes['pg/text@1']['input'] | null;
     };
     readonly Juzgado: {
       readonly id: CodecTypes['pg/text@1']['input'];
@@ -555,6 +559,7 @@ export type StorageColumnTypes = {
       readonly notas: CodecTypes['pg/text@1']['output'] | null;
     };
     readonly expense: {
+      readonly archivoUrl: CodecTypes['pg/text@1']['output'] | null;
       readonly caseId: CodecTypes['pg/text@1']['output'];
       readonly comprobante: CodecTypes['pg/text@1']['output'] | null;
       readonly concepto: CodecTypes['pg/text@1']['output'];
@@ -564,6 +569,7 @@ export type StorageColumnTypes = {
       readonly notas: CodecTypes['pg/text@1']['output'] | null;
     };
     readonly fee: {
+      readonly archivoUrl: CodecTypes['pg/text@1']['output'] | null;
       readonly caseId: CodecTypes['pg/text@1']['output'];
       readonly fechaPago: CodecTypes['pg/text@1']['output'] | null;
       readonly fechaVenc: CodecTypes['pg/text@1']['output'] | null;
@@ -676,6 +682,7 @@ export type StorageColumnInputTypes = {
       readonly notas: CodecTypes['pg/text@1']['input'] | null;
     };
     readonly expense: {
+      readonly archivoUrl: CodecTypes['pg/text@1']['input'] | null;
       readonly caseId: CodecTypes['pg/text@1']['input'];
       readonly comprobante: CodecTypes['pg/text@1']['input'] | null;
       readonly concepto: CodecTypes['pg/text@1']['input'];
@@ -685,6 +692,7 @@ export type StorageColumnInputTypes = {
       readonly notas: CodecTypes['pg/text@1']['input'] | null;
     };
     readonly fee: {
+      readonly archivoUrl: CodecTypes['pg/text@1']['input'] | null;
       readonly caseId: CodecTypes['pg/text@1']['input'];
       readonly fechaPago: CodecTypes['pg/text@1']['input'] | null;
       readonly fechaVenc: CodecTypes['pg/text@1']['input'] | null;
@@ -836,6 +844,7 @@ export namespace Models {
     metodo: CodecTypes['pg/text@1']['output'] | null;
     recibo: CodecTypes['pg/text@1']['output'] | null;
     notas: CodecTypes['pg/text@1']['output'] | null;
+    archivoUrl: CodecTypes['pg/text@1']['output'] | null;
     case: public_Case;
     readonly [RelationKeys]?: 'case';
   };
@@ -859,6 +868,7 @@ export namespace Models {
     fecha: CodecTypes['pg/text@1']['output'] | null;
     comprobante: CodecTypes['pg/text@1']['output'] | null;
     notas: CodecTypes['pg/text@1']['output'] | null;
+    archivoUrl: CodecTypes['pg/text@1']['output'] | null;
     case: public_Case;
     readonly [RelationKeys]?: 'case';
   };
@@ -1383,6 +1393,11 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
                 };
+                readonly archivoUrl: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
               };
               primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [];
@@ -1456,6 +1471,11 @@ type ContractBase = Omit<
                   readonly nullable: true;
                 };
                 readonly notas: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly archivoUrl: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
@@ -2154,6 +2174,10 @@ type ContractBase = Omit<
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
+              readonly archivoUrl: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
             };
             readonly relations: {
               readonly case: {
@@ -2177,6 +2201,7 @@ type ContractBase = Omit<
                 readonly fecha: { readonly column: 'fecha' };
                 readonly comprobante: { readonly column: 'comprobante' };
                 readonly notas: { readonly column: 'notas' };
+                readonly archivoUrl: { readonly column: 'archivoUrl' };
               };
             };
           };
@@ -2218,6 +2243,10 @@ type ContractBase = Omit<
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
+              readonly archivoUrl: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
             };
             readonly relations: {
               readonly case: {
@@ -2243,6 +2272,7 @@ type ContractBase = Omit<
                 readonly metodo: { readonly column: 'metodo' };
                 readonly recibo: { readonly column: 'recibo' };
                 readonly notas: { readonly column: 'notas' };
+                readonly archivoUrl: { readonly column: 'archivoUrl' };
               };
             };
           };

@@ -12,6 +12,7 @@ type Fee = {
   metodo?: string | null
   recibo?: string | null
   notas?: string | null
+  archivoUrl?: string | null
 }
 
 type Expense = {
@@ -21,6 +22,7 @@ type Expense = {
   fecha?: string | null
   comprobante?: string | null
   notas?: string | null
+  archivoUrl?: string | null
 }
 
 interface Props {
@@ -115,16 +117,17 @@ export function MovimientosModal({ fees, expenses }: Props) {
                       Honorarios
                     </h4>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                      <div style={{ display: 'grid', gridTemplateColumns: '120px 100px 100px 100px 1fr 100px', gap: '1rem', padding: '0 1rem', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold', textTransform: 'uppercase' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: '120px 100px 100px 100px 1fr 100px 60px', gap: '1rem', padding: '0 1rem', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold', textTransform: 'uppercase' }}>
                         <span>Monto</span>
                         <span>Fecha</span>
                         <span>Método</span>
                         <span>Recibo</span>
                         <span>Notas</span>
                         <span style={{ textAlign: 'center' }}>Estado</span>
+                        <span style={{ textAlign: 'center' }}>Doc</span>
                       </div>
                       {fees.map(f => (
-                        <div key={f.id} style={{ display: 'grid', gridTemplateColumns: '120px 100px 100px 100px 1fr 100px', alignItems: 'center', gap: '1rem', padding: '0.5rem 1rem', backgroundColor: 'rgba(16, 185, 129, 0.05)', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(16, 185, 129, 0.2)', fontSize: '0.85rem' }}>
+                        <div key={f.id} style={{ display: 'grid', gridTemplateColumns: '120px 100px 100px 100px 1fr 100px 60px', alignItems: 'center', gap: '1rem', padding: '0.5rem 1rem', backgroundColor: 'rgba(16, 185, 129, 0.05)', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(16, 185, 129, 0.2)', fontSize: '0.85rem' }}>
                           <span style={{ fontWeight: 'bold' }}>
                             {f.moneda === 'Dólares' ? 'U$S ' : (f.moneda === 'JUS' ? '' : '$ ')}
                             {f.monto.toLocaleString()} {f.moneda === 'JUS' ? 'JUS' : ''}
@@ -135,6 +138,9 @@ export function MovimientosModal({ fees, expenses }: Props) {
                           <span style={{ color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={f.notas || ''}>{f.notas || '-'}</span>
                           <span style={{ padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', textAlign: 'center', backgroundColor: f.fechaPago ? 'rgba(16, 185, 129, 0.2)' : 'rgba(245, 158, 11, 0.2)', color: f.fechaPago ? '#34d399' : '#f59e0b', fontWeight: 600 }}>
                             {f.fechaPago ? 'PAGADO' : 'PENDIENTE'}
+                          </span>
+                          <span style={{ textAlign: 'center' }}>
+                            {f.archivoUrl ? <a href={f.archivoUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Ver</a> : '-'}
                           </span>
                         </div>
                       ))}
@@ -149,15 +155,16 @@ export function MovimientosModal({ fees, expenses }: Props) {
                       Gastos
                     </h4>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                      <div style={{ display: 'grid', gridTemplateColumns: '120px 200px 100px 100px 1fr', gap: '1rem', padding: '0 1rem', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold', textTransform: 'uppercase' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: '120px 200px 100px 100px 1fr 60px', gap: '1rem', padding: '0 1rem', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold', textTransform: 'uppercase' }}>
                         <span>Monto</span>
                         <span>Concepto</span>
                         <span>Fecha</span>
                         <span>Comprobante</span>
                         <span>Notas</span>
+                        <span style={{ textAlign: 'center' }}>Doc</span>
                       </div>
                       {expenses.map(e => (
-                        <div key={e.id} style={{ display: 'grid', gridTemplateColumns: '120px 200px 100px 100px 1fr', alignItems: 'center', gap: '1rem', padding: '0.5rem 1rem', backgroundColor: 'rgba(59, 130, 246, 0.05)', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(59, 130, 246, 0.2)', fontSize: '0.85rem' }}>
+                        <div key={e.id} style={{ display: 'grid', gridTemplateColumns: '120px 200px 100px 100px 1fr 60px', alignItems: 'center', gap: '1rem', padding: '0.5rem 1rem', backgroundColor: 'rgba(59, 130, 246, 0.05)', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(59, 130, 246, 0.2)', fontSize: '0.85rem' }}>
                           <span style={{ fontWeight: 'bold' }}>
                             $ {e.monto.toLocaleString()}
                           </span>
@@ -167,6 +174,9 @@ export function MovimientosModal({ fees, expenses }: Props) {
                           <span style={{ color: 'var(--text-muted)' }}>{e.fecha || '-'}</span>
                           <span style={{ color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{e.comprobante || '-'}</span>
                           <span style={{ color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={e.notas || ''}>{e.notas || '-'}</span>
+                          <span style={{ textAlign: 'center' }}>
+                            {e.archivoUrl ? <a href={e.archivoUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Ver</a> : '-'}
+                          </span>
                         </div>
                       ))}
                     </div>
