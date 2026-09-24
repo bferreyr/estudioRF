@@ -14,7 +14,7 @@ async function saveFile(file: File | null): Promise<string | null> {
   const dir = path.join(process.cwd(), 'public', 'uploads');
   await fs.mkdir(dir, { recursive: true });
   await fs.writeFile(path.join(dir, filename), buffer);
-  return `/uploads/${filename}`;
+  return `/api/archivos/${filename}`;
 }
 
 export async function getFees(page = 1) {

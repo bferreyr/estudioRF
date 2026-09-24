@@ -39,6 +39,9 @@ export function MovimientosModal({ fees, expenses }: Props) {
   }, [])
 
   const hasItems = fees.length > 0 || expenses.length > 0
+  const [previewDocUrl, setPreviewDocUrl] = useState<string | null>(null)
+
+  const getDocUrl = (url: string) => url.startsWith('/uploads/') ? url.replace('/uploads/', '/api/archivos/') : url
 
   return (
     <>
@@ -140,7 +143,14 @@ export function MovimientosModal({ fees, expenses }: Props) {
                             {f.fechaPago ? 'PAGADO' : 'PENDIENTE'}
                           </span>
                           <span style={{ textAlign: 'center' }}>
-                            {f.archivoUrl ? <a href={f.archivoUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Ver</a> : '-'}
+                            {f.archivoUrl ? (
+                              <button 
+                                onClick={() => setPreviewDocUrl(getDocUrl(f.archivoUrl!))} 
+                                style={{ color: 'var(--accent)', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.85rem' }}
+                              >
+                                Ver
+                              </button>
+                            ) : '-'}
                           </span>
                         </div>
                       ))}
@@ -175,7 +185,14 @@ export function MovimientosModal({ fees, expenses }: Props) {
                           <span style={{ color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{e.comprobante || '-'}</span>
                           <span style={{ color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={e.notas || ''}>{e.notas || '-'}</span>
                           <span style={{ textAlign: 'center' }}>
-                            {e.archivoUrl ? <a href={e.archivoUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Ver</a> : '-'}
+                            {e.archivoUrl ? (
+                              <button 
+                                onClick={() => setPreviewDocUrl(getDocUrl(e.archivoUrl!))} 
+                                style={{ color: 'var(--accent)', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.85rem' }}
+                              >
+                                Ver
+                              </button>
+                            ) : '-'}
                           </span>
                         </div>
                       ))}
@@ -185,6 +202,21 @@ export function MovimientosModal({ fees, expenses }: Props) {
               </div>
             )}
           </div>
+          
+          {previewDocUrl && (
+            <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 100000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+              <div style={{ width: '100%', maxWidth: '900px', backgroundColor: 'var(--bg-color)', borderRadius: 'var(--radius-md)', padding: '1rem', display: 'flex', flexDirection: 'column', height: '90vh', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.25rem' }}>Documento Adjunto</h3>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <a href={previewDocUrl} target="_blank" rel="noreferrer" className="btn btn-outline" style={{ padding: '0.4rem 1rem' }}>Abrir en nueva pestaña</a>
+                    <button className="btn btn-primary" onClick={() => setPreviewDocUrl(null)} style={{ padding: '0.4rem 1rem' }}>Cerrar</button>
+                  </div>
+                </div>
+                <iframe src={previewDocUrl} style={{ width: '100%', flex: 1, border: 'none', borderRadius: '4px', backgroundColor: '#fff' }} title="Visor de documentos" />
+              </div>
+            </div>
+          )}
         </div>,
         document.body
       )}
