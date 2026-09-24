@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { CaseForm } from '../CaseForm'
 import { markFeeAsPaid } from '@/app/actions/honorarios'
+import { MovimientosModal } from './MovimientosModal'
 
 export default async function DetalleCasoPage({
   params
@@ -139,7 +140,7 @@ export default async function DetalleCasoPage({
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h4 style={{ fontSize: '1rem' }}>Movimientos Registrados</h4>
+              <MovimientosModal fees={caseData.fees || []} expenses={caseData.expenses || []} />
               <Link href={`/dashboard/honorarios/nuevo?caseId=${caseData.id}`} className="btn btn-sm btn-primary">
                 + Nuevo
               </Link>
