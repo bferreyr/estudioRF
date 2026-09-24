@@ -30,6 +30,60 @@ type Expense = {
   archivoUrl?: string | null
 }
 
+function FileInput({ id, name, label, existingUrl }: { id: string, name: string, label: string, existingUrl?: string | null }) {
+  const [fileName, setFileName] = useState<string | null>(null)
+
+  return (
+    <div>
+      <label className="input-label" htmlFor={id}>{label}</label>
+      <div style={{ position: 'relative' }}>
+        <input 
+          type="file" 
+          id={id} 
+          name={name} 
+          className="input-field" 
+          accept="image/*,application/pdf"
+          style={{ 
+            opacity: 0, 
+            position: 'absolute', 
+            top: 0, left: 0, width: '100%', height: '100%', 
+            cursor: 'pointer',
+            zIndex: 2
+          }} 
+          onChange={(e) => {
+            if (e.target.files && e.target.files.length > 0) {
+              setFileName(e.target.files[0].name)
+            } else {
+              setFileName(null)
+            }
+          }}
+        />
+        <div 
+          className="input-field" 
+          style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'space-between', 
+            backgroundColor: fileName ? 'rgba(59, 130, 246, 0.1)' : undefined,
+            borderColor: fileName ? 'var(--accent)' : undefined,
+            color: fileName ? 'var(--text-main)' : 'var(--text-muted)'
+          }}
+        >
+          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '80%' }}>
+            {fileName ? fileName : 'Seleccionar archivo...'}
+          </span>
+          <span style={{ fontSize: '1.1rem' }}>{fileName ? '📄' : '📎'}</span>
+        </div>
+      </div>
+      {existingUrl && !fileName && (
+        <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', position: 'relative', zIndex: 3 }}>
+          Archivo actual: <a href={existingUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Ver archivo</a>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function FeeForm({ 
   initialData, 
   caseId, 
@@ -157,10 +211,7 @@ export function FeeForm({
                 <label className="input-label" htmlFor={`notas-${index}`}>Breve nombre (Notas)</label>
                 <input type="text" id={`notas-${index}`} name="notas" className="input-field" placeholder="Ej. Tasa de justicia" />
               </div>
-              <div>
-                <label className="input-label" htmlFor={`archivo-${index}`}>Adjunto (Opcional)</label>
-                <input type="file" id={`archivo-${index}`} name="archivo" className="input-field" accept="image/*,application/pdf" style={{ padding: '0.4rem' }} />
-              </div>
+              <FileInput id={`archivo-${index}`} name="archivo" label="Adjunto (Opcional)" />
               <input type="hidden" name="comprobante" value="" />
               {expenseRows.length > 1 && (
                 <button type="button" className="btn btn-outline" style={{ padding: '0.65rem 1rem', color: '#ef4444', borderColor: '#ef4444' }} onClick={() => removeExpenseRow(rowId)}>
@@ -230,13 +281,7 @@ export function FeeForm({
           )}
           
           <div style={{ gridColumn: '1 / -1' }}>
-            <label className="input-label" htmlFor="archivo">Archivo Adjunto (Opcional)</label>
-            <input type="file" id="archivo" name="archivo" className="input-field" accept="image/*,application/pdf" style={{ padding: '0.4rem' }} />
-            {initialData?.archivoUrl && (
-              <div style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
-                Archivo actual: <a href={initialData.archivoUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Ver archivo</a>
-              </div>
-            )}
+            <FileInput id="archivo" name="archivo" label="Archivo Adjunto (Opcional)" existingUrl={initialData?.archivoUrl} />
           </div>
           
           <div style={{ gridColumn: '1 / -1' }}>
