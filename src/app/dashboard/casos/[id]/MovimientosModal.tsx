@@ -204,8 +204,17 @@ export function MovimientosModal({ fees, expenses }: Props) {
           </div>
           
           {previewDocUrl && (
-            <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 100000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
-              <div style={{ width: '100%', maxWidth: '900px', backgroundColor: 'var(--bg-color)', borderRadius: 'var(--radius-md)', padding: '1rem', display: 'flex', flexDirection: 'column', height: '90vh', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
+            <div 
+              style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 100000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}
+              onClick={(e) => {
+                e.stopPropagation()
+                setPreviewDocUrl(null)
+              }}
+            >
+              <div 
+                style={{ width: '100%', maxWidth: '900px', backgroundColor: 'var(--bg-color)', borderRadius: 'var(--radius-md)', padding: '1rem', display: 'flex', flexDirection: 'column', height: '90vh', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                   <h3 style={{ margin: 0, fontSize: '1.25rem' }}>Documento Adjunto</h3>
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
