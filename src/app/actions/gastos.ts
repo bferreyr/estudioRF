@@ -7,24 +7,29 @@ import { redirect } from 'next/navigation'
 export async function createExpense(prevState: any, formData: FormData) {
   const caseId = formData.get('caseId') as string
   const concepto = formData.get('concepto') as string
-  const monto = parseFloat(formData.get('monto') as string)
-  const fecha = formData.get('fecha') as string
-  const comprobante = formData.get('comprobante') as string
-  const notas = formData.get('notas') as string
+  const montos = formData.getAll('monto')
+  const fechas = formData.getAll('fecha')
+  const comprobantes = formData.getAll('comprobante')
+  const notasList = formData.getAll('notas')
 
-  if (!caseId || !concepto || isNaN(monto)) {
-    return { error: 'El caso, concepto y monto son obligatorios.' }
+  if (!caseId || !concepto || montos.length === 0) {
+    return { error: 'El caso, concepto y al menos un monto son obligatorios.' }
   }
 
   try {
-    await db.orm.public.Expense.create({
-      caseId,
-      concepto,
-      monto,
-      fecha: fecha || null,
-      comprobante: comprobante || null,
-      notas: notas || null
-    })
+    for (let i = 0; i < montos.length; i++) {
+      const monto = parseFloat(montos[i] as string)
+      if (isNaN(monto)) continue
+
+      await db.orm.public.Expense.create({
+        caseId,
+        concepto,
+        monto,
+        fecha: (fechas[i] as string) || null,
+        comprobante: (comprobantes[i] as string) || null,
+        notas: (notasList[i] as string) || null
+      })
+    }
   } catch (error) {
     console.error('Error creating expense:', error)
     return { error: 'Ocurrió un error al registrar el gasto.' }
