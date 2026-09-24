@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 
 type Fee = {
   id: string
@@ -29,6 +30,11 @@ interface Props {
 
 export function MovimientosModal({ fees, expenses }: Props) {
   const [isOpen, setIsOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const hasItems = fees.length > 0 || expenses.length > 0
 
@@ -44,7 +50,7 @@ export function MovimientosModal({ fees, expenses }: Props) {
         Movimientos Registrados 🔍
       </h4>
 
-      {isOpen && (
+      {isOpen && mounted && createPortal(
         <div style={{
           position: 'fixed',
           top: 0, left: 0, right: 0, bottom: 0,
@@ -175,7 +181,8 @@ export function MovimientosModal({ fees, expenses }: Props) {
               </div>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   )
