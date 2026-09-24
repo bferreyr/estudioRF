@@ -77,13 +77,14 @@ function FileInput({ id, name, label, existingUrl }: { id: string, name: string,
             justifyContent: 'space-between', 
             backgroundColor: fileName ? 'rgba(59, 130, 246, 0.1)' : undefined,
             borderColor: fileName ? 'var(--accent)' : undefined,
-            color: fileName ? 'var(--text-main)' : 'var(--text-muted)'
+            color: fileName ? 'var(--text-main)' : 'var(--text-muted)',
+            minWidth: 0
           }}
         >
-          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '80%' }}>
+          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0, flex: 1, paddingRight: '0.5rem' }}>
             {fileName ? fileName : 'Seleccionar archivo...'}
           </span>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', position: 'relative', zIndex: 3 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', position: 'relative', zIndex: 3, flexShrink: 0 }}>
             {fileName && (
               <button 
                 type="button" 
@@ -221,7 +222,7 @@ export function FeeForm({
       {type === 'gasto' && actionType === 'create' ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
           {expenseRows.map((rowId, index) => (
-            <div key={rowId} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1.5fr 1.5fr auto', gap: '1rem', alignItems: 'end', padding: '1rem', backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(255,255,255,0.05)' }}>
+            <div key={rowId} style={{ display: 'grid', gridTemplateColumns: '100px 140px 1.2fr 1.8fr auto', gap: '1rem', alignItems: 'end', padding: '1rem', backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(255,255,255,0.05)' }}>
               <div>
                 <label className="input-label" htmlFor={`monto-${index}`}>Monto *</label>
                 <input type="number" step="0.01" id={`monto-${index}`} name="monto" className="input-field" required />
