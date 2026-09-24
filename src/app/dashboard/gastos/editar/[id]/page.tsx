@@ -27,7 +27,7 @@ export default async function EditarGastoPage({
         </p>
       </div>
 
-      <div style={{ maxWidth: '800px' }}>
+      <div style={{ maxWidth: '1200px' }}>
         <FeeForm initialData={expense} caseId={expense.caseId} actionType="update" isExpense={true} />
       </div>
     </div>

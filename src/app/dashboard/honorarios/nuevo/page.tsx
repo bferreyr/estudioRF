@@ -34,7 +34,7 @@ export default async function NuevoHonorarioPage({
         </p>
       </div>
 
-      <div style={{ maxWidth: '800px' }}>
+      <div style={{ maxWidth: '1200px' }}>
         <FeeForm caseId={caseId} />
       </div>
     </div>
