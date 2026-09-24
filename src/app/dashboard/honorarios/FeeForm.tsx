@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createFee, updateFee, deleteFee } from '@/app/actions/honorarios'
@@ -32,12 +32,23 @@ type Expense = {
 
 function FileInput({ id, name, label, existingUrl }: { id: string, name: string, label: string, existingUrl?: string | null }) {
   const [fileName, setFileName] = useState<string | null>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const handleClear = (e: any) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setFileName(null)
+    if (inputRef.current) {
+      inputRef.current.value = ""
+    }
+  }
 
   return (
     <div>
       <label className="input-label" htmlFor={id}>{label}</label>
       <div style={{ position: 'relative' }}>
         <input 
+          ref={inputRef}
           type="file" 
           id={id} 
           name={name} 
@@ -72,7 +83,19 @@ function FileInput({ id, name, label, existingUrl }: { id: string, name: string,
           <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '80%' }}>
             {fileName ? fileName : 'Seleccionar archivo...'}
           </span>
-          <span style={{ fontSize: '1.1rem' }}>{fileName ? '📄' : '📎'}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', position: 'relative', zIndex: 3 }}>
+            {fileName && (
+              <button 
+                type="button" 
+                onClick={handleClear}
+                style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: '4px', color: '#ef4444', cursor: 'pointer', padding: '0.1rem 0.4rem', display: 'flex', alignItems: 'center', fontSize: '0.75rem', fontWeight: 'bold' }}
+                title="Quitar archivo"
+              >
+                ✕
+              </button>
+            )}
+            <span style={{ fontSize: '1.1rem' }}>{fileName ? '📄' : '📎'}</span>
+          </div>
         </div>
       </div>
       {existingUrl && !fileName && (
