@@ -45,7 +45,9 @@ export async function createExpense(prevState: any, formData: FormData) {
 
       const nota = notasList[i] as string;
       if (nota && nota.trim() !== '') {
-        notasCombinadas.push(nota.trim());
+        notasCombinadas.push(`$${monto}: ${nota.trim()}`);
+      } else {
+        notasCombinadas.push(`$${monto}`);
       }
 
       if (!primeraFecha && fechas[i]) {
