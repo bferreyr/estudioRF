@@ -197,16 +197,18 @@ export function MovimientosModal({ fees, expenses }: Props) {
                             ) : '-'}
                           </span>
                           <span style={{ textAlign: 'right' }}>
-                            <form 
-                              action={deleteExpense.bind(null, e.id)}
-                              onSubmit={(ev) => {
-                                if (!confirm('¿Seguro que deseas eliminar este gasto?')) {
-                                  ev.preventDefault()
+                            <button 
+                              type="button" 
+                              onClick={async () => {
+                                if (confirm('¿Seguro que deseas eliminar este gasto?')) {
+                                  await deleteExpense(e.id)
                                 }
                               }}
+                              style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1rem', fontWeight: 'bold' }} 
+                              title="Eliminar Gasto"
                             >
-                              <button type="submit" style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1rem', fontWeight: 'bold' }} title="Eliminar Gasto">✕</button>
-                            </form>
+                              ✕
+                            </button>
                           </span>
                         </div>
                       ))}
