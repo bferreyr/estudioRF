@@ -31,24 +31,48 @@ export async function createExpense(prevState: any, formData: FormData) {
   }
 
   try {
+    let totalMonto = 0;
+    const notasCombinadas: string[] = [];
+    let primeraFecha: string | null = null;
+    let primerComprobante: string | null = null;
+    let primerArchivoUrl: string | null = null;
+
     for (let i = 0; i < montos.length; i++) {
       const monto = parseFloat(montos[i] as string)
       if (isNaN(monto)) continue
 
-      let archivoUrl = null;
-      const file = archivos[i];
-      if (file && typeof file === 'object' && file.size > 0) {
-        archivoUrl = await saveFile(file);
+      totalMonto += monto;
+
+      const nota = notasList[i] as string;
+      if (nota && nota.trim() !== '') {
+        notasCombinadas.push(nota.trim());
       }
 
+      if (!primeraFecha && fechas[i]) {
+        primeraFecha = fechas[i] as string;
+      }
+
+      if (!primerComprobante && comprobantes[i]) {
+        primerComprobante = comprobantes[i] as string;
+      }
+
+      if (!primerArchivoUrl) {
+        const file = archivos[i];
+        if (file && typeof file === 'object' && file.size > 0) {
+          primerArchivoUrl = await saveFile(file);
+        }
+      }
+    }
+
+    if (totalMonto > 0) {
       await db.orm.public.Expense.create({
         caseId,
         concepto,
-        monto,
-        fecha: (fechas[i] as string) || null,
-        comprobante: (comprobantes[i] as string) || null,
-        notas: (notasList[i] as string) || null,
-        archivoUrl
+        monto: totalMonto,
+        fecha: primeraFecha,
+        comprobante: primerComprobante,
+        notas: notasCombinadas.length > 0 ? notasCombinadas.join(' | ') : null,
+        archivoUrl: primerArchivoUrl
       })
     }
   } catch (error) {
