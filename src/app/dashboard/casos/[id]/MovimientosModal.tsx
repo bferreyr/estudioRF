@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
+import { deleteExpense } from '@/app/actions/gastos'
 
 type Fee = {
   id: string
@@ -165,16 +166,17 @@ export function MovimientosModal({ fees, expenses }: Props) {
                       Gastos
                     </h4>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                      <div style={{ display: 'grid', gridTemplateColumns: '120px 200px 100px 100px 1fr 60px', gap: '1rem', padding: '0 1rem', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold', textTransform: 'uppercase' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: '120px 200px 100px 100px 1fr 60px 30px', gap: '1rem', padding: '0 1rem', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold', textTransform: 'uppercase' }}>
                         <span>Monto</span>
                         <span>Concepto</span>
                         <span>Fecha</span>
                         <span>Comprobante</span>
                         <span>Notas</span>
                         <span style={{ textAlign: 'center' }}>Doc</span>
+                        <span></span>
                       </div>
                       {expenses.map(e => (
-                        <div key={e.id} style={{ display: 'grid', gridTemplateColumns: '120px 200px 100px 100px 1fr 60px', alignItems: 'center', gap: '1rem', padding: '0.5rem 1rem', backgroundColor: 'rgba(59, 130, 246, 0.05)', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(59, 130, 246, 0.2)', fontSize: '0.85rem' }}>
+                        <div key={e.id} style={{ display: 'grid', gridTemplateColumns: '120px 200px 100px 100px 1fr 60px 30px', alignItems: 'center', gap: '1rem', padding: '0.5rem 1rem', backgroundColor: 'rgba(59, 130, 246, 0.05)', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(59, 130, 246, 0.2)', fontSize: '0.85rem' }}>
                           <span style={{ fontWeight: 'bold' }}>
                             $ {e.monto.toLocaleString()}
                           </span>
@@ -193,6 +195,18 @@ export function MovimientosModal({ fees, expenses }: Props) {
                                 Ver
                               </button>
                             ) : '-'}
+                          </span>
+                          <span style={{ textAlign: 'right' }}>
+                            <form 
+                              action={deleteExpense.bind(null, e.id)}
+                              onSubmit={(ev) => {
+                                if (!confirm('¿Seguro que deseas eliminar este gasto?')) {
+                                  ev.preventDefault()
+                                }
+                              }}
+                            >
+                              <button type="submit" style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1rem', fontWeight: 'bold' }} title="Eliminar Gasto">✕</button>
+                            </form>
                           </span>
                         </div>
                       ))}

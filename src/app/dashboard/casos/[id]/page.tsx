@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { CaseForm } from '../CaseForm'
 import { markFeeAsPaid } from '@/app/actions/honorarios'
+import { deleteExpense } from '@/app/actions/gastos'
 import { MovimientosModal } from './MovimientosModal'
 
 export default async function DetalleCasoPage({
@@ -183,6 +184,12 @@ export default async function DetalleCasoPage({
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                       <Link href={`/dashboard/gastos/editar/${e.id}`} style={{ color: 'var(--accent)', fontSize: '0.75rem', textDecoration: 'underline' }}>Editar</Link>
+                      <form action={async () => {
+                        'use server'
+                        await deleteExpense(e.id)
+                      }}>
+                        <button type="submit" style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1rem', fontWeight: 'bold' }} title="Eliminar Gasto">✕</button>
+                      </form>
                     </div>
                   </div>
                 ))}
